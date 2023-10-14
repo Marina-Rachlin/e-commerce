@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation</title>
+    <style>
+        body {
+        margin: 0;
+        padding: 0;
+        min-width: 100%;
+        font-family: Arial, sans-serif;
+        font-size: 16px;
+        line-height: 1.5;
+        background-color: #FAFAFA;
+        color: #222222;
+        }
+
+    .email-header{
+        background-image: url(../footer-bg.png);
+    }    
+
+        .email-wrapper {
+        max-width: 600px;
+        margin: 0 auto;
+      }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .total-price {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <div class="email-header">
+            <h1>Order Confirmation</h1>
+          </div>
+        <table>
+            <tr>
+                <td colspan="2">
+                    <h2>Order Details</h2>
+                    <p>Order Number: <%= newOrder._id %></p>
+                    <p>Date: <%= newOrder.createdAt.toDateString() %></p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h2>Shipping Address</h2>
+                    <!-- <p>Name: <%= newOrder.shippingAddress.name %></p> -->
+                    <p>Address: <%= newOrder.shippingAddress.address %></p>
+                    <p>City: <%= newOrder.shippingAddress.city %></p>
+                    <p>Postal Code: <%= newOrder.shippingAddress.postalCode %></p>
+                </td>
+                <td>
+                    <h2>Order Summary</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% newOrder.cart.forEach(item => { %>
+                                <tr>
+                                    <td><%= item.product.name %></td>
+                                    <td><%= item.quantity %></td>
+                                    <!-- <td>$<%= item.price.toFixed(2) %></td>
+                                    <td>$<%= (item.quantity * item.product.price).toFixed(2) %></td> -->
+                                </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                    <p class="total-price">Total Price: $<%= newOrder.totalPrice.toFixed(2) %></p>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>
+
