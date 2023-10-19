@@ -26,7 +26,6 @@ coverage/
 .idea/
 
 # Ignore database files and directories
-db/
 data/
 
 # Ignore cache and session data directories

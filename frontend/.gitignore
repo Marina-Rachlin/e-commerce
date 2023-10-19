@@ -1,27 +1,24 @@
-# Ignore Next.js build output
-.next/
-
-# Ignore Node.js modules (dependencies)
+# Ignore Node.js modules
 node_modules/
 
-# Ignore environment-specific files
-.env
-.env.local
-.env.development
-.env.test
-.env.production
+# Ignore build output
+.next/
+out/
 
-# Ignore logs and temporary files
+# Ignore environment variables file (if used)
+.env
+
+# Ignore log files
 logs/
 *.log
-*.log.*
-*.log-*
-*.pid
 
-# Ignore IDE/editor configuration files (specific to VS Code and WebStorm)
+# Ignore other build files
+build/
+.cache/
+
+# Ignore VS Code settings
 .vscode/
-.idea/
 
-# Ignore build artifacts and test coverage reports
-out/
-coverage/
+# Ignore other development tools' settings and files
+.idea/
+.DS_Store
