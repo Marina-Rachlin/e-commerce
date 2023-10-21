@@ -2,7 +2,6 @@ import React from "react";
 import Head from "next/head";
 import Banner from "../components/banner/Banner";
 import PopularCategory from "../components/home/PopularCategory";
-import FeatureProduct from "../components/home/FeatureProduct";
 import ProductBanner from "../components/home/ProductBanner";
 import SuggestSection from "../components/home/SuggestSection";
 import OfferBanner from "../components/home/OfferBanner";
@@ -25,8 +24,7 @@ export default function Home() {
       <ProductViewModal />
       <Banner />
       <PopularCategory />
-      <FeatureProduct />
-      {/* <FeatureProduct2 /> */}
+      <FeatureProduct2 />
       <ProductBanner />
       <SuggestSection />
       <OfferBanner />

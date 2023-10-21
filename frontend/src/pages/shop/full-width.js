@@ -275,11 +275,10 @@ const Fullidth = () => {
             <div className="row gy-4 mb-80 ">
               <div className={`col${activeColumn === 'column-4'?"-lg-3":activeColumn==="column-3"?"-md-4":activeColumn==="column-2"?"-sm-6":"nop"}`}>
                 <div className="product-card style-3 hover-btn">
-                  <div className="product-card-img double-img">
+                  <div className="product-card-img">
                     <Link legacyBehavior href="/shop">
                       <a>
                       <img src="/assets/img/home1/product-img-4.png" alt="" className="img1" />
-                      <img src="/assets/img/home1/product-img-7.png" alt="" className="img2" />
                       <div className="countdown-timer">
                       <ul data-countdown={endTime}>
                         <li className="times" data-days={days}>{days}D</li>
@@ -524,11 +523,10 @@ const Fullidth = () => {
               </div>
               <div className={`col${activeColumn === 'column-4'?"-lg-3":activeColumn==="column-3"?"-md-4":activeColumn==="column-2"?"-sm-6":"nop"}`}>
                 <div className="product-card style-3 hover-btn">
-                  <div className="product-card-img double-img">
+                  <div className="product-card-img">
                     <Link legacyBehavior href="/shop">
                       <a>
                       <img src="/assets/img/home1/product-img-16.png" alt="" className="img1" />
-                      <img src="/assets/img/home1/product-img-3.png" alt="" className="img2" />
                       <div className="batch">
                         <span>-18%</span>
                       </div>

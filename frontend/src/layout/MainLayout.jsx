@@ -4,6 +4,8 @@ import Topbar from "./Topbar";
 import Header from "./Header";
 import Head from "next/head";
 import Footer from "./Footer";
+import Login from "../components/auth/Login";
+import Register from "../components/auth/Registration";
 
 const MainLayout = ({ children }) => {
   return (
@@ -17,6 +19,7 @@ const MainLayout = ({ children }) => {
       
       <Topbar />
       <AuthModal />
+      {/* <Login /> */}
       <Header />
       {children}
       <Footer />

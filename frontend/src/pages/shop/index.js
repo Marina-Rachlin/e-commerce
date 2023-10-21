@@ -25,8 +25,8 @@ export default function Home() {
       <ProductViewModal />
       <Banner />
       <PopularCategory />
-      <FeatureProduct />
-      {/* <FeatureProduct2 /> */}
+      {/* <FeatureProduct /> */}
+      <FeatureProduct2 />
       <ProductBanner />
       <SuggestSection />
       <OfferBanner />
