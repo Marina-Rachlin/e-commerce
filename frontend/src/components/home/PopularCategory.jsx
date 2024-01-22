@@ -10,7 +10,7 @@ const PopularCategory = () => {
       <div className="container">
         <div className="section-title3">
           <h3>Popular <span>Category</span> </h3>
-          <ViewAllLink lastWord='Category' />
+          <ViewAllLink lastWord='Category'  path='/shop/categories'/>
         </div>
         <div className="row g-4">
           <CategoryCard

@@ -22,6 +22,9 @@
   // Theme Color
   --primary-color1: #222222;
   --bg-color: #f2f2f2;
+  --admin-primary: ;
+  --admin-text: color: rgba(58, 53, 65, 0.87);
+
 }
 
 ul {
@@ -12199,6 +12202,11 @@ Testimonial-Section Css
             }
           }
       }
+  }
+
+  .nice-select .is-invalid .form-select{
+    border-color: red;
+
   }
   .added-product-summary{
       border: 1px solid #eee;

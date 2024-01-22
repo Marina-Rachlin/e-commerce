@@ -14,19 +14,32 @@ import analyticsRouter from "./routes/analytics.route.js";
 import notificationRoute from "./routes/notification.route.js";
 import {v2 as cloudinary} from "cloudinary";
 import layoutRouter from "./routes/layout.route.js";
+import wishlistRouter from "./routes/wishlist.route.js";
+import cartRouter from "./routes/cart.route.js";
+import http from "http";
+import { initSocketServer } from "./socketServer.js";
+
 
 
 const app = express();
+const server = http.createServer(app);//use an HTTP server which is compatible with Socket.io
+initSocketServer(server);
 
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 app.use(express.json());
-app.use(bodyParser.urlencoded({extended:true, limit: "50mb"}))
 app.use(cookieParser());
 
-// cors => cross origin resource sharing
+//cors => cross origin resource sharing
+// app.use(cors({
+//   origin: process.env.ORIGIN,
+//   credentials: true,
+// }));
 app.use(cors({
-  origin: process.env.ORIGIN,
+  origin: 'http://localhost:3000',
   credentials: true,
 }));
+
 
 // routes
 app.use(
@@ -35,7 +48,9 @@ app.use(
   orderRouter,
   notificationRoute,
   analyticsRouter,
-  layoutRouter
+  layoutRouter,
+  wishlistRouter,
+  cartRouter,
 );
 
 // middleware calls
@@ -91,16 +106,8 @@ cloudinary.config({
 });
  
 //server  
-const server = app.listen(process.env.PORT || 3030, () =>{
+ server.listen(process.env.PORT || 3030, () =>{
     console.log(`Server is running on port ${process.env.PORT}`)
 })
 
-
-
-// import http from "http";
-// import { initSocketServer } from "./socketServer";
-// const server = http.createServer(app);
-
-
-// initSocketServer(server);
 // import { rateLimit } from 'express-rate-limit'

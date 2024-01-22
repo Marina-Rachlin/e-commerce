@@ -42,6 +42,7 @@ await redis.set(user._id, JSON.stringify(user));
     success: true,
     user,
     accessToken,
+    refreshToken
   });
 };
 

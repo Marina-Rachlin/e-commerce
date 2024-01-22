@@ -88,10 +88,10 @@ const Footer = () => {
           <div className="row">
             <div className="col-lg-12 d-flex flex-md-row flex-column align-items-center justify-content-md-between justify-content-center flex-wrap gap-3">
               <div className="footer-left">
-                <p>©Copyright 2023 Beautico | Design By <a href="https://www.egenslab.com/">Egens Lab</a></p>
+                <p>©Copyright 2023 Beautime | Design By <a href="https://www.egenslab.com/">Marina Rachlin</a></p>
               </div>
               <div className="footer-logo">
-                <Link legacyBehavior href="/"><a><img src="assets/img/logo.svg" alt="" /></a></Link>
+                <Link legacyBehavior href="/"><a><img src="assets/img/sm-logo.svg" alt="" />Beautime</a></Link>
               </div>
               <div className="footer-contact">
                 <div className="logo">

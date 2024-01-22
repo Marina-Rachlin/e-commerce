@@ -1,25 +1,22 @@
 import mongoose from "mongoose";
 
 const orderSchema = new mongoose.Schema({
-    user:{
-        type: Object,
-        required: true,
-    },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
     cart: [
         {
-          product: {
-            type: Object,
+          productId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Product",
             required: true,
           },
           quantity: {
             type: Number,
             required: true,
             min: 0,
-          },
-          price: {
-            type: Number,
-            required: true,
-            min: 0.0,
           },
         },
       ],
@@ -30,7 +27,7 @@ const orderSchema = new mongoose.Schema({
     paymentMethod: {
         type: String,
         required: [true, "Please select payment method!"],
-        enum: ["Credit Card", "PayPal"], 
+        // enum: ["Credit Card"], 
     },
     paymentInfo: {
         id: String,
@@ -40,7 +37,7 @@ const orderSchema = new mongoose.Schema({
     taxPrice: {
         type: Number,
         required: true,
-        default: 0.0,
+        default: 2.0,
       },
     shippingPrice: {
         type: Number,

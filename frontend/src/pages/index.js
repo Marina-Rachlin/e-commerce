@@ -9,9 +9,10 @@ import TopSellingProduct from "../components/home/TopSellingProduct";
 import BrandSection from "../components/home/BrandSection";
 import BannerFooter from "../components/home/BannerFooter";
 import ProductViewModal from "../components/common/ProductViewModal";
-import FeatureProduct2 from "../components/home/FeatureProduct2";
+import FeatureProduct from "../components/home/FeatureProduct";
 
 export default function Home() {
+
   return (
     <>
       <Head>
@@ -24,7 +25,7 @@ export default function Home() {
       <ProductViewModal />
       <Banner />
       <PopularCategory />
-      <FeatureProduct2 />
+      <FeatureProduct />
       <ProductBanner />
       <SuggestSection />
       <OfferBanner />
@@ -34,3 +35,6 @@ export default function Home() {
     </>
   );
 }
+
+
+

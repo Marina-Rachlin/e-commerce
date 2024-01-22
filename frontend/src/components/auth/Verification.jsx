@@ -1,12 +1,36 @@
 "use client";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
+import { useSelector } from "react-redux";
+import { useActivationMutation } from "../../redux/features/auth/authApi";
+import { toast } from "react-hot-toast";
 
-const Verification = ({ name }) => {
+const Verification = ({ name, handleTabChange }) => {
   const { control, handleSubmit } = useForm();
   const [verifyNumber, setVerifyNumber] = useState(["", "", "", ""]);
   const inputRefs = [useRef(null), useRef(null), useRef(null), useRef(null)];
   const [invalidError, setInvalidError] = useState(false);
+  const { token } = useSelector(state => state.auth);
+  const [activation, { isSuccess, error, data }] = useActivationMutation();
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success("Account activated successfully");
+      console.log("Account activated successfully");
+      handleTabChange("login");
+    }
+    if (error) {
+      if ("data" in error) {
+        const errorData = error;
+        toast.error(errorData.data.message);
+        console.log(errorData.data.message);
+        setInvalidError(true);
+      } else {
+        console.log("An error occured:", error);
+      }
+    }
+  }, [isSuccess, error]);
+
 
   const handleInputChange = (value, index) => {
     const newVerifyNumber = [...verifyNumber];
@@ -20,10 +44,17 @@ const Verification = ({ name }) => {
     }
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     const joinedNumber = verifyNumber.join("");
     console.log(joinedNumber);
-    setInvalidError(true);
+    if (joinedNumber.length !== 4) {
+      setInvalidError(true);
+      return;
+    }
+    await activation({
+      activation_token: token,
+      activation_code: joinedNumber,
+    });
   };
 
   return (
@@ -69,6 +100,7 @@ const Verification = ({ name }) => {
                 />
               </div>
             ))}
+            
           </div>
 
           <button type="submit" className="primary-btn1 hover-btn3">
@@ -77,7 +109,7 @@ const Verification = ({ name }) => {
 
           <div className="member d-flex justify-content-center align-items-center">
             <p>Didn't get the mail?
-                 <a href="#">Resend</a>
+                 <a href="#"> Resend</a>
             </p>
           </div>
         </form>

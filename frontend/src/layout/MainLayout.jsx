@@ -1,13 +1,15 @@
-import React, { useEffect } from "react";
+import React from "react";
 import AuthModal from "./AuthModal";
 import Topbar from "./Topbar";
 import Header from "./Header";
 import Head from "next/head";
 import Footer from "./Footer";
-import Login from "../components/auth/Login";
-import Register from "../components/auth/Registration";
+import { useRouter } from "next/router";
+import AdminLayout from "./admin/AdminLayout";
 
 const MainLayout = ({ children }) => {
+  const router = useRouter();
+
   return (
     <>
       <Head>
@@ -16,15 +18,24 @@ const MainLayout = ({ children }) => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/assets/img/sm-logo.svg" />
       </Head>
-      
-      <Topbar />
-      <AuthModal />
-      {/* <Login /> */}
-      <Header />
-      {children}
-      <Footer />
-    </>
-  );s
+
+      {router.pathname.startsWith("/admin") ? (
+        <>
+          {/* Admin dashboard layout */} 
+          {children}
+        </>
+      ) : (
+        <>
+          {/* Default layout */}
+          <Topbar />
+          <AuthModal />
+          <Header /> 
+          {children}
+          <Footer />
+        </>
+      )}
+  </>
+  );
 };
 
 export default MainLayout;

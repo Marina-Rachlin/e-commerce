@@ -1,8 +1,6 @@
 import mongoose from "mongoose";
 
-const { Schema, model } = mongoose;
-
-const reviewSchema = new Schema(
+const reviewSchema = new mongoose.Schema(
   {
     user: Object,
     rating: {
@@ -15,7 +13,7 @@ const reviewSchema = new Schema(
   { timestamps: true }
 );
 
-const productSchema = new Schema(
+const productSchema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -26,6 +24,7 @@ const productSchema = new Schema(
       type: String,
       required: [true, "Please enter your product brand!"],
       trim: true,
+      index: true, // Index for the brand field
     },
     description: {
       type: String,
@@ -35,6 +34,7 @@ const productSchema = new Schema(
       type: String,
       required: [true, "Please enter your product category!"],
       trim: true,
+      index: true, // Index for the category field
     },
     stock: {
       type: Number,

@@ -6,7 +6,7 @@ import validator from 'validator';
 
 dotenv.config();
 
-const emailRegexPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+// const emailRegexPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const userSchema = new mongoose.Schema(
   {
@@ -40,6 +40,7 @@ const userSchema = new mongoose.Schema(
     role: {
       type: String,
       default: "user",
+      index: true,
     },
     phoneNumber: {
       type: String,

@@ -13,7 +13,7 @@ const ProductCard = ({ product }) => {
           {product.discount !== 0 && <span>-{product.discount}%</span>}
         </div>
         <div className="product-card-img">
-          <Link legacyBehavior href={`/p/product-default}`}>
+          <Link legacyBehavior href={`/shop/products/${product._id}`}>
             <a>
               <img src={product.image} alt={product.name} />
             </a>
@@ -41,7 +41,7 @@ const ProductCard = ({ product }) => {
            {product.category}
           </p>
           <h6>
-            <Link legacyBehavior href={`/p/product-default`}>
+            <Link legacyBehavior href={`/shop/products/product`}>
               <a className="hover-underline">{product.name}</a>
             </Link>
           </h6>

@@ -1,9 +1,9 @@
 import Link from 'next/link';
 
-const ViewAllLink = ({ lastWord }) => {
+const ViewAllLink = ({ lastWord, path }) => {
   return (
     <div className="view-all">
-      <Link legacyBehavior href="/shop/full-width">
+      <Link legacyBehavior href={path}>
         <a>
           View All {lastWord}
           <svg

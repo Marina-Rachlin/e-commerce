@@ -7,8 +7,10 @@ import SwiperCore, {
   Pagination,
 } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { useCountdownTimer } from "@/src/hooks/useCountdownTimer";
+import {useCountdownTimer} from "../../hooks/useCountdownTimer";
+import QuickViewButton from "../common/QuickViewButton";
 SwiperCore.use([Pagination, Autoplay, EffectFade, Navigation]);
+
 
 const SuggestSection = () => {
   const endTime = "2023-10-23";

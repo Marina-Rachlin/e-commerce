@@ -1,23 +1,19 @@
 import { CatchAsyncError } from "../middleware/catchAsyncErrors.js";
 import ErrorHandler from "../utils/ErrorHandler.js";
 import {v2 as cloudinary} from "cloudinary"; 
-// import { createProduct, getAllCoursesService } from "../services/product.service.js";
 import { redis } from "../utils/redis.js";
-import { paginateResults, calculateTotalPages } from "../utils/pagination.js";
-import mongoose from "mongoose";
-import path from "path";
-import ejs from "ejs";
-import sendMail from "../utils/sendMail.js";
 // import NotificationModel from "../models/notification.Model";
-import axios from "axios";
 import productModel from "../models/product.model.js";
-import { generateCacheKey } from "../middleware/cacheMiddleware.js";
 import { clearCacheKeys } from '../utils/cacheUtils.js'; 
 import { isValidObjectId } from "mongoose";
 import {
   getAllProductsService,
-  getOutOfStockProductsService,
+  createProduct,
+  getAllProductsShopService
 } from "../services/product.service.js";
+import notificationModel from "../models/notification.model.js";
+// import { createProduct } from "../services/product.service.js";
+// import { getAllProductsShopService } from "../services/product.service.js";
 
 
 // create product (only for admin)
@@ -34,14 +30,19 @@ export const uploadProduct = CatchAsyncError(async (req, res, next) => {
       const imagesLinks = [];
     
       for (let i = 0; i < images.length; i++) {
-        const result = await cloudinary.uploader.upload(images[i], {folder: "products"});
-    
+        const result = await cloudinary.uploader.upload(images[i].dataURL, {
+          folder: "products",
+          transformation: [
+            { width: 648, height: 238, crop: "fill" },
+          ],
+        });
+        
+        
         imagesLinks.push({
           public_id: result.public_id,
           url: result.secure_url,
         });
       }
-
       const productData = req.body;
       productData.images = imagesLinks;
 
@@ -52,14 +53,19 @@ export const uploadProduct = CatchAsyncError(async (req, res, next) => {
   }
 );
 
-// Get All Products 
+// Get All Products Admin
 export const getAllProducts = CatchAsyncError(async (req, res, next) => {
   try {
     const page = parseInt(req.query.page) || 1;
-    const pageSize = parseInt(req.query.pageSize) || 10; // TODO: should I validate it?
+    const pageSize = parseInt(req.query.pageSize) || 24;
+    const category = req.query.category ||  "";
+    const brand = req.query.brand ||  ""; 
+    const stock = req.query.stock ||  "" ; 
+    const value = req.query.value ||  "" ;
+    const context = req.query.context || "";
 
     // Call the service function with pagination parameters
-    const result = await getAllProductsService(page, pageSize, req);
+    const result = await getAllProductsService(page, pageSize, category, brand, stock, value, context, req);
 
     res.status(200).json({
       success: true,
@@ -71,7 +77,46 @@ export const getAllProducts = CatchAsyncError(async (req, res, next) => {
       totalProducts: result.totalProducts,
     });
   } catch (error) {
+    if (error.message === "No products found in the database") {
+      return res.status(404).json({
+        success: false,
+        message: "No products found in the database",
+      });
+    }
     return next(new ErrorHandler(error.message, 500));
+  }
+});
+
+//Get All Products Shop
+export const getAllProductsShop = CatchAsyncError(async(req, res, next) => {
+
+  const page = parseInt(req.query.page) || 1;
+  const pageSize = parseInt(req.query.pageSize) || 24;
+
+  try{
+      // Call the service function with pagination parameters
+      const result = await getAllProductsShopService(page, pageSize, req);
+      res.status(200).json({
+        success: true,
+        source: result.source,
+        products: result.products,
+        page: result.page,
+        pageSize: result.pageSize,
+        totalPages: result.totalPages,
+        totalProducts: result.totalProducts,
+      });
+
+  }
+  catch(error){
+    {
+      if (error.message === "No products found in the database") {
+        return res.status(404).json({
+          success: false,
+          message: "OOPs...It looks like something went wrong :( ",
+        });
+      }
+      return next(new ErrorHandler(error.message, 500));
+    }
   }
 });
 
@@ -99,7 +144,7 @@ export const getSingleProduct = CatchAsyncError(async (req, res, next) => {
             return next(new ErrorHandler('Product not found', 404));
         }
 
-        await redis.set(productId, JSON.stringify(product), "EX", 3600); // 1 hour
+        await redis.set(productId, JSON.stringify(product), "EX", 7200); // 2 hour
 
         res.status(200).json({
           success: true,
@@ -207,63 +252,25 @@ export const deleteProduct = CatchAsyncError(async (req, res, next) => {
   }
 );
 
-//get out of stock products --- admin only
-export const getOutOfStockProducts = CatchAsyncError(async (req, res, next) => {
-  try {
-    const outOfStockProducts = await getOutOfStockProductsService();
-
-    if (outOfStockProducts.source === 'cache') {
-      res.status(200).json({
-        success: true,
-        source: 'cache',
-        products: outOfStockProducts.products,
-        totalProducts: outOfStockProducts.totalProducts,
-      });
-    } else if (outOfStockProducts.source === 'database') {
-      res.status(200).json({
-        success: true,
-        source: 'database',
-        products: outOfStockProducts.products,
-        totalProducts: outOfStockProducts.totalProducts,
-      });
-    } else {
-      res.status(404).json({
-        success: false,
-        message: 'No out of stock products found',
-      });
-    }
-  } catch (error) {
-    return next (new ErrorHandler(error.message, 500));
-  }
-});
-
-
-
-
-
-
-
 // add review in course
 export const addReview = CatchAsyncError(async (req, res, next) => {
     try {
       const userOrders = req.user?.orders;
-
       const productId = req.params.id;
+      const { review, rating } = req.body;
 
       // check if productId already exists in userOrders based on _id
-      const productExists = userOrders?.some(
-        (product) => product._id.toString() === productId.toString()
-      );
+      // const productExists = userOrders?.some(
+      //   (product) => product._id.toString() === productId.toString()
+      // );
 
-      if (!productExists) {
-        return next(
-          new ErrorHandler("You are not eligible to review this product", 404)
-        );
-      }
+      // if (!productExists) {
+      //   return next(
+      //     new ErrorHandler("You are not eligible to review this product", 404)
+      //   );
+      // }
 
       const product = await productModel.findById(productId);
-
-      const { review, rating } = req.body;
 
       const reviewData = {
         user: req.user,
@@ -285,13 +292,14 @@ export const addReview = CatchAsyncError(async (req, res, next) => {
 
       await product?.save();
 
-      await redis.set(productId, JSON.stringify(product), "EX", 3600); // 1 hour
+      await redis.set(productId, JSON.stringify(product), "EX", 7200); // 2 hour
 
       // create notification
       await notificationModel.create({
         user: req.user?._id,
         title: "New Review Received",
         message: `${req.user?.name} has given a review in ${product?.name}`,
+        type: 'review'
       });
 
       res.status(200).json({
@@ -304,26 +312,18 @@ export const addReview = CatchAsyncError(async (req, res, next) => {
   }
 );
 
-
-
-
-
-
-
-
 // add reply to review
-export const addReplyToReview = CatchAsyncError(
-  async (req, res, next) => {
+export const addReplyToReview = CatchAsyncError(async (req, res, next) => {
     try {
-      const { comment, courseId, reviewId } = req.body;
+      const { comment, productId, reviewId } = req.body;
 
-      const course = await CourseModel.findById(courseId);
+      const product = await productModel.findById(productId);
 
-      if (!course) {
-        return next(new ErrorHandler("Course not found", 404));
+      if (!product) {
+        return next(new ErrorHandler("Product not found", 404));
       }
 
-      const review = course?.reviews?.find(
+      const review = product?.reviews?.find(
         (rev) => rev._id.toString() === reviewId
       );
 
@@ -344,13 +344,13 @@ export const addReplyToReview = CatchAsyncError(
 
       review.commentReplies?.push(replyData);
 
-      await course?.save();
+      await product?.save();
 
-      await redis.set(courseId, JSON.stringify(course), "EX", 604800); // 7days
+      await redis.set(productId, JSON.stringify(product), "EX", 604800); // 7days
 
       res.status(200).json({
         success: true,
-        course,
+        product,
       });
     } catch (error) {
       return next(new ErrorHandler(error.message, 500));
@@ -358,38 +358,7 @@ export const addReplyToReview = CatchAsyncError(
   }
 );
 
-// get all courses --- only for admin
-export const getAdminAllCourses = CatchAsyncError(
-  async (req, res, next) => {
-    try {
-      getAllCoursesService(res);
-    } catch (error) {
-      return next(new ErrorHandler(error.message, 400));
-    }
-  }
-);
 
 
 
-// generate video url
-export const generateVideoUrl = CatchAsyncError(
-  async (req, res, next) => {
-    try {
-      const { videoId } = req.body;
-      const response = await axios.post(
-        `https://dev.vdocipher.com/api/videos/${videoId}/otp`,
-        { ttl: 300 },
-        {
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: `Apisecret ${process.env.VDOCIPHER_API_SECRET}`,
-          },
-        }
-      );
-      res.json(response.data);
-    } catch (error) {
-      return next(new ErrorHandler(error.message, 400));
-    }
-  }
-);
+

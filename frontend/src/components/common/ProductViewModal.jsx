@@ -1,15 +1,15 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
-import QuantityCounter from '@/src/uitils/QuantityCounter'
+import QuantityCounter from "../../utils/QuantityCounter"
 
-const ProductViewModal = () => {
+const ProductViewModal = () => {3
     const [selectColor, setselectColor] = useState(0);
     const handleItemClick = (index) => {
       setselectColor(index);
     };
 
   return (
-    <div className="modal product-view-modal" id="product-view">
+    <div className="modal product-view-modal" id="product-view" >
     <div className="modal-dialog modal-xl modal-dialog-centered">
       <div className="modal-content">
         <div className="modal-body">

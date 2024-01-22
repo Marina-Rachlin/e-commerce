@@ -7,7 +7,7 @@ import { updateAccessToken } from "../controllers/user.controller.js";
 // authenticated user
 export const isAuthenticated = CatchAsyncError(async (req, res, next) => {
     const access_token = req.cookies.access_token;
-  
+
     if (!access_token) {
       return next(new ErrorHandler("Please login to access this resource", 400));
     }
@@ -34,7 +34,7 @@ export const isAuthenticated = CatchAsyncError(async (req, res, next) => {
   
       req.user = JSON.parse(user);
   
-      next();
+      return next();
     }
   });
   

@@ -1,21 +1,23 @@
 'use client'
-
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
+import { useRegisterMutation } from "../../redux/features/auth/authApi"; 
+import { toast } from "react-hot-toast";
 
 const Registration = ({ handleTabChange, name, handleContentChange }) => {
   const [showPassword, setShowPassword] = useState(false);
+  const [register, { isSuccess, error, data }] = useRegisterMutation();
 
   const schema = Yup.object().shape({
-    username: Yup.string().required("Please enter your username"),
+    name: Yup.string().required("Please enter your name"),
     email: Yup.string().email("Invalid email!").required("Please enter your email"),
     password: Yup.string().required("Please enter your password").min(6),
   });
 
   const defaultValues = {
-    username: '',
+    name: '',
     email: '',
     password: '',
   }
@@ -30,12 +32,26 @@ const Registration = ({ handleTabChange, name, handleContentChange }) => {
     resolver: yupResolver(schema),
   })
 
-  const onSubmit = (data) => {
-    // You can submit the form data to your API or handle it as needed.
-    console.log("Form Data:", data);
-    handleContentChange("verification"); // Change the content to "verification"
-    // Perform registration logic here.
-  };
+  const onSubmit =async (data) => {
+    await register(data);
+  }
+
+  useEffect(() => {
+    if (isSuccess) {
+      const message = data? data.message || "Registration successful" : "Registration successful";
+      const token = data? data.activationToken : "token not found";
+      toast.success(message);
+      handleContentChange("Verification");
+    }
+    if (error) {
+      if ("data" in error) {
+        const errorData = error;
+        console.log(errorData);
+        toast.error(errorData.data.message);
+      }
+    }
+  }, [isSuccess, error]);
+  
 
   return (
     <div
@@ -52,19 +68,19 @@ const Registration = ({ handleTabChange, name, handleContentChange }) => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="form-inner mb-25">
             <Controller
-              name="username"
+              name="name"
               control={control}
               render={({ field }) => (
                 <input
                   {...field}
                   type="text"
                   placeholder="User Name *"
-                  className={`${errors.username ? "is-invalid" : ""} form-control`}
+                  className={`${errors.name ? "is-invalid" : ""} form-control`}
                 />
               )}
             />
-            {errors.username && (
-              <div className="invalid-feedback">{errors.username.message}</div>
+            {errors.name && (
+              <div className="invalid-feedback">{errors.name.message}</div>
             )}
           </div>
 
@@ -113,9 +129,9 @@ const Registration = ({ handleTabChange, name, handleContentChange }) => {
             Registration
           </button>
 
-          <div className="member">
+          <div className="member d-flex justify-content-center align-items-center">
             <p>Already have an account?
-               <a href="#" onClick={() => handleTabChange("login")}>Sign In</a>
+               <a href="#" onClick={() => handleTabChange("login")}> Sign In</a>
             </p>
           </div>
         </form>

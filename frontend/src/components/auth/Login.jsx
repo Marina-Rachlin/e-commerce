@@ -1,11 +1,16 @@
-'use client'
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
+import { useLoginMutation } from "../../redux/features/auth/authApi";
+import { toast } from "react-hot-toast";
+import { useLoadUserQuery } from "../../redux/features/api/apiSlice";
 
-const Login = ({ handleTabChange, name }) => {
+const Login = ({ handleTabChange, name}) => {
+  
   const [showPassword, setShowPassword] = useState(false);
+  const[login, {isSuccess, error}] = useLoginMutation();
+  const {refetch} = useLoadUserQuery(undefined,{});
 
   const schema = Yup.object().shape({
     email: Yup.string().email("Invalid email").required("Please enter your email"),
@@ -27,9 +32,23 @@ const Login = ({ handleTabChange, name }) => {
     resolver: yupResolver(schema)
   });
 
-  const onSubmit = (data) => {
-    console.log("Form Data =>", data);
+  const onSubmit = async (data) => {
+    await login(data);
   }
+
+useEffect(() => {
+  if (isSuccess) {
+    toast.success("Login Successfully!", {duration: 2000});
+    // setOpen(false);
+   refetch(); 
+  }
+  if (error) {
+    if ("data" in error) {
+      const errorData = error;
+      console.log(errorData)
+    }
+  }
+}, [isSuccess, error]);
 
   return (
     <div className={name} id="login" role="tabpanel" aria-labelledby="login-tab">
@@ -85,9 +104,9 @@ const Login = ({ handleTabChange, name }) => {
             Log In
           </button>
 
-          <div className="member">
+          <div className="member d-flex justify-content-center align-items-center">
             <p>Not a member yet?
-                 <a href="#" onClick={() => handleTabChange("registration")}>Register</a>
+                 <a href="#" onClick={() => handleTabChange("registration")}> Register</a>
             </p>
           </div>
         </form>

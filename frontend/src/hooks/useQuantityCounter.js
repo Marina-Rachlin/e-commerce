@@ -3,8 +3,9 @@ import { useState } from "react";
 
 const MAX_QUANTITY = 10; // Define your maximum quantity here
 
-const useQuantityCounter = (initialValue = 1) => {
+const useQuantityCounter = (initialValue) => {
   const [quantity, setQuantity] = useState(initialValue);
+  // initialValue = {initialValue}
 
   const handleInputChange = (event) => {
     const inputQuantity = parseInt(event.target.value, 10);

@@ -20,13 +20,29 @@ export const createProduct = CatchAsyncError(async (data, res) => {
 });
 
 // Get All Products
-export const getAllProductsService = async (page, pageSize, req) => {
+export const getAllProductsService = async (page, pageSize, category, brand, stock, value, context, req) => {
   try {
-    const totalProducts = await productModel.countDocuments();
-
+    let totalProducts = await productModel.countDocuments();
     const totalPages = calculateTotalPages(totalProducts, pageSize);
-
     const cacheKey = generateCacheKey(req);
+
+    const filter = {};
+    if (category) {
+      filter.category = category;
+    }
+    if (brand) {
+      filter.brand = brand;
+    }
+    if (stock) {
+      if (stock === '>0') {
+        filter.stock = { $gt: 0 };
+      } else {
+        filter.stock = stock;
+      }
+    }
+    if (value) {
+      filter.name = { $regex: new RegExp(value, 'i') }; // Case-insensitive search
+    }
 
     const cachedData = await redis.get(cacheKey);
 
@@ -42,16 +58,29 @@ export const getAllProductsService = async (page, pageSize, req) => {
       };
     }
 
-    const products = await productModel.find().sort({ createdAt: -1 }).limit(pageSize).skip((page - 1) * pageSize);
+    const projection = {};
 
-    if (!products) {
-      return res.status(404).json({
-        success: false,
-        message: "No products found in the database",
-      });
+    // Check the context to decide what to exclude from res
+    if (context === 'admin') {              // If the context is 'admin', exclude the 'description' field
+      projection.description = 0;          // If the context is 'admin', include only the first image
+      projection.images = { $slice: 1 };
     }
 
-    await redis.set(cacheKey, JSON.stringify(products), "EX", 10800); //3 hours
+    const products = await productModel
+      .find(filter, projection)  
+      .sort({ createdAt: -1 })
+      .limit(pageSize)
+      .skip((page - 1) * pageSize);
+
+        if (!products) {
+      throw new Error("No products found in the database");
+    }
+
+    totalProducts = (category === '' && brand === '' && stock === '' && value === '') ? totalProducts : products.length;
+
+if ((!category || category === 'all') && (!brand || brand === 'all') && !stock && !value) {
+  await redis.set(cacheKey, JSON.stringify(products), "EX", 10800); // 3 hours
+}
 
     return {
       source: "database",
@@ -62,10 +91,54 @@ export const getAllProductsService = async (page, pageSize, req) => {
       totalPages,
     };
   } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: "Error accessing the database",
-    }); 
+    throw error;
+  }
+};
+
+// Get All Products Shop
+export const getAllProductsShopService = async (page, pageSize, req) => {
+  try {
+    let totalProducts = await productModel.countDocuments();
+    const totalPages = calculateTotalPages(totalProducts, pageSize);
+    const cacheKey = `${req.originalUrl}:${page}`;
+
+    const cachedData = await redis.get(cacheKey);
+
+    if (cachedData) {
+      const products = JSON.parse(cachedData);
+      return {
+        source: "cache",
+        products: products,
+        totalProducts,
+        page,
+        pageSize,
+        totalPages,
+      };
+    }
+    const projection = { images: { $slice: 1 } }; // Apply $slice to the images field
+
+    const products = await productModel
+      .find({}, projection) // Apply the projection to the images field
+      .sort({ createdAt: -1 })
+      .limit(pageSize)
+      .skip((page - 1) * pageSize);
+
+        if (!products) {
+      throw new Error("No products found in the database");
+    }
+
+await redis.set(cacheKey, JSON.stringify(products), "EX", 86400); // 24 hours
+
+    return {
+      source: "database",
+      products,
+      totalProducts,
+      page,
+      pageSize,
+      totalPages,
+    };
+  } catch (error) {
+    throw error;
   }
 };
 

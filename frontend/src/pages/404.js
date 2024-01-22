@@ -9,11 +9,10 @@ function Error() {
           <div className="col-lg-8 ">
             <div className="error-wrapper">
               <div className="error-img">
-                <img src="/assets/img/inner-page/404-img.png" alt="" />
+                <img src="/assets/img/404-img.png" alt="" />
               </div>
               <div className="error-content">
                 <h1>Something Went Wrong</h1>
-                <p>Donec bibendum enim ut elit porta ullamcorper. Vestibulum Nai quam nulla, venenatis eget dapibus ac, catali topuny wekemdini iaculis vitae nulla. Morbi mattis nec mi ac mollis. </p>
                 <Link legacyBehavior href="/">
                   <a  className="primary-btn1 hover-btn3">
                   <svg xmlns="http://www.w3.org/2000/svg" width={14} height={14} viewBox="0 0 14 14">

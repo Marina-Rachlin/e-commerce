@@ -9,17 +9,17 @@ import cron from "node-cron";
 export const getAdminNotifications = CatchAsyncError(async (req, res, next) => {
   try {
     // Check if notifications are cached
-    const cachedData = await redis.get("adminNotifications");
+    // const cachedData = await redis.get("adminNotifications");
 
-    if (cachedData) {
-      const adminNotifications = JSON.parse(cachedData);
-      return res.status(200).json({
-        success: true,
-        source: "cache",
-        total: adminNotifications.length,
-        adminNotifications,
-      });
-    }
+    // if (cachedData) {
+    //   const adminNotifications = JSON.parse(cachedData);
+    //   return res.status(200).json({
+    //     success: true,
+    //     source: "cache",
+    //     total: adminNotifications.length,
+    //     adminNotifications,
+    //   });
+    // }
 
     // If not cached, retrieve notifications from the database
     const adminNotifications = await notificationModel

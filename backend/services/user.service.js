@@ -9,10 +9,7 @@ export const getUserById = async (id, res) => {
 
   if (userJson) {
     const user = JSON.parse(userJson);
-    res.status(201).json({
-      success: true,
-      user,
-    });
+    return user;
   }
 };
 
@@ -55,6 +52,53 @@ export const getAllUsersService = async (res) => {
     });
   }
 };
+
+// Get all users
+// export const getAllUsersService = async (res) => {
+//   try {
+//     const cachedData = await redis.get("allUsers");
+
+//     if (cachedData) {
+//       const users = JSON.parse(cachedData);
+//       return res.status(200).json({
+//         success: true,
+//         source: "cache",
+//         total: users.length,
+//         users,
+//       });
+//     }
+
+//     const users = await userModel.find({}, 'name email role addresses.country').sort({ createdAt: -1 });
+
+//     if (!users) {
+//       return res.status(404).json({
+//         success: false,
+//         message: "No users found in the database",
+//       });
+//     }
+
+//     await redis.set("allUsers", JSON.stringify(users), "EX", 25200); // 7 hours
+
+//     return res.status(200).json({
+//       success: true,
+//       source: "database",
+//       total: users.length,
+//       users: users.map(user => ({
+//         id: user._id,
+//         name: user.name,
+//         email: user.email,
+//         role: user.role,
+//         country: user.addresses.length > 0 ? user.addresses[0].country : null
+//       })),
+//     });
+//   } catch (error) {
+//     return res.status(500).json({
+//       success: false,
+//       message: "Error accessing the database",
+//     });
+//   }
+// };
+
 
 // Update user role
 export const updateUserRoleService = async (res, id, role) => {

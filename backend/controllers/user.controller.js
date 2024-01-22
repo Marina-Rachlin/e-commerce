@@ -165,7 +165,8 @@ export const logout = CatchAsyncError(async (req, res, next) => {
 });
 
 // update access token
-export const updateAccessToken = CatchAsyncError(async (req, res, next) => {
+export const updateAccessToken =(async (req, res, next) => {
+  console.log('updating accessToken...');
     try {
       const refresh_token = req.cookies.refresh_token;
       const decoded = jwt.verify(
@@ -177,7 +178,7 @@ export const updateAccessToken = CatchAsyncError(async (req, res, next) => {
       if (!decoded) {
         return next(new ErrorHandler(message, 400));
       }
-      console.log('decoded=>', decoded);
+      
       const session = await redis.get(decoded.id);
   
       if (!session) {
@@ -211,6 +212,10 @@ export const updateAccessToken = CatchAsyncError(async (req, res, next) => {
       await redis.set(user._id, JSON.stringify(user), "EX", 604800); // 7days
   
       return next();
+
+      // res.status(200).json({
+      //   success: true,
+      // });
     } catch (error) {
       return next(new ErrorHandler(error.message, 400));
     }
@@ -220,11 +225,23 @@ export const updateAccessToken = CatchAsyncError(async (req, res, next) => {
 export const getUserInfo = CatchAsyncError(async (req, res, next) => {
   try {
     const userId = req.user?._id;
-    getUserById(userId, res);
+    const user = await getUserById(userId, res);
+
+    if (user) {
+      // Retrieve the access token from cookies
+      const accessToken = req.cookies.access_token;
+
+      res.status(201).json({
+        success: true,
+        user,
+        accessToken, // Include the access token in the response
+      });
+    }
   } catch (error) {
     return next(new ErrorHandler(error.message, 400));
   }
 });
+
 
 // social auth
 export const socialAuth = CatchAsyncError(async (req, res, next) => {
@@ -245,25 +262,39 @@ export const socialAuth = CatchAsyncError(async (req, res, next) => {
 // update user info
 export const updateUserInfo = CatchAsyncError(async (req, res, next) => {
   try {
-    const { name, email } = req.body;
+    const { name, email, phoneNumber, addresses } = req.body;
     const userId = req.user?._id;
-    const user = await userModel.findById({ userId });
+    const user = await userModel.findById(userId);
 
-    if(email && user ){
-        const isEmailExist = await userModel.findOne({email});
-        if(isEmailExist){
-            return next(new ErrorHandler("Email already in used", 400));
-        };
+    // Update email if provided and not already in use
+    if (email && user) {
+      const isEmailExist = await userModel.findOne({ email });
+      if (isEmailExist && isEmailExist._id.toString() !== userId.toString()) {
+        return next(new ErrorHandler("Email already in use", 400));
+      }
 
-        user.email = email;
+      user.email = email;
     }
 
+    // Update name if provided
     if (name && user) {
       user.name = name;
     }
 
+    // Update phone if provided
+    if (phoneNumber && user) {
+      user.phoneNumber = phoneNumber;
+    }
+
+    // Update addresses if provided
+    if (addresses && user) {
+      user.addresses = [addresses]; 
+    }
+
+    // Save the updated user
     await user?.save();
 
+    // Update the cache with the new user data
     await redis.set(userId, JSON.stringify(user));
 
     res.status(201).json({
@@ -324,7 +355,8 @@ export const updateProfilePicture = CatchAsyncError(async (req, res, next) => {
 
         const myCloud = await cloudinary.uploader.upload(avatar, {
           folder: "avatars",
-          width: 150,
+           quality: "auto", 
+         
         });
         user.avatar = {
           public_id: myCloud.public_id,
@@ -333,11 +365,12 @@ export const updateProfilePicture = CatchAsyncError(async (req, res, next) => {
       } else {
         const myCloud = await cloudinary.uploader.upload(avatar, {
           folder: "avatars",
-          width: 150,
+          quality: "auto", 
         });
         user.avatar = {
           public_id: myCloud.public_id,
           url: myCloud.secure_url,
+          // url: `${myCloud.secure_url}/q_auto/${myCloud.public_id}.jpg`,
         };
       }
     }
@@ -367,7 +400,7 @@ export const getAllUsers = CatchAsyncError(async (req, res, next) => {
 // update user role --- only for admin
 export const updateUserRole = async (req, res, next) => {
   try {
-    const { email, role } = req.body; //TODO: validate also role?
+    const { email, role } = req.body; 
     const isUserExist = await userModel.findOne({ email });
     if (isUserExist) {
       const id = isUserExist._id;

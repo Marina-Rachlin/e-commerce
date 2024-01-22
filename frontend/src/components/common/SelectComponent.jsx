@@ -1,6 +1,6 @@
-import useCustomSelect from "@/src/hooks/useCustomSelect";
+import useCustomSelect from "../../hooks/useCustomSelect";
 import React, { useEffect, useRef } from "react";
-const SelectComponent = ({ options, placeholder, open, customClass }) => {
+const SelectComponent = ({ options, placeholder, open, customClass, onChange }) => {
   const {
     isOpen,
     selectedOption,
@@ -31,6 +31,7 @@ const SelectComponent = ({ options, placeholder, open, customClass }) => {
     };
   }, [isOpen]);
 
+
   const dropdownClassName = `nice-select ${customClass || ""} ${
     isOpen ? "open" : ""
   }`;
@@ -43,7 +44,7 @@ const SelectComponent = ({ options, placeholder, open, customClass }) => {
       ref={dropdownRef}
     >
       <span className="current">{selectedOption || placeholder}</span>
-      <ul className="list">
+      <ul className="list" style={{maxHeight: '300px', overflowY: 'auto'}}>
         {options.map((option, index) => (
           <li
             key={index}
@@ -53,7 +54,10 @@ const SelectComponent = ({ options, placeholder, open, customClass }) => {
             data-value={index}
             onClick={() => {
               selectOption(option);
-              openDropdown(); // Open the next dropdown
+              // if (onChange) {
+              //   onChange(option);
+              // }
+              closeDropdown();
             }}
           >
             {option}
@@ -64,4 +68,44 @@ const SelectComponent = ({ options, placeholder, open, customClass }) => {
   );
 };
 
+
+
 export default SelectComponent;
+
+
+// import React from "react";
+
+// const SelectComponent = ({ options, placeholder, value, onChange, customClass }) => {
+  
+//   const handleChange = (e) => {
+//     const selectedValue = e.target.value;
+//     if (onChange) {
+//       onChange(selectedValue);
+//     }
+//   };
+
+//   const selectClassName = `${customClass || ""}`;
+
+//   return (
+//     <select
+//       value={value}
+//       onChange={handleChange}
+//       className='nice-select'
+//     >
+//       <option value="">{placeholder}</option>
+//       {options.map((option, index) => (
+//         <option
+//           key={index}
+//           value={option}
+//         >
+//           {option}
+//         </option>
+//       ))}
+//     </select>
+//   );
+// };
+
+// export default SelectComponent;
+
+
+

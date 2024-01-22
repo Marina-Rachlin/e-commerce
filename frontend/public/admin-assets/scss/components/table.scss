@@ -1,0 +1,80 @@
+/*==========================
+default table
+===========================*/
+
+.table-outer {
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+
+.default-table {
+  position: relative;
+  background: #ffffff;
+  border: 0;
+  border-radius: 5px;
+  margin-bottom: 30px;
+  overflow: hidden;
+  width: 100%;
+  min-width: 700px;
+}
+
+.default-table thead {
+  background: #f5f7fc;
+  border-radius: 8px;
+  color: #ffffff;
+}
+
+.default-table thead th {
+  position: relative;
+  padding: 20px 30px;
+  font-size: 14px;
+  color: var(--primary-color);
+  color: #373f50;
+  font-weight: 500;
+  line-height: 30px;
+  white-space: nowrap;
+}
+
+.default-table tbody tr {
+  position: relative;
+  border-bottom: 1px solid #ecedf2;
+}
+
+.default-table tr td {
+  position: relative;
+  padding: 21px 30px;
+  font-size: 14px;
+  color: #696969;
+  font-weight: 400;
+}
+
+.default-table tr{
+  .tag{
+    font-size: 14px;
+    font-weight: 400;
+    padding: 3px 12px;
+    border-radius: 16px;
+    display: inline-block;
+    color: rgb(43, 52, 69);
+    background-color: rgb(243, 245, 249);
+  }
+  .row-data-name{
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.75;
+    color: #2b3445;
+  }
+  .row-data-index{
+    font-size: 12px;
+    font-weight: 300;
+    color: #7D879C;
+    padding-left: 0;
+  }
+
+}
+
+
+
+
+
+
