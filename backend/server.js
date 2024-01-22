@@ -18,6 +18,7 @@ import wishlistRouter from "./routes/wishlist.route.js";
 import cartRouter from "./routes/cart.route.js";
 import http from "http";
 import { initSocketServer } from "./socketServer.js";
+// import path from "path";
 
 
 
@@ -93,11 +94,11 @@ app.get("/test", (req, res, next) => {
   });
 
 // unknown route
-app.all("*", (req, res, next) => {
-    const err = new Error(`Route ${req.originalUrl} not found`);
-    err.statusCode = 404;
-    next(err);
-});
+// app.all("*", (req, res, next) => {
+//     const err = new Error(`Route ${req.originalUrl} not found`);
+//     err.statusCode = 404;
+//     next(err);
+// });
 
 cloudinary.config({
  cloud_name: process.env.CLOUD_NAME,
@@ -110,4 +111,14 @@ cloudinary.config({
     console.log(`Server is running on port ${process.env.PORT}`)
 })
 
+// const __dirname = path.resolve();
+
 // import { rateLimit } from 'express-rate-limit'
+// Have Node serve the files for our built React app
+// app.use(express.static(path.resolve(__dirname, "./client/build")));
+// app.use(express.static(path.join(__dirname, "../frontend/client/build")));
+
+// All other GET requests not handled before will return our React app
+// app.get("*", (req, res) => {
+  // res.sendFile(path.resolve(__dirname, "../frontend/client/build", "index.html"));
+// });
