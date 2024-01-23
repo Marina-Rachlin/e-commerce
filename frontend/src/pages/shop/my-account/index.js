@@ -4,7 +4,7 @@ import { signOut } from "next-auth/react";
 import Protected from "../../../hooks/useProtected";
 
 //Custom components
-import UserSidebar from "../../../components/profile/userSidebar";
+import UserSidebar from "../../../components/profile/UserSidebar";
 import UserAccountContent from "../../../components/profile/UserAccountContent";
 import {getInitials} from '../../../utils/get-initials';
 
