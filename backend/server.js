@@ -37,7 +37,7 @@ app.use(cookieParser());
 //   credentials: true,
 // }));
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: 'https://beautime-client.vercel.app',
   credentials: true,
 }));
 
