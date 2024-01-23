@@ -19,7 +19,7 @@ import cartRouter from "./routes/cart.route.js";
 import http from "http";
 import { initSocketServer } from "./socketServer.js";
 // import path from "path";
-
+import { rateLimit } from 'express-rate-limit'
 
 
 const app = express();
@@ -41,6 +41,13 @@ app.use(cors({
   credentials: true,
 }));
 
+// api requests limit
+const limiter = rateLimit({
+	windowMs: 15 * 60 * 1000,
+	max: 100, 
+	standardHeaders: 'draft-7', 
+	legacyHeaders: false, 
+})
 
 // routes
 app.use(
@@ -55,7 +62,7 @@ app.use(
 );
 
 // middleware calls
-// app.use(limiter);
+app.use(limiter);
 app.use(ErrorMiddleware);
 
 // connect db
@@ -76,14 +83,6 @@ process.on("unhandledRejection", (err) => {
     process.exit(1);
   });
 });   
-  
-// api requests limit
-// const limiter = rateLimit({
-// 	windowMs: 15 * 60 * 1000,
-// 	max: 100, 
-// 	standardHeaders: 'draft-7', 
-// 	legacyHeaders: false, 
-// })
  
 // testing api
 app.get("/test", (req, res, next) => {
@@ -94,11 +93,11 @@ app.get("/test", (req, res, next) => {
   });
 
 // unknown route
-// app.all("*", (req, res, next) => {
-//     const err = new Error(`Route ${req.originalUrl} not found`);
-//     err.statusCode = 404;
-//     next(err);
-// });
+app.all("*", (req, res, next) => {
+    const err = new Error(`Route ${req.originalUrl} not found`);
+    err.statusCode = 404;
+    next(err);
+});
 
 cloudinary.config({
  cloud_name: process.env.CLOUD_NAME,
@@ -113,7 +112,6 @@ cloudinary.config({
 
 // const __dirname = path.resolve();
 
-// import { rateLimit } from 'express-rate-limit'
 // Have Node serve the files for our built React app
 // app.use(express.static(path.resolve(__dirname, "./client/build")));
 // app.use(express.static(path.join(__dirname, "../frontend/client/build")));

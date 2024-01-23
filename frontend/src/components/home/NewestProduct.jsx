@@ -8,8 +8,8 @@ import SwiperCore, {
   Pagination,
 } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { useCountdownTimer } from "@/src/hooks/useCountdownTimer";
-import QuantityCounter from "@/src/uitils/QuantityCounter";
+import { useCountdownTimer } from "../../hooks/useCountdownTimer";
+import QuantityCounter from "../../hooks/useQuantityCounter";
 SwiperCore.use([Pagination, Autoplay, EffectFade, Navigation]);
 const NewestProduct = () => {
   const [selectColor, setselectColor] = useState(0);

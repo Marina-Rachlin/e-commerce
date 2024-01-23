@@ -9,9 +9,9 @@ import SwiperCore, {
 } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 SwiperCore.use([Pagination, Autoplay, EffectFade, Navigation]);
-import GiftSection from '@/src/components/common/GiftSection'
-import ProductViewModal from '@/src/components/common/ProductViewModal'
-import { useCountdownTimer } from "@/src/hooks/useCountdownTimer";
+import GiftSection from "../../components/common/GiftSection";
+import ProductViewModal from "../../components/common/ProductViewModal";
+import { useCountdownTimer } from "../../hooks/useCountdownTimer";
 
 
 const Slider = () => {
