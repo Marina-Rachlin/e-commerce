@@ -1,17 +1,15 @@
 import Link from 'next/link';
-import React, { useState } from 'react'
-import NewestProduct from "@/src/components/Home/NewestProduct";
-import GiftSection from "@/src/components/common/GiftSection";
-import useMagneticHover from "@/src/hooks/useMagneticHover";
-import { useCountdownTimer } from '@/src/hooks/useCountdownTimer';
-import QuantityCounter from '@/src/uitils/QuantityCounter';
+import React, { useState } from 'react';
+import useMagneticHover from "../../hooks/useMagneticHover";
+import { useCountdownTimer } from '../../hooks/useCountdownTimer';
+import QuantityCounter from '../../utils/QuantityCounter';
 const Countdown = () => {
     const [selectColor, setselectColor] = useState(0);
     useMagneticHover();
     const handleItemClick = (index) => {
       setselectColor(index);
     };
-    const endTime = "2023-10-23";
+    const endTime = "2024-03-23";
     const { days, hours, minutes, seconds } = useCountdownTimer(endTime)
       
   
@@ -379,8 +377,6 @@ const Countdown = () => {
           </div>
         </div>
       </div>
-      <NewestProduct />
-      <GiftSection />
     </>
   )
 }

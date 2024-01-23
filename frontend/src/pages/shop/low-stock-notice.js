@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import Link from 'next/link';
-import NewestProduct from "@/src/components/Home/NewestProduct";
-import GiftSection from "@/src/components/common/GiftSection";
-import useMagneticHover from "@/src/hooks/useMagneticHover";
-import QuantityCounter from '@/src/uitils/QuantityCounter';
+import NewestProduct from '../../components/home/NewestProduct';
+import GiftSection from "../../components/common/GiftSection";
+import useMagneticHover from "../../hooks/useMagneticHover";
+import QuantityCounter from '../../utils/QuantityCounter';
 const LowStockNotice = () => {
   const [selectColor, setselectColor] = useState(0);
 

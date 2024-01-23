@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-// import NewestProduct from "@/src/components/Home/NewestProduct";
+// import NewestProduct from "../../components/Home/NewestProduct";
 import GiftSection from "../../../../components/common/GiftSection";
 import useMagneticHover from "../../../../hooks/useMagneticHover";
 import QuantityCounter from "../../../../utils/QuantityCounter";
@@ -670,7 +670,7 @@ const ProductDefaultPage = () => {
         </div>
       </div>
       {/* <NewestProduct /> */}
-      {/* <GiftSection /> */}
+     <GiftSection /> 
     </>
   );
 };
