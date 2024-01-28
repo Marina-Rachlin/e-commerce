@@ -10,6 +10,7 @@ import { redis } from "../utils/redis.js";
 import dotenv from "dotenv";
 import stripeModule from "stripe";
 import { isValidObjectId } from "mongoose";
+import CartModel from "../models/cart.model.js";
 dotenv.config();
 
 const stripe = stripeModule(process.env.STRIPE_SECRET_KEY);
@@ -106,6 +107,12 @@ export const createOrder = CatchAsyncError(async (req, res, next) => {
     user.orders.push(newOrder);
     await user.save(); // updated user data in the database
     await redis.set(req.user?._id, JSON.stringify(user)); // updated user data in Redis
+    let userCart = await CartModel.findOne({ userId });
+    if (userCart) {
+      userCart.items = [];
+      await userCart.save();
+    }
+
 
     await sendOrderConfirmationEmail(user, newOrder);
 

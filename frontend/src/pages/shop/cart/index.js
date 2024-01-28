@@ -61,26 +61,6 @@ const Cart = () => {
       latestProductData = result.data.products;
     }
 
-    // for (const item of cart) {
-    //   const updatedProduct = latestProductData.find(
-    //     (product) => product._id === item.productId._id
-    //   );
-
-    //   // Check stock availability
-    //   if (item.quantity > updatedProduct.stock) {
-    //     isValid = false;
-    //     errorMessages.push(
-    //       `Item ${updatedProduct.name} is not available in the requested quantity (only ${updatedProduct.stock} left).`
-    //     );
-    //   }
-    //   // Check for price changes
-    //   if (isPriceChanged(item, updatedProduct)) {
-    //     isValid = false;
-    //     errorMessages.push(
-    //       `The price of item ${updatedProduct.name} has changed.`
-    //     );
-    //   }
-    // }
     const updatedCart = cart.reduce((acc, item) => {
       const updatedProduct = latestProductData.find(
         product => product._id === item.productId._id
@@ -113,12 +93,6 @@ const Cart = () => {
       return acc;
     }, []);
 
-    // if (isValid) {
-    //   router.push("/shop/checkout");
-    // } else {
-    //   setErrorMessages(errorMessages);
-    // }
-
     setErrorMessages(errorMessages);
 
     if (updatedCart.length === 0) {
@@ -131,25 +105,6 @@ const Cart = () => {
       router.push("/shop/checkout");
     }
   };
-
-  useEffect(() => {
-    if (isLoading) {
-      return;
-    } else if (data) {
-      console.log(data.cart)
-      if (!areCartsEqual(data.cart, cart) && cart.length > 0 ) {
-        // The local state is more up-to-date, use it
-        console.log("Using local state for cart");
-      } else {
-        // The server cart is up-to-date, update the local state
-        dispatch(fetchCartSuccess(data.cart));
-        console.log("Using server state for cart");
-      }
-    } else if (error) {
-      console.error(error);
-      dispatch(fetchCartFailure(error.message));
-    }
-  }, [isLoading, data, error, dispatch, cart]);
 
   return (
     <>

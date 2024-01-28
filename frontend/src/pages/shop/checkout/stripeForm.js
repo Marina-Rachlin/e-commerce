@@ -10,6 +10,7 @@ import { redirect } from "next/navigation";
 import { toast } from "react-hot-toast";
 import socketIO from "socket.io-client";
 import { emptyCart } from "../../../redux/features/cart/cartSlice";
+import { useDispatch } from "react-redux";
 
 const ENDPOINT = process.env.NEXT_PUBLIC_SOCKET_SERVER_URI || "";
 const socketId = socketIO(ENDPOINT, { transports: ["websocket"] });
@@ -20,6 +21,7 @@ export default function CheckoutForm({ cart, shippingAddress, user, total, shipp
   const [message, setMessage] = useState("");
   const [createOrder, { data: orderData, error }] = useCreateOrderMutation();
   const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -45,7 +47,8 @@ export default function CheckoutForm({ cart, shippingAddress, user, total, shipp
       toast.success('Order created successfully!', {
         duration: 7000,
     });
-    store.dispatch(emptyCart());
+    dispatch(emptyCart());
+
   //  redirect('/');
     }
   };

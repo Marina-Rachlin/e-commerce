@@ -38,8 +38,6 @@ export const getCart = CatchAsyncError(async (req, res, next) => {
     // Calculate cart totals
     const { total, subtotal, taxes, shipping } = calculateCartTotal(cart);
 
-    console.log(source, reversedCart.length);
-
     return res.status(200).json({
       source: source,
       cart: reversedCart,
@@ -105,7 +103,6 @@ export const addToCart = CatchAsyncError(async (req, res, next) => {
 
     // Update Redis cache with the populated cart
     await redis.set(`cart_${userId}`, JSON.stringify(populatedCart));
-    console.log("product added to redis  successfully");
 
     res.status(200).json({
       success: true,
@@ -168,3 +165,4 @@ export const fetchLatestProductData = CatchAsyncError(async (req, res, next) => 
     return next(new ErrorHandler(error.message, 500));
   }
 });
+

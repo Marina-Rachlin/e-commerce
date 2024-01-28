@@ -55,6 +55,10 @@ const cartSlice = createSlice({
     },
     emptyCart: (state) => {
       state.items = [];
+      state.subtotal = 0;
+      state.taxes = 0;
+      state.shipping = 0;
+      state.total = 0;
     },
   },
 });
