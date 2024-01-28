@@ -7,7 +7,6 @@ import productModel from "../models/product.model.js"
 
 // get user's cart
 export const getCart = CatchAsyncError(async (req, res, next) => {
-  console.log('here')
   try {
     const userId = req.user._id;
     let source;

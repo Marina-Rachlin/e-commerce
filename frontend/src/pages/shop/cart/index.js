@@ -36,19 +36,8 @@ const Cart = () => {
   }, 300);
 
   const handleRemoveFromCart = async (product) => {
-    dispatch(removeItemFromCart(product)); // Update local state immediately
-    // Check if the cart is now empty
-    if (cart.length === 1) {
-      // If cart is empty, send immediate request to server
-      try {
-        await deleteFromCart(product).unwrap();
-      } catch (error) {
-        console.error("Error removing last item from cart:", error);
-      }
-    } else {
-      // If cart is not empty, call the debounced server update function
-      debouncedRemoveFromCart(product);
-    }
+    dispatch(removeItemFromCart(product)); // Update client
+    debouncedRemoveFromCart(product);//update server
   };
 
   //help function for validating the price

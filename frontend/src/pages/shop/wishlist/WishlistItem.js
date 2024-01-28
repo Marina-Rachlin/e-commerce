@@ -35,7 +35,7 @@ const WishlistItem = ({ product, handleDelete }) => {
 
   const handleAddToCart = (product) => {
     const quantity = 1;
-    dispatch(addItemToCart({ productId: product, quantity }));//update state
+    dispatch(addItemToCart({ productId: product, quantity }));//update client
     debouncedUpdateCart(product);//update server
   };
 

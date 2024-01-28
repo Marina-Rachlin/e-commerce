@@ -75,16 +75,13 @@ try {
   );
 
   if (getCartResponse.data) {
-    console.log ('cart =>', getCartResponse.data)
-    // Received data from the server
     const cartItems = getCartResponse.data.cart.map((item) => ({
-      productId: item.productId, // Assuming this includes necessary product details
+      productId: item.productId, 
       quantity: item.quantity
     }));
 
     // If there are items in the cart, dispatch actions to add them to the state
     if (cartItems.length > 0) {
-      // First, empty the cart to ensure it's initialized from a clean state
       store.dispatch(emptyCart());
 
       // Then, add each item to the cart
@@ -97,7 +94,6 @@ try {
   console.error("Error fetching cart:", error);
 }
 };
-
 
 initializeApp();
 

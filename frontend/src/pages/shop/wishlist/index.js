@@ -1,9 +1,6 @@
 import React from "react";
 import WishlistItem from "./WishlistItem";
-import { useSelector, useDispatch } from "react-redux";
-import { removeItem } from "../../../redux/features/wishlist/wishlistSlice";
-import { debounce } from "lodash";
-import { wishlistApi } from "../../../redux/features/wishlist/wishlistApi";
+import { useSelector } from "react-redux";
 
 const Wishlist = () => {
   const wishlist = useSelector((state) => state.wishlist.wishlist);
@@ -35,12 +32,11 @@ const Wishlist = () => {
                             <WishlistItem
                               key={item._id}
                               product={item}
-                              // handleDelete={handleRemoveFromWishlist}
                             />
                           ))
                       ) : (
                         <p>Your wishlist is empty.</p>
-                      ) // Message to display if the wishlist is empty
+                      ) 
                     }
                   </tbody>
                 </table>

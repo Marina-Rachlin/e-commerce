@@ -55,7 +55,7 @@ const ProductCard = ({ product }) => {
 
   // Handle adding to cart
   const handleAddToCart = (productId) => {
-    dispatch(addItemToCart({ productId, quantity: 1 })); // Update local state
+    dispatch(addItemToCart({ productId, quantity: 1 })); // Update client
     debouncedUpdateCart(productId); // Update server
   };
 

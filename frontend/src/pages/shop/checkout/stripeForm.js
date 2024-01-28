@@ -9,6 +9,8 @@ import { useLoadUserQuery } from "../../../redux/features/api/apiSlice";
 import { redirect } from "next/navigation";
 import { toast } from "react-hot-toast";
 import socketIO from "socket.io-client";
+import { emptyCart } from "../../../redux/features/cart/cartSlice";
+
 const ENDPOINT = process.env.NEXT_PUBLIC_SOCKET_SERVER_URI || "";
 const socketId = socketIO(ENDPOINT, { transports: ["websocket"] });
 
@@ -43,6 +45,7 @@ export default function CheckoutForm({ cart, shippingAddress, user, total, shipp
       toast.success('Order created successfully!', {
         duration: 7000,
     });
+    store.dispatch(emptyCart());
   //  redirect('/');
     }
   };
