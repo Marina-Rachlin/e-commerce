@@ -4,11 +4,28 @@ import { useDispatch } from "react-redux";
 import { addItemToCart } from "../../../redux/features/cart/cartSlice";
 import { useUpdateCartMutation } from "../../../redux/features/cart/cartApi";
 import { debounce } from 'lodash'; 
+import { wishlistApi } from "../../../redux/features/wishlist/wishlistApi";
+import { removeItem } from "../../../redux/features/wishlist/wishlistSlice";
 
 
 const WishlistItem = ({ product, handleDelete }) => {
   const dispatch = useDispatch();
   const [updateCart] = useUpdateCartMutation();
+  const [deleteFromWishlist] = wishlistApi.useDeleteFromWishlistMutation();
+
+  // Debounced function for updating bd
+  const debouncedDeleteFromWishlist = debounce(async (productId) => {
+    try {
+      await deleteFromWishlist(productId).unwrap();
+    } catch (error) {
+      console.error("Failed to delete from wishlist:", error);
+    }
+  }, 300);
+
+  const handleRemoveFromWishlist = (product) => {
+    dispatch(removeItem(product._id));// Update client
+    debouncedDeleteFromWishlist(product._id);//update server
+  };
 
   //Adding to cart
   const debouncedUpdateCart = debounce(async (product) => {
@@ -25,7 +42,7 @@ const WishlistItem = ({ product, handleDelete }) => {
   return (
     <tr>
       <td>
-        <div className="delete-icon" onClick={() => handleDelete(product.id)}>
+        <div className="delete-icon" onClick={() => handleRemoveFromWishlist(product)}>
           <i className="bi bi-x-lg" />
         </div>
       </td>

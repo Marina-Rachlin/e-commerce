@@ -5,6 +5,63 @@ import * as Yup from "yup";
 import { useLoginMutation } from "../../redux/features/auth/authApi";
 import { toast } from "react-hot-toast";
 import { useLoadUserQuery } from "../../redux/features/api/apiSlice";
+import store from "../../redux/features/store";
+
+// Fetch wishlist data from the server and update the store
+const fetchWishlistData = async (store) => {
+  try {
+    const getWishlistResponse = await store.dispatch(
+      wishlistApi.endpoints.getWishlist.initiate({}, { forceRefetch: true })
+    );
+
+    if (getWishlistResponse.data) {
+      const wishlistItems = getWishlistResponse.data.products.map((product) => ({
+        id: product.productId._id,
+        name: product.productId.name,
+        stock: product.productId.stock,
+        price: product.productId.price,
+        discountPrice: product.productId.discountPrice,
+        images: product.productId.images,
+      }));
+
+      // Dispatch the addItem action to add wishlist items to the store
+      wishlistItems.forEach((item) => {
+        store.dispatch(addItem(item));
+      });
+    }
+  } catch (error) {
+    console.error("Error fetching wishlist:", error);
+  }
+};
+
+// Fetch cart data from the server and update the store
+const fetchCartData = async (store) => {
+  try {
+    const getCartResponse = await store.dispatch(
+      cartApi.endpoints.getCart.initiate({}, { forceRefetch: true })
+    );
+
+    if (getCartResponse.data) {
+      const cartItems = getCartResponse.data.cart.map((item) => ({
+        productId: item.productId, // Assuming this includes necessary product details
+        quantity: item.quantity,
+      }));
+
+      // If there are items in the cart, dispatch actions to add them to the state
+      if (cartItems.length > 0) {
+        // First, empty the cart to ensure it's initialized from a clean state
+        store.dispatch(emptyCart());
+
+        // Then, add each item to the cart
+        cartItems.forEach((item) => {
+          store.dispatch(addItemToCart(item));
+        });
+      }
+    }
+  } catch (error) {
+    console.error("Error fetching cart:", error);
+  }
+};
 
 const Login = ({ handleTabChange, name}) => {
   
@@ -41,6 +98,8 @@ useEffect(() => {
     toast.success("Login Successfully!", {duration: 2000});
     // setOpen(false);
    refetch(); 
+   fetchWishlistData(store); // Fetch wishlist data after successful login
+   fetchCartData(store);
   }
   if (error) {
     if ("data" in error) {

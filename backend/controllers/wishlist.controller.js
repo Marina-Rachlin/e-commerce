@@ -36,6 +36,7 @@ export const wishlistAdd = CatchAsyncError(async (req, res, next) => {
       }
     }
 
+    console.log('added')
     res.status(200).json({
       success: true,
     });
@@ -83,6 +84,7 @@ export const wishlistDelete = CatchAsyncError(async(req, res, next) => {
     );
 
     await wishlist.save();
+    console.log('deleted')
 
     return res.status(200).json({ message: "Product removed from wishlist" });
   } catch (error) {

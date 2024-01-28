@@ -16173,5 +16173,16 @@ Testimonial-Section Css
  
 }
 
+.wishlist-container {
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  height: 100%; /* Or set a specific height */
+}
+
+.empty-wishlist-message {
+  text-align: center; /* Center the text inside the paragraph */
+}
+
 
 

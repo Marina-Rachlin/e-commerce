@@ -12,7 +12,7 @@ const wishlistSlice = createSlice({
       state.wishlist.push(action.payload);
     },
     removeItem: (state, action) => {
-      state.wishlist = state.wishlist.filter(item => item.id !== action.payload);
+      state.wishlist = state.wishlist.filter(item => item._id !== action.payload);
     },
   },
 });
