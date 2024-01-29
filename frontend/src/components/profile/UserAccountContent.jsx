@@ -1,7 +1,8 @@
 'use client'
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import SelectComponent from '../common/SelectComponent';
 import ProfileSection from './ProfileSection';
+import { useGetMyOrdersQuery } from '../../redux/features/orders/orderApi';
 
 function UserAccountContent({ user, initials, imageHandler, handleSubmit }) {
   return (
@@ -30,6 +31,7 @@ function DashboardSection({ user }) {
 }
 
 function OrderTrackingSection() {
+
   return (
     <div className="tab-pane fade" id="v-pills-order" role="tabpanel" aria-labelledby="v-pills-order-tab">
        <div className="order-traking-area">
@@ -75,6 +77,23 @@ function OrderTrackingSection() {
 }
 
 function PurchaseSection() {
+
+  const {data, isLoading, error} = useGetMyOrdersQuery();
+  const [orders, setOrders] = useState([]);
+
+  useEffect(() => {
+    if(isLoading){
+      return
+    }
+    else if(data){
+      setOrders(data.orders);
+    }
+    else{
+      console.log(error)
+    }
+  },[isLoading, data, error])
+
+
   return (
     <div className="tab-pane fade" id="v-pills-purchase" role="tabpanel" aria-labelledby="v-pills-purchase-tab">
         {/* table title*/}
@@ -82,97 +101,54 @@ function PurchaseSection() {
                     <h3>My Order</h3>
                     <SelectComponent
                       options={[
-                        "Show: Last 05 Order",
-                        "Show: Last 03 Order",
-                        "Show: Last 15 Order",
-                        "Show: Last 20 Order",
+                        "Last 05 Order",
+                        "Last 03 Order",
+                        "Last 15 Order",
+                        "Last 20 Order",
                       ]}
                       placeholder="orders"
                     />
                   </div>
-                  {/* table */}
+                
                   <div className="table-wrapper">
-                    <table className="eg-table order-table table mb-0">
-                      <thead>
-                        <tr>
-                          <th>Image</th>
-                          <th>Order ID</th>
-                          <th>Product Details</th>
-                          <th>price</th>
-                          <th>Status</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td data-label="Image">
-                            <img
-                              alt="image"
-                              src="/assets/img/inner-page/whistlist-img1.png"
-                              className="img-fluid"
-                            />
-                          </td>
-                          <td data-label="Order ID">#4ce345c3e</td>
-                          <td data-label="Product Details">
-                            Eau De Blue Perfume
-                          </td>
-                          <td data-label="price">$40.00</td>
-                          <td data-label="Status" className="text-green">
-                            Shipped
-                          </td>
-                        </tr>
-                        <tr>
-                          <td data-label="Image">
-                            <img
-                              alt="image"
-                              src="/assets/img/inner-page/whistlist-img2.png"
-                              className="img-fluid"
-                            />
-                          </td>
-                          <td data-label="Order ID">#4ce3533e</td>
-                          <td data-label="Product Details">
-                            Smooth Makeup Box
-                          </td>
-                          <td data-label="price">$25.00</td>
-                          <td data-label="Status" className="text-red">
-                            Pending
-                          </td>
-                        </tr>
-                        <tr>
-                          <td data-label="Image">
-                            <img
-                              alt="image"
-                              src="/assets/img/inner-page/whistlist-img3.png"
-                              className="img-fluid"
-                            />
-                          </td>
-                          <td data-label="Order ID">#8ce3533e</td>
-                          <td data-label="Product Details">
-                            Modern Red Lipstick{" "}
-                          </td>
-                          <td data-label="price">$32.00</td>
-                          <td data-label="Status" className="text-red">
-                            Pending
-                          </td>
-                        </tr>
-                        <tr>
-                          <td data-label="Image">
-                            <img
-                              alt="image"
-                              src="/assets/img/inner-page/whistlist-img4.png"
-                              className="img-fluid"
-                            />
-                          </td>
-                          <td data-label="Order ID">#8ce3533e</td>
-                          <td data-label="Product Details">
-                            New Botanical Shampoo
-                          </td>
-                          <td data-label="price">$27.00</td>
-                          <td data-label="Status" className="text-green">
-                            Shipped
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
+
+{
+   [...orders].reverse().map(order => (
+    <div key={order._id} className="order-card">
+      <div className="order-header">
+        <h3>Order ID: {order._id}</h3>
+        <p>Created At: {new Date(order.paidAt).toLocaleDateString()}</p>
+        <p className="order-status">Status: <span>{order.status}</span></p>
+      </div>
+      <table className="eg-table order-table table mb-0">
+        <thead>
+          <tr>
+            <th>Image</th>
+            <th>Product Details</th>
+            <th>Price</th>
+            <th>Quantity</th>
+          </tr>
+        </thead>
+        <tbody>
+          {order.cart.map(item => (
+            <tr key={item.productId._id}>
+              <td data-label="Image">
+                <img
+                  alt={item.productId.name}
+                  src={item.productId.images[0].url}
+                  className="img-fluid"
+                />
+              </td>
+              <td data-label="Product Details">{item.productId.name}</td>
+              <td data-label="Price">${item.productId.price}</td>
+              <td data-label="Quantity">{item.quantity}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  ))
+}
                   </div>
                   {/* pagination area */}
                   <div className="table-pagination">

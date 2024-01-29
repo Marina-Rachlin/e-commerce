@@ -276,20 +276,29 @@ export const getMyOrders = CatchAsyncError(async (req, res, next) => {
       return next(new ErrorHandler("Invalid user ID.", 400));
     }
 
-    const cachedData = await redis.get(userId);
+    // const cachedData = await redis.get(userId);
 
-    if (cachedData) {
-      const user = JSON.parse(cachedData);
-      const orders = user.orders || [];
-      return res.status(200).json({
-        success: true,
-        source: "cache",
-        total: orders.length,
-        orders,
-      });
-    }
+    // if (cachedData) {
+    //   const user = JSON.parse(cachedData);
+    //   const orders = user.orders || [];
+    //   return res.status(200).json({
+    //     success: true,
+    //     source: "cache",
+    //     total: orders.length,
+    //     orders,
+    //   });
+    // }
 
-    const user = await userModel.findById(userId);
+    // const user = await userModel.findById(userId);
+    const user = await userModel.findById(userId).populate({
+      path: 'orders',
+      select: 'totalPrice status paidAt cart', // Select the fields you want from the order
+      populate: {
+        path: 'cart.productId',
+        select: 'name price images ' // Specify fields to include from the Product model
+      }
+    });
+    
 
     if (!user) {
       return next(new ErrorHandler("User not found.", 404));

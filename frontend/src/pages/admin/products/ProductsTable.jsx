@@ -375,8 +375,6 @@ const ProductsTable = () => {
     }
 
     if (data) {
-      console.log('data received!')
-      console.log(data);
       const newRows = data.products.map((item) => ({
         id: item._id, // used as a key
         name: item.name,

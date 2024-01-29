@@ -4283,6 +4283,7 @@ header.style-2 .nav-right::after {
   align-items: center;
   flex-direction: column;
   gap: 5px;
+  display: none
 }
 .product-card .product-card-img > a .batch > span {
   width: 52px;
@@ -15073,7 +15074,7 @@ Testimonial-Section Css
   width: 100%;
 }
 .table-title-area .nice-select.open .list .option {
-  padding-left: 25px;
+  /* padding-left: 25px; */
 }
 
 .table > :not(:first-child) {
@@ -16183,6 +16184,40 @@ Testimonial-Section Css
 .empty-wishlist-message {
   text-align: center; /* Center the text inside the paragraph */
 }
+
+.order-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  padding: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.order-header {
+  margin-bottom: 15px;
+}
+
+.order-header h3 {
+  margin: 0;
+  color: #333;
+  font-size: 1em; /* Adjusted font size */
+}
+
+.order-header p {
+  margin: 5px 0;
+  color: #666;
+}
+
+.order-status span {
+  color: #ffc61c;
+  font-weight: bold;
+}
+
+.order-table {
+  width: 100%;
+  /* additional table styling */
+}
+
 
 
 
