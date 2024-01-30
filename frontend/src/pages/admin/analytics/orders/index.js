@@ -86,7 +86,8 @@ const index = () => {
             <BreadCrumb title="Orders Analytics" subtitle="Last 12 months analytics data" />
             {/* breadCrumb */}
 
-            <div className="chart-container">
+
+            <div className="row" style={{ margin: "0 -24px", marginTop: '100px' }}>
             <ResponsiveContainer
               width={ "100%" }
               height={300}
@@ -110,7 +111,9 @@ const index = () => {
                 <Line type="monotone" dataKey="Count" stroke="#82ca9d" />
               </LineChart>
             </ResponsiveContainer>
-            </div>
+          </div>
+
+           
         </div>
     </div>
 </AdminLayout>

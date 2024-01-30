@@ -47,7 +47,7 @@ const index = () => {
             <BreadCrumb title="Users Analytics" subtitle="Last 12 months analytics data" />
             {/* breadCrumb */}
 
-            <div className="row" style={{ margin: "0 -24px" }}>
+            <div className="row" style={{ margin: "0 -24px", marginTop: '100px' }}>
               <ResponsiveContainer width='100%'  height={300}>
              <AreaChart
                data={analyticsData}
@@ -69,7 +69,6 @@ const index = () => {
                />
              </AreaChart>
            </ResponsiveContainer>
-           
           </div>
         </div>
     </div>

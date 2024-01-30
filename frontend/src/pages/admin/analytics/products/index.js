@@ -55,7 +55,7 @@ const index = () => {
             <BreadCrumb title="Products Analytics" subtitle="Last 12 months analytics data" />
             {/* breadCrumb */}
 
-            <div className="row" style={{ margin: "0 -24px" }}>
+            <div className="row" style={{ margin: "0 -24px", marginTop: '100px' }}>
                   <div className="chart-container">
                 <ResponsiveContainer width="100%" height={300}>
                     <BarChart data={analyticsData} margin={{ top: 20, right: 30, left: 30, bottom: 20 }}>
