@@ -9,9 +9,20 @@ const categorySchema = new mongoose.Schema({
     title: String,
 });
 
-const bannerImageSchema = new mongoose.Schema({
-    public_id: String,
-    url: String,
+// const bannerImageSchema = new mongoose.Schema({
+//     public_id: String,
+//     url: String,
+// });
+
+const bannerSchema = new mongoose.Schema({
+    image: {
+        public_id: String,
+        url: String,
+    },
+    title: String,
+    subtitle: String,
+    discount: Number,
+    blackFriday: Boolean,
 });
 
 const layoutSchema = new mongoose.Schema({
@@ -19,7 +30,7 @@ const layoutSchema = new mongoose.Schema({
     faq: [faqSchema],
     categories: [categorySchema],
     banner: {
-        image: bannerImageSchema,
+        image: bannerSchema,
         title: String,
         subTitle: String,
     },

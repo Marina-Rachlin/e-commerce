@@ -1807,3 +1807,470 @@ Chat Widget
   color: #ccc; /* You can change the color as needed */
   cursor: pointer;
 }
+
+
+
+
+
+/*........................ 
+  Banner section
+........................*/
+.banner-section {
+  overflow: hidden;
+  display: flex;
+  position: relative;
+  // margin-bottom: 110px;
+}
+.banner-section .swiper-slide-active .banner-content h1 {
+  animation: leftRight 1s;
+}
+@keyframes leftRight {
+  0% {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+.banner-section .swiper-slide-active .banner-content > p {
+  animation: leftRight 2s;
+}
+.banner-section .swiper-slide-active .banner-content .primary-btn1 {
+  animation: leftRight 3s;
+}
+.banner-section .swiper-slide-active .discount {
+  animation: zoomIn 3s;
+}
+.banner-section .banner-wrapper {
+  display: flex;
+}
+.banner-section .banner-wrapper .banner-left {
+  padding: 190px 30px 130px 10%;
+  background-color: #fcf7ee;
+  width: 45%;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+@media (min-width: 1400px) and (max-width: 1599px) {
+  .banner-section .banner-wrapper .banner-left {
+    padding-left: 8%;
+  }
+}
+@media (min-width: 1200px) and (max-width: 1399px) {
+  .banner-section .banner-wrapper .banner-left {
+    padding-left: 65px;
+    padding-right: 20px;
+  }
+}
+@media (min-width: 992px) and (max-width: 1199px) {
+  .banner-section .banner-wrapper .banner-left {
+    padding: 190px 20px 130px 50px;
+  }
+}
+@media (max-width: 991px) {
+  .banner-section .banner-wrapper .banner-left {
+    width: 100%;
+  }
+}
+@media (max-width: 576px) {
+  .banner-section .banner-wrapper .banner-left {
+    padding: 90px 30px 90px 30px;
+    min-height: 550px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+}
+.banner-section .banner-wrapper .banner-left .banner-vector1 {
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0.03;
+}
+.banner-section .banner-wrapper .banner-left .banner-vector2 {
+  position: absolute;
+  right: 0;
+  top: 0;
+  opacity: 0.03;
+}
+.banner-section .banner-wrapper .banner-left .banner-vector3 {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+.banner-section .banner-wrapper .banner-left .banner-content {
+  position: relative;
+  max-width: 560px;
+  width: 100%;
+}
+.banner-section .banner-wrapper .banner-left .banner-content .discount {
+  position: absolute;
+  top: -32px;
+  left: -53px;
+}
+@media (min-width: 1400px) and (max-width: 1599px) {
+  .banner-section .banner-wrapper .banner-left .banner-content .discount {
+    top: -38px;
+  }
+}
+@media (max-width: 1399px) {
+  .banner-section .banner-wrapper .banner-left .banner-content .discount {
+    top: -38px;
+  }
+}
+@media (min-width: 992px) and (max-width: 1199px) {
+  .banner-section .banner-wrapper .banner-left .banner-content .discount {
+    top: -52px;
+    left: -35px;
+  }
+}
+@media (max-width: 576px) {
+  .banner-section .banner-wrapper .banner-left .banner-content .discount {
+    transform: rotate(26deg);
+    top: -60px;
+    left: -10px;
+  }
+}
+.banner-section .banner-wrapper .banner-left .banner-content .discount p {
+  font-family: var(--font-Jost);
+  font-style: normal;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 1;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--white-color);
+  transform: rotate(-27.59deg);
+  position: absolute;
+  top: 31px;
+  left: 22px;
+  margin-bottom: 0;
+}
+.banner-section
+  .banner-wrapper
+  .banner-left
+  .banner-content
+  .discount
+  p
+  strong {
+  font-weight: 500;
+  font-size: 20px;
+}
+.banner-section .banner-wrapper .banner-left .banner-content h1 {
+  font-family: var(--font-Jost);
+  font-style: normal;
+  font-weight: 700;
+  font-size: 60px;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+  text-transform: capitalize;
+  color: var(--primary-color1);
+  margin-bottom: 20px;
+}
+@media (min-width: 1400px) and (max-width: 1599px) {
+  .banner-section .banner-wrapper .banner-left .banner-content h1 {
+    font-size: 50px;
+  }
+}
+@media (max-width: 1399px) {
+  .banner-section .banner-wrapper .banner-left .banner-content h1 {
+    font-size: 50px;
+  }
+}
+@media (max-width: 1199px) {
+  .banner-section .banner-wrapper .banner-left .banner-content h1 {
+    font-size: 42px;
+  }
+}
+@media (max-width: 576px) {
+  .banner-section .banner-wrapper .banner-left .banner-content h1 {
+    font-size: 38px;
+  }
+}
+.banner-section .banner-wrapper .banner-left .banner-content p {
+  font-family: var(--font-Jost);
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 1.8;
+  letter-spacing: 0.03em;
+  text-transform: capitalize;
+  color: var(--primary-color1);
+  margin-bottom: 40px;
+}
+.banner-section .banner-wrapper .banner-left .banner-content .primary-btn1 {
+  padding: 12px 35px;
+}
+.banner-section .banner-wrapper .banner-right-wrapper {
+  width: 55%;
+  padding-left: 0;
+  position: relative;
+}
+@media (max-width: 991px) {
+  .banner-section .banner-wrapper .banner-right-wrapper {
+    display: none;
+  }
+}
+.banner-section .banner-wrapper .banner-right-wrapper .banner-right-img {
+  position: relative;
+  height: 100%;
+}
+.banner-section
+  .banner-wrapper
+  .banner-right-wrapper
+  .banner-right-img
+  .discount-tag {
+  position: absolute;
+  right: 25px;
+  z-index: 1;
+}
+.banner-section
+  .banner-wrapper
+  .banner-right-wrapper
+  .banner-right-img
+  .banner-right-bg {
+  min-height: 500px;
+  height: 100%;
+  position: relative;
+  -o-object-fit: cover;
+  object-fit: cover;
+  width: 100%;
+}
+@media (min-width: 992px) and (max-width: 1199px) {
+  .banner-section
+    .banner-wrapper
+    .banner-right-wrapper
+    .banner-right-img
+    .banner-right-bg {
+    min-height: 665px;
+  }
+}
+.banner-section .banner-wrapper .banner-right-wrapper .banner-right-img::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: linear-gradient(
+    47.51deg,
+    rgba(252, 247, 238, 0.54) 2.73%,
+    rgba(252, 247, 238, 0.511018) 9.17%,
+    rgba(252, 247, 238, 0) 15.47%
+  );
+  width: 100%;
+  height: 100%;
+  z-index: 11;
+}
+.banner-section .swiper-pagination1 {
+  position: absolute;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 99;
+  display: flex;
+  align-items: center;
+  width: unset;
+  gap: 14px;
+}
+@media (max-width: 576px) {
+  .banner-section .swiper-pagination1 {
+    display: none;
+  }
+}
+.banner-section .swiper-pagination1 .swiper-pagination-bullet {
+  width: 13px;
+  height: 13px;
+  border: 1px solid var(--primary-color1);
+  background-color: transparent;
+  opacity: 1;
+  margin: 0;
+}
+.banner-section
+  .swiper-pagination1
+  .swiper-pagination-bullet.swiper-pagination-bullet-active {
+  background: var(--primary-color1);
+  margin: 0;
+}
+
+.banner-footer {
+  background: #e9e6e2;
+}
+.banner-footer .banner-footer-wrapper {
+  padding: 50px 10%;
+}
+@media (min-width: 1400px) and (max-width: 1599px) {
+  .banner-footer .banner-footer-wrapper {
+    padding: 50px 35px;
+  }
+}
+@media (max-width: 1399px) {
+  .banner-footer .banner-footer-wrapper {
+    padding: 50px 15px;
+  }
+}
+.banner-footer .banner-footer-wrapper .banner-footer-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+@media (min-width: 1400px) and (max-width: 1599px) {
+  .banner-footer .banner-footer-wrapper .banner-footer-item {
+    gap: 15px;
+  }
+}
+@media (max-width: 1399px) {
+  .banner-footer .banner-footer-wrapper .banner-footer-item {
+    gap: 10px;
+  }
+}
+.banner-footer
+  .banner-footer-wrapper
+  .banner-footer-item
+  .banner-footer-icon
+  svg {
+  fill: var(--primary-color1);
+}
+.banner-footer
+  .banner-footer-wrapper
+  .banner-footer-item
+  .banner-footer-content {
+  max-width: 270px;
+  width: 100%;
+}
+.banner-footer
+  .banner-footer-wrapper
+  .banner-footer-item
+  .banner-footer-content
+  h5 {
+  color: var(--primary-color1);
+  font-size: 22px;
+  font-family: var(--font-Jost);
+  font-weight: 600;
+  margin-bottom: 8px;
+  line-height: 1;
+}
+@media (min-width: 992px) and (max-width: 1199px) {
+  .banner-footer
+    .banner-footer-wrapper
+    .banner-footer-item
+    .banner-footer-content
+    h5 {
+    font-size: 20px;
+  }
+}
+.banner-footer
+  .banner-footer-wrapper
+  .banner-footer-item
+  .banner-footer-content
+  p {
+  color: var(--primary-color1);
+  font-size: 15px;
+  font-family: var(--font-Jost);
+  font-weight: 300;
+  line-height: 1.8;
+  letter-spacing: 0.45px;
+  margin: 0;
+}
+@media (max-width: 1399px) {
+  .banner-footer
+    .banner-footer-wrapper
+    .banner-footer-item
+    .banner-footer-content
+    p {
+    font-size: 14px;
+  }
+}
+.banner-footer
+  .banner-footer-wrapper
+  .banner-footer-item:hover
+  .banner-footer-icon {
+  animation: topBottom 1.5s;
+}
+@keyframes topBottom {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+.banner-footer.style-2 {
+  background: transparent;
+  border-top: 1px solid var(--primary-color1);
+}
+.banner-footer.style-2 .banner-footer-wrapper {
+  padding: 40px 8%;
+}
+@media (min-width: 992px) and (max-width: 1199px) {
+  .banner-footer.style-2 .banner-footer-wrapper {
+    padding: 35px 15px;
+  }
+}
+@media (max-width: 991px) {
+  .banner-footer.style-2 .banner-footer-wrapper {
+    padding: 35px 15px;
+  }
+}
+@media (min-width: 992px) and (max-width: 1199px) {
+  .banner-footer.style-2
+    .banner-footer-wrapper
+    .banner-footer-item
+    .banner-footer-content {
+    max-width: 175px;
+  }
+}
+.banner-footer.style-2
+  .banner-footer-wrapper
+  .banner-footer-item
+  .banner-footer-content
+  h5 {
+  font-size: 20px;
+}
+.banner-footer.style-2
+  .banner-footer-wrapper
+  .banner-footer-item
+  .banner-footer-content
+  p {
+  font-size: 16px;
+  line-height: 1.3;
+}
+.banner-footer.style-2 .banner-footer-wrapper .divider {
+  position: relative;
+}
+.banner-footer.style-2 .banner-footer-wrapper .divider::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1px;
+  height: 130px;
+  background-color: var(--primary-color1);
+}
+@media (min-width: 992px) and (max-width: 1199px) {
+  .banner-footer.style-2 .banner-footer-wrapper .divider::after {
+    height: 140px;
+  }
+}
+@media (max-width: 991px) {
+  .banner-footer.style-2 .banner-footer-wrapper .divider::after {
+    display: none;
+  }
+}
+
+.full-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999; /* Ensure it's above other content */
+  background: white; /* You can change the background color as needed */
+  /* Additional styling for full-screen display */
+  /* Add any other styles you need for full-screen mode */
+}
+

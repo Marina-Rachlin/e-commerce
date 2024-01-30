@@ -79,9 +79,9 @@ export const adminSidebarMenuData = [
     },
     // {
     //   id: 8,
-    //   name: "Messages",
+    //   name: "Customization",
     //   icon: "la-comment-o",
-    //   routePath: "/employers-dashboard/messages",
+    //   routePath: "/admin/customization",
     //   active: "",
     // },
     // {

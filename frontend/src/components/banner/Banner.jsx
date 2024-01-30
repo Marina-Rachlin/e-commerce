@@ -8,9 +8,15 @@ import SwiperCore, {
 } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { banner1Data } from "../../data/bannerData";
+import { useGetHeroDataQuery } from "../../redux/features/layout/layoutApi";
 SwiperCore.use([Pagination, Autoplay, EffectFade, Navigation]);
 
 const Banner = () => {
+
+  const { data,isLoading } = useGetHeroDataQuery("Banner", {});
+
+
+
   const bannerSlideSetting = useMemo(() => {
     return {
       slidesPerView: "auto",

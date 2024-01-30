@@ -10,24 +10,59 @@ const createLayout = async (req, res, next) => {
     if (isTypeExist) {
       return next(new ErrorHandler(`${type} already exists`, 400));
     }
+
+
+    // if (type === "Banner") {
+    //   const { image, title, subTitle } = req.body;
+    //   const myCloud = await cloudinary.v2.uploader.upload(image, {
+    //     folder: "layout",
+    //   });
+    //   const banner = {
+    //     type: "Banner",
+    //     banner: {
+    //       image: {
+    //         public_id: myCloud.public_id,
+    //         url: myCloud.secure_url,
+    //       },
+    //       title,
+    //       subTitle,
+    //     },
+    //   };
+    //   await LayoutModel.create(banner);
+    // }
+
     if (type === "Banner") {
-      const { image, title, subTitle } = req.body;
-      const myCloud = await cloudinary.v2.uploader.upload(image, {
-        folder: "layout",
-      });
-      const banner = {
-        type: "Banner",
-        banner: {
+      const { banners } = req.body;
+
+      // Handle multiple banners
+      const bannerData = await Promise.all(banners.map(async (banner) => {
+        const myCloud = await cloudinary.v2.uploader.upload(banner.image, {
+          folder: "layout",
+        });
+        return {
           image: {
             public_id: myCloud.public_id,
             url: myCloud.secure_url,
           },
-          title,
-          subTitle,
-        },
-      };
-      await LayoutModel.create(banner);
+          title: banner.title,
+          subtitle: banner.subtitle,
+          discount: banner.discount,
+          blackFriday: banner.blackFriday,
+        };
+      }));
+
+      const newLayout = { type, banners: bannerData };
+      if (layoutData) {
+        // Update existing layout
+        await LayoutModel.findByIdAndUpdate(layoutData._id, newLayout);
+      } else {
+        // Create new layout
+        await LayoutModel.create(newLayout);
+      }
     }
+
+
+
     if (type === "FAQ") {
       const { faq } = req.body;
       const faqItems = await Promise.all(

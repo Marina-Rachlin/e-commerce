@@ -92,6 +92,21 @@
   transition: 0.3s;
 }
 
+.uploadButton-button.no-arrow::before {
+  /* Hide the arrow when no-arrow class is added */
+  display: none;
+}
+
+/* Styles for the image preview */
+.uploadButton-button .image-preview {
+  max-width: 100%;
+  max-height: 100%;
+  height: auto;
+  width: auto;
+}
+
+
+
 .widget-content .default-form .form-group {
   margin-bottom: 30px;
 }
