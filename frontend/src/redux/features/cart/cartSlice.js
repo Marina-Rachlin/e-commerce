@@ -54,12 +54,16 @@ const cartSlice = createSlice({
       state.error = action.payload;
     },
     emptyCart: (state) => {
-      state.items = [];
-      state.subtotal = 0;
-      state.taxes = 0;
-      state.shipping = 0;
-      state.total = 0;
+      return {
+        ...state,
+        items: [],
+        subtotal: 0,
+        taxes: 0,
+        shipping: 0,
+        total: 0,
+      };
     },
+    
   },
 });
 

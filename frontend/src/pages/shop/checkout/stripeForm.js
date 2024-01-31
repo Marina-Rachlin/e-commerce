@@ -27,7 +27,7 @@ export default function CheckoutForm({
   const stripe = useStripe();
   const elements = useElements();
   const [message, setMessage] = useState("");
-  const [createOrder, { data: orderData, error }] = useCreateOrderMutation();
+  const [createOrder, { data: orderData, error, isSuccess }] = useCreateOrderMutation();
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const router = useRouter();
@@ -66,12 +66,6 @@ export default function CheckoutForm({
       });
       dispatch(emptyCart());
       router.push('/shop/my-account?tab=orders');
-    }
-  };
-
-  useEffect(() => {
-    if (orderData) {
-       refetch();
       socketId.emit("notification", {
         title: "New Order",
         message: "You have a new order.",
@@ -79,12 +73,24 @@ export default function CheckoutForm({
         type: "order",
       });
     }
-    if (error) {
-      if ("data" in error) {
-        toast.error(error.data.message);
-      }
-    }
-  }, [orderData, error]);
+  };
+
+  // useEffect(() => {
+  //   if (orderData) {
+  //     refetch();
+  //    socketId.emit("notification", {
+  //      title: "New Order",
+  //      message: "You have a new order.",
+  //      userId: user._id,
+  //      type: "order",
+  //    });
+  //  }
+  //   if (error) {
+  //     if ("data" in error) {
+  //       toast.error(error.data.message);
+  //     }
+  //   }
+  // }, [orderData, error]);
 
   return (
     <form id="payment-form" onSubmit={(e) => handleSubmit(e)}>

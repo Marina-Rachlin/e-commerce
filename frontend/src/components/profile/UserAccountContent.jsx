@@ -3,6 +3,7 @@ import React, {useEffect, useState} from 'react';
 import SelectComponent from '../common/SelectComponent';
 import ProfileSection from './ProfileSection';
 import { useGetMyOrdersQuery } from '../../redux/features/orders/orderApi';
+import { useSelector } from 'react-redux';
 
 function UserAccountContent({ user, initials, imageHandler, handleSubmit }) {
   return (
@@ -80,6 +81,8 @@ function PurchaseSection() {
 
   const {data, isLoading, error} = useGetMyOrdersQuery();
   const [orders, setOrders] = useState([]);
+  const cart = useSelector((state) => (state.cart.items))
+  console.log('cart here =>',  cart)
 
   useEffect(() => {
     if(isLoading){

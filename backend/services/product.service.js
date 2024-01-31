@@ -44,19 +44,19 @@ export const getAllProductsService = async (page, pageSize, category, brand, sto
       filter.name = { $regex: new RegExp(value, 'i') }; // Case-insensitive search
     }
 
-    const cachedData = await redis.get(cacheKey);
+    // const cachedData = await redis.get(cacheKey);
 
-    if (cachedData) {
-      const products = JSON.parse(cachedData);
-      return {
-        source: "cache",
-        products: products,
-        totalProducts,
-        page,
-        pageSize,
-        totalPages,
-      };
-    }
+    // if (cachedData) {
+    //   const products = JSON.parse(cachedData);
+    //   return {
+    //     source: "cache",
+    //     products: products,
+    //     totalProducts,
+    //     page,
+    //     pageSize,
+    //     totalPages,
+    //   };
+    // }
 
     const projection = {};
 
@@ -78,9 +78,9 @@ export const getAllProductsService = async (page, pageSize, category, brand, sto
 
     totalProducts = (category === '' && brand === '' && stock === '' && value === '') ? totalProducts : products.length;
 
-if ((!category || category === 'all') && (!brand || brand === 'all') && !stock && !value) {
-  await redis.set(cacheKey, JSON.stringify(products), "EX", 10800); // 3 hours
-}
+// if ((!category || category === 'all') && (!brand || brand === 'all') && !stock && !value) {
+//   await redis.set(cacheKey, JSON.stringify(products), "EX", 10800); // 3 hours
+// }
 
     return {
       source: "database",

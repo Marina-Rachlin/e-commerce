@@ -33,8 +33,6 @@ const DashboardHeader = ({ user }) => {
 
   useEffect(() => {
     if (data) {
-      console.log(data);
-      console.log(data.adminNotifications);
       setNotifications(data.adminNotifications);
       // data.adminNotifications?.filter((item) => item.status === "unread"
     }
@@ -46,7 +44,7 @@ const DashboardHeader = ({ user }) => {
 
   useEffect(() => {
     socketId.on("newNotification", (data) => {
-      // refetch();
+      refetch();
       playNotificationSound();
     });
   }, []);

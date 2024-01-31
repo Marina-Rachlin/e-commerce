@@ -28,7 +28,6 @@ const ProductCard = ({ product }) => {
 
   const handleToggleWishlist = (product) => {
     const inWishlist = isProductInWishlist(product._id);
-    console.log(inWishlist);
     if (inWishlist) {
       dispatch(removeItem(product._id)); //update client
       debouncedDeleteFromWishlist(product._id);//update server

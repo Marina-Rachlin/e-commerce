@@ -5,18 +5,18 @@ function GiftSection() {
   return (
     <div className="gift-section">
       <img
-        src="/assets/img/home1/gift-card-img1.png"
+        src="https://res.cloudinary.com/dmdv8s9mz/image/upload/v1706715989/banners/zeiqzabsz7cxqvl2tcup.png"
         alt=""
         className="gift-img1"
       />
       <img
-        src="/assets/img/home1/gift-card-img2.png"
+        src="https://res.cloudinary.com/dmdv8s9mz/image/upload/v1706715934/banners/zmorexbpfn7j390eaihx.png"
         alt=""
         className="gift-img2"
       />
       <div className="container-lg container-fluid">
         <div className="gift-wrapper">
-          <h5>BEAUTICO GIFT CARD</h5>
+          <h5>BEAUTIME GIFT CARD</h5>
           <div className="gift-card-content">
             <p>
               Whatever your summer looks like, bring your own heat with up to

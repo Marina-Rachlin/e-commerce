@@ -105,7 +105,7 @@ export const createOrder = CatchAsyncError(async (req, res, next) => {
 
     await newOrder.save(); // Save the new order to the database
     user.orders.push(newOrder);
-    user.totalSpent += totalPrice;
+    // user.totalSpent += totalPrice;
     await user.save(); // updated user data in the database
     await redis.set(req.user?._id, JSON.stringify(user)); // updated user data in Redis
     let userCart = await CartModel.findOne({ userId });

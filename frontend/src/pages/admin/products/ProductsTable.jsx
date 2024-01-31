@@ -367,7 +367,7 @@ const ProductsTable = () => {
   }, [])
 
   useEffect(() => {
-    // console.log(`fetching ... with: isLoading: ${isLoading}, data: ${data} , brand: ${brand}, category: ${category}, status: ${status}, pm: ${paginationModel}, rowcs: ${rowCountState}, error: ${error}`  )
+    console.log(`fetching ... with: isLoading: ${isLoading}, data: ${data} , brand: ${brand}, category: ${category}, status: ${status}, pm: ${paginationModel}, rowcs: ${rowCountState}, error: ${error}`  )
 
     if (isLoading) {
       console.log('isLoading....')
