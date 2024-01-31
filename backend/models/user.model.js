@@ -6,8 +6,6 @@ import validator from 'validator';
 
 dotenv.config();
 
-// const emailRegexPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
 const userSchema = new mongoose.Schema(
   {
     name: {
@@ -73,6 +71,10 @@ const userSchema = new mongoose.Schema(
         ref: "Order",
       },
     ],
+    totalSpent: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true }
 );
