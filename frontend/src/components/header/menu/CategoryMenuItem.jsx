@@ -4,7 +4,7 @@ import MenuItem from './MenuItem'; // Import the MenuItem component
 import ViewAllProductsLink from './ViewAllProductsLink'; // Import the ViewAllProductsLink component
 import ViewAllLink from '../../common/VIewAllLink';
 
-const CategoryMenuItem = ({ category, categoryLabels }) => {
+const CategoryMenuItem = ({ category, categoryLabels, image }) => {
   const [activeMenu, setActiveMenu] = useState(null);
 
   const toggleMenu = (menu) => {
@@ -27,7 +27,7 @@ const CategoryMenuItem = ({ category, categoryLabels }) => {
       <div
         className={`mega-menu2 ${activeMenu === category ? "d-block" : ""}`}
         style={{
-          backgroundImage: `url("/assets/img/home1/megamenu2-${category.toLowerCase()}-bg.png")`,
+          backgroundImage: `url(${image})`,
         }}
       >
         <div className="megamenu-wrap">

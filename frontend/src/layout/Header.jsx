@@ -195,12 +195,13 @@ const Header = () => {
             </div>
 
             <ul className="menu-list">
-              <CategoryMenuItem category="Face" categoryLabels={faceLabels} />
-              <CategoryMenuItem category="Body" categoryLabels={bodyLabels} />
-              <CategoryMenuItem category="Hair" categoryLabels={hairLabels} />
+              <CategoryMenuItem category="Face" categoryLabels={faceLabels} image={'https://res.cloudinary.com/dmdv8s9mz/image/upload/v1706704149/banners/w19nxzelnrykwtmonyj9.png'} />
+              <CategoryMenuItem category="Body" categoryLabels={bodyLabels}  image={'https://res.cloudinary.com/dmdv8s9mz/image/upload/v1706704196/banners/x0zxjbndkez368zjujcd.png'}/>
+              <CategoryMenuItem category="Hair" categoryLabels={hairLabels}  image={'https://res.cloudinary.com/dmdv8s9mz/image/upload/v1706704217/banners/blt86jpxtupujleg44ln.png'}/>
               <CategoryMenuItem
                 category="Makeup"
                 categoryLabels={makeupLabels}
+                image={'https://res.cloudinary.com/dmdv8s9mz/image/upload/v1706704224/banners/ngl2neebpvz5zkytv8wp.png'}
               />
             </ul>
 
