@@ -284,7 +284,7 @@ const OrdersTable = () => {
     }
 
     if (data) {
-      console.log(data);
+      console.log(data)
       const newRows = data.orders.map((item) => ({
         id: item._id.slice(-10),
         quantity: item.cart.reduce(
@@ -301,7 +301,7 @@ const OrdersTable = () => {
       setLoading(false);
     } else {
       console.log(error);
-      // refetch()
+      refetch()
     }
   }, [isLoading, data, error, paginationModel, value]);
 

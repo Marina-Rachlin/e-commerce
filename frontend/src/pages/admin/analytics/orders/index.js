@@ -10,7 +10,8 @@ import {
     Legend,
     ResponsiveContainer,
   } from "recharts";
-  import {useGetOrdersAnalyticsQuery} from '../../../../redux/features/analytics/analyticsApi'
+  import {useGetOrdersAnalyticsQuery} from '../../../../redux/features/analytics/analyticsApi';
+  import LineChartDiagram from "./LineChartDiagram";
 
 
 
@@ -88,7 +89,7 @@ const index = () => {
 
 
             <div className="row" style={{ margin: "0 -24px", marginTop: '100px' }}>
-            <ResponsiveContainer
+            {/* <ResponsiveContainer
               width={ "100%" }
               height={300}
             >
@@ -110,7 +111,8 @@ const index = () => {
                 {<Legend />}
                 <Line type="monotone" dataKey="Count" stroke="#82ca9d" />
               </LineChart>
-            </ResponsiveContainer>
+            </ResponsiveContainer> */}
+            <LineChartDiagram data={analyticsData} />
           </div>
 
            

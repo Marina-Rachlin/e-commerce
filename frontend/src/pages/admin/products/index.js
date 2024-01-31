@@ -17,7 +17,7 @@ const Products = () => {
           {/*Collapsible sidebar button */}
 
           <div className="row" style={{ margin: "0 -24px" }}>
-            <TopCardBlock />
+            {/* <TopCardBlock /> */}
           </div>
           {/* <!-- End TopCardBlock --> */}
 

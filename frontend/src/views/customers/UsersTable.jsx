@@ -287,7 +287,7 @@ const UsersTable = () => {
     } else {
       console.log(error);
       console.log('Error. trying to refetch...')
-      // refetch()
+      refetch()
     }
   }, [isLoading, data, error, paginationModel, value]);
 
