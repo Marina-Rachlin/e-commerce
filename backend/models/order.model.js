@@ -53,15 +53,10 @@ const orderSchema = new mongoose.Schema({
         type: String,
         default: "Processing",
         enum:{
-            values: ["Processing", "Shipped", "Delivered"],
+            values: ["Processing", "Delivered", "Cancelled", "Pending"],
             message: "Please select correct order status",
         },
     },
-    // isPaid: {
-    //     type: Boolean,
-    //     required: true,
-    //     default: false,
-    //   },
     paidAt: {
         type: Date,
       },

@@ -10,18 +10,14 @@ const index = () => {
       <div className="admin-section user-dashboard">
         <div className="dashboard-outer">
           <BreadCrumb title="All Customers" />
-          {/* breadCrumb */}
 
           <MenuToggler />
-          {/* Collapsible sidebar button */}
 
           <div className="row" style={{margin: '0 -24px'}}>
            <UsersTable />
           </div>
-          {/* End .row */}
 
         </div>
-        {/* End dashboard-outer */}
       </div>
 
     </AdminLayout>

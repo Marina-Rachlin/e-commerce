@@ -369,7 +369,7 @@ const UsersTable = () => {
       loading={loading}
       className="default-table manage-job-table"
       disableRowSelectionOnClick
-      paginationMode="server"
+      // paginationMode="server"
       rowCount={rowCountState}
       pageSizeOptions={[25, 50, 100]}
       paginationModel={paginationModel}
