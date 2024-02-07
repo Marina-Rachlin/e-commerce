@@ -64,7 +64,7 @@ const TopSellingProduct = () => {
           </div>
         </div>
         <div className="row">
-          <div className="col-12">
+          <div className="col-12 ">
             <Swiper {...slideSettings} className="swiper top-selling-slider">
               <div className="swiper-wrapper">
                 <SwiperSlide className="swiper-slide">

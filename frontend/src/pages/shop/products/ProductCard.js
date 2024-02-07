@@ -70,6 +70,7 @@ const ProductCard = ({ product }) => {
               src={product.images[0].url}
               alt={product.name}
               className="img1"
+              loading="lazy"
             />
             {/* <div className="countdown-timer">
                           <ul data-countdown={endTime}>
@@ -165,7 +166,7 @@ const ProductCard = ({ product }) => {
             `$${product?.price}`
           )}
         </p>
-        <div className="rating">
+        {/* <div className="rating">
           <ul>
             <li>
               <i className="bi bi-star-fill" />
@@ -183,8 +184,25 @@ const ProductCard = ({ product }) => {
               <i className="bi bi-star-fill" />
             </li>
           </ul>
-          <span>(50)</span>
-        </div>
+          <span>{product?.commentsCount}</span>
+        </div> */}
+
+<div className="rating">
+  {product?.ratings > 0 ? (
+    <ul>
+      {[...Array(5)].map((star, index) => {
+        const ratingValue = index + 1;
+        return (
+          <li key={index}>
+            <i className={`bi ${ratingValue <= product.ratings ? "bi-star-fill" : "bi-star"}`} />
+          </li>
+        );
+      })}
+    </ul>
+  ) : null}
+  {product?.commentsCount > 0 && <span>({product.commentsCount})</span>}
+</div>
+
       </div>
 
      

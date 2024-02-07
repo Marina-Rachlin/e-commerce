@@ -37,8 +37,15 @@ const Products = () => {
     setValue(newValue);
   };
 
-  const {isLoading, data, error} = useGetAllProductsShopQuery({});
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [sort, setSort] = useState('');
+  const [brand, setBrand] = useState('');
+  const {isLoading, data, error} = useGetAllProductsShopQuery({page, sort, brand});
   const [products, setProducts] = useState([]);
+
+  console.log(brand)
+
 
   useEffect(() => {
     const handleOutsideClick = (e) => {
@@ -79,23 +86,45 @@ const Products = () => {
         price: item.price,
         discountPrice: item.discountPrice,
         images: item.images,
-        stock: item.stock
+        stock: item.stock,
+        ratings: item.ratings,
+        commentsCount: item.commentsCount,
+        purchased: item.purchased,
+        isNew: item.isNew,
+        isHot: item.isHot,
+        discount: item.discount
       })))
       setProducts(fetchedProducts);
+      setTotalPages(data.totalPages);
     } else{
       console.log(error)
     }
-  },[isLoading, data])
+  },[isLoading, data, page, sort, brand])
 
   const toggleSidebar = () => {
     setIsOpenSidebar(!isOpenSidebar);
   };
 
-  const totalPages = 6;
-  const currentPage = 1;
-  const onPageChange = () => {
+  const onPageChange = (newPage) => {
+    setPage(newPage); 
+  };
 
-  }
+  const handleSortChange = (selectedOption) => {
+    let sortValue;
+    switch (selectedOption) {
+      case "Price Low to High":
+        sortValue = "price_asc";
+        break;
+      case "Price High to Low":
+        sortValue = "price_desc";
+        break;
+      case "Default Sorting":
+      default:
+        sortValue = ""; 
+        break;
+    }
+    setSort(sortValue);
+  };
 
   return (
     <>
@@ -105,6 +134,8 @@ const Products = () => {
         valuetext={valuetext}
         isOpenSidebar={isOpenSidebar}
         sidebarRef={sidebarRef}
+        setPage={setPage}
+        setBrand={setBrand}
       />
 
       <div className="full-width-section mt-110 mb-110">
@@ -114,6 +145,7 @@ const Products = () => {
             activeColumn={activeColumn}
             handleColumnClick={handleColumnClick}
             handleFilterClick={handleFilterClick}
+            handleSortChange={handleSortChange}
           />
 
           {/* Products grid */}
@@ -263,7 +295,7 @@ const Products = () => {
                       ? "-md-4"
                       : activeColumn === "column-2"
                       ? "-sm-6"
-                      : "nop"
+                      : "-6"
                   }`}
                 >
                   <ProductCard key={product.id} product={product} />
@@ -272,7 +304,7 @@ const Products = () => {
             </div>
           </div>
 
-          <Pagination totalPages={totalPages} currentPage={currentPage} onPageChange={onPageChange}/>
+          <Pagination totalPages={totalPages} currentPage={page} onPageChange={onPageChange}/>
 
         </div>
       </div>

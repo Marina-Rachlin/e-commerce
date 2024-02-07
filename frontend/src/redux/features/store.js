@@ -36,8 +36,13 @@ const initializeApp = async () => {
     const response = await store.dispatch(
       apiSlice.endpoints.loadUser.initiate({}, { forceRefetch: true })
     );
+    if (!response.data || response.error) {
+      console.error("Failed to load user, aborting further actions.");
+      return; 
+    }
   } catch (error) {
     console.error("Error loading user:", error);
+    return; 
   }
 
 // Fetch wishlist data from the server and update the store

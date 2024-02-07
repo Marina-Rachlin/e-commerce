@@ -17,13 +17,37 @@ export const productApi = apiSlice.injectEndpoints({
         credentials: "include",
       }),
     }),
+    // getAllProductsShop: builder.query({
+    //   query: ({page}) => ({
+    //     url: `get-products-shop?page=${page}`,
+    //     method: "GET",
+    //     credentials: "include",
+    //   }),
+    // }),
     getAllProductsShop: builder.query({
+      query: ({ page, sort, pageSize, brand }) => {
+        // Construct the query URL based on the presence of the sort parameter
+        let url = `get-products-shop?page=${page}&pageSize=${pageSize}`;
+        if (sort) {
+          url += `&sort=${sort}`;
+        }
+        if (brand) {
+          url += `&brand=${brand}`;
+        }
+        return {
+          url,
+          method: "GET",
+        };
+      },
+    }),
+    getBrands: builder.query({
       query: () => ({
-        url: "get-products-shop",
+        url: "get-brands",
         method: "GET",
-        credentials: "include",
+        // credentials: "include",
       }),
     }),
+    
     getProductDetails: builder.query({
       query: (productId) => ({
         url: `get-product/${productId}`,
@@ -62,5 +86,6 @@ export const {
   useGetAllProductsShopQuery,
   useGetProductDetailsQuery,
   useAddReviewMutation,
-  useAddReplyInReviewMutation
+  useAddReplyInReviewMutation,
+  useGetBrandsQuery
 } = productApi;

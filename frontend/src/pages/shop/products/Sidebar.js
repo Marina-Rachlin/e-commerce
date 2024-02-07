@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
 import Link from "next/link";
+import { useGetBrandsQuery } from "../../../redux/features/products/productApi";
 
 const Sidebar = ({
   value,
@@ -10,17 +11,37 @@ const Sidebar = ({
   valuetext,
   isOpenSidebar,
   sidebarRef,
+  setPage,
+  setBrand
 }) => {
 
 
-  const [categories, setCategories] = useState([{ name: "face" },{ name: "body" },{ name: "hair" }]);
-  const [brands, setBrands] = useState([{ name: "Nivea" }, { name: "Loreal" },{ name: "Chanel" }]);
-   const topRated = [{name: "Magical Eyelash Extensions", url: "jnjnjj", price: '15.00', discountPrice: '20.00'}, {name: "Magical Eyelash Extensions", url: "jnjnjj", price: '15.00', discountPrice: '20.00'}, {name: "Magical Eyelash Extensions", url: "jnjnjj", price: '15.00', discountPrice: '20.00'}]
+  const [categories, setCategories] = useState([{ name: "face" },{ name: "body" },{ name: "hair" },{ name: "face" },{ name: "body" },{ name: "hair" }]);
+  const [brands, setBrands] = useState([]);
+  const topRated = [{name: "Magical Eyelash Extensions", url: "jnjnjj", price: '15.00', discountPrice: '20.00'}, {name: "Magical Eyelash Extensions", url: "jnjnjj", price: '15.00', discountPrice: '20.00'}, {name: "Magical Eyelash Extensions", url: "jnjnjj", price: '15.00', discountPrice: '20.00'}]
+  const {isLoading, data, error} = useGetBrandsQuery();
+
+  const handleBrandSelect = (brand) => {
+    console.log(brand)
+    setBrand(brand);
+    setPage(1);
+  };
+
 
   useEffect(() => {
-    // fetch categories
+   if(isLoading){
+    return;
+   }
+   else if(data){
+    setBrands(data.brandList);
+   }
+   else{
+    console.log(error)
+   }
+
+
     //fetch brands
-  }, []);
+  }, [isLoading, data, error]);
 
   return (
     <div
@@ -84,11 +105,11 @@ const Sidebar = ({
             <ul className="shop-item">
                 {brands?.map((item, index) => {
                     return(
-                        <li className="brand-list" key={index}>
+                        <li className="brand-list" key={index} onClick={() => handleBrandSelect(item.brand)}>
                         <Link legacyBehavior href="/shop">
                           <a>
-                            {item.name}
-                            <span>50</span>
+                            {item.brand}
+                            <span>{item.count}</span>
                           </a>
                         </Link>
                       </li>

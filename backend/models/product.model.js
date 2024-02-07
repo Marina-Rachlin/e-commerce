@@ -71,6 +71,23 @@ const productSchema = new mongoose.Schema(
         type: Number,
         default: 0,
         },
+    isNew:{
+      type: Boolean,
+      default: false,
+      index: true,
+    },
+    isHot:{
+      type: Boolean,
+      default: false,
+      index: true,
+    },
+    discount: {
+      type: Number,
+      min: 0,
+      max: 100, // Assuming discount is a percentage value between 0 and 100
+      default: 0, 
+    },
+
   },
   { timestamps: true }
 );

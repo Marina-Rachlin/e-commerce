@@ -91,11 +91,13 @@ export const getAllProducts = CatchAsyncError(async (req, res, next) => {
 export const getAllProductsShop = CatchAsyncError(async(req, res, next) => {
 
   const page = parseInt(req.query.page) || 1;
-  const pageSize = parseInt(req.query.pageSize) || 24;
+  const pageSize = parseInt(req.query.pageSize) || 20;
+  const sort = req.query.sort || '';
+  const brand = req.query.brand || '';
 
   try{
       // Call the service function with pagination parameters
-      const result = await getAllProductsShopService(page, pageSize, req);
+      const result = await getAllProductsShopService(page, pageSize, sort, brand, req);
       res.status(200).json({
         success: true,
         source: result.source,
@@ -358,6 +360,34 @@ export const addReplyToReview = CatchAsyncError(async (req, res, next) => {
   }
 );
 
+
+export const getAllBrands = CatchAsyncError(async (req, res, next) =>  {
+  try {
+    const brands = await productModel.aggregate([
+      {
+        $group: {
+          _id: '$brand', // Group by the brand field
+          count: { $sum: 1 }
+        },
+      },
+      {
+        $sort: { _id: 1 }, 
+      },
+    ]);
+
+    const brandList = brands.map((b) => ({
+      brand: b._id, 
+      count: b.count 
+    }));
+
+    res.status(200).json({
+      success: true,
+      brandList,
+    });
+  } catch (error) {
+    return next(new ErrorHandler(error.message, 500));
+  }
+});
 
 
 

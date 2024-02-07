@@ -51,7 +51,6 @@ function reducer(state, action) {
 const Header = () => {
   const { data: userData } = useLoadUserQuery(undefined, {});
   const cart = useSelector((state) => state.cart);
-  console.log(cart.items.length);
 
   const [state, dispatch] = useReducer(reducer, initialState);
   const headerRef = useRef(null);

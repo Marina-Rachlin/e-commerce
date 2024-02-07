@@ -8,6 +8,7 @@ import {
   getSingleProduct,
   uploadProduct,
   updateProduct,
+  getAllBrands
 } from "../controllers/product.controller.js";
 import { authorizeRoles, isAuthenticated } from "../middleware/auth.js";
 import cacheMiddleware from "../middleware/cacheMiddleware.js";
@@ -24,6 +25,8 @@ productRouter.get("/get-product/:id", getSingleProduct);
 productRouter.get("/get-products", cacheMiddleware, getAllProducts);
 
 productRouter.get("/get-products-shop", cacheMiddleware, getAllProductsShop);
+
+productRouter.get("/get-brands", cacheMiddleware, getAllBrands);
 
 productRouter.delete("/delete-product/:id", updateAccessToken, isAuthenticated, authorizeRoles("admin"), deleteProduct);
 

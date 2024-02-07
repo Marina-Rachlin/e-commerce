@@ -54,9 +54,9 @@ const SelectComponent = ({ options, placeholder, open, customClass, onChange }) 
             data-value={index}
             onClick={() => {
               selectOption(option);
-              // if (onChange) {
-              //   onChange(option);
-              // }
+              if (onChange) {
+                onChange(option);
+              }
               closeDropdown();
             }}
           >

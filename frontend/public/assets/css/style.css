@@ -4399,7 +4399,8 @@ header.style-2 .nav-right::after {
   transition: 0.5s;
 }
 
-.product-card .product-card-img .view-and-favorite-area > ul li > button svg.heart-filled {
+.product-card .product-card-img .view-and-favorite-area > ul li > button svg.heart-filled,
+.product-card2 .product-card-img .view-and-favorite-area ul li button svg.heart-filled {
   fill: red!important; 
   transition: 0.5s;
 }

@@ -58,7 +58,7 @@ const SuggestSection = () => {
             <div className="row g-4">
               <div className="col-lg-3">
                 <div className="row g-4">
-                  <div className="col-lg-12 col-sm-6">
+                  <div className="col-lg-12 col-sm-6 col-6">
                     <div className="product-card2">
 
 
@@ -138,7 +138,7 @@ const SuggestSection = () => {
 
 
 
-                  <div className="col-lg-12 col-sm-6">
+                  <div className="col-lg-12 col-sm-6 col-6">
                     <div className="product-card2">
                       <div className="batch">
                         <span>NEW</span>
@@ -477,7 +477,7 @@ const SuggestSection = () => {
 
               <div className="col-lg-3">
                 <div className="row g-4">
-                  <div className="col-lg-12 col-sm-6">
+                  <div className="col-lg-12 col-sm-6 col-6">
                     <div className="product-card2">
                       <div className="batch">
                         <span>NEW</span>
