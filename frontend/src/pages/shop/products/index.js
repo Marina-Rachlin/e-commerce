@@ -31,6 +31,7 @@ const Products = () => {
     e.stopPropagation();
     toggleSidebar();
   };
+  console.log('here')
 
   const [value, setValue] = useState([20, 37]);
   const handleChange = (event, newValue) => {
