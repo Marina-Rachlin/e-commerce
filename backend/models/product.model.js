@@ -71,12 +71,12 @@ const productSchema = new mongoose.Schema(
         type: Number,
         default: 0,
         },
-    isNew:{
+    isNewProduct:{
       type: Boolean,
       default: false,
       index: true,
     },
-    isHot:{
+    isHotProduct:{
       type: Boolean,
       default: false,
       index: true,

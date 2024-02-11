@@ -14,7 +14,6 @@ import { useAddToWishlistMutation, useDeleteFromWishlistMutation } from '../../r
 
 
 const ProductCard = ({ product }) => {
-  console.log(product)
 
   const wishlist = useSelector((state) => state.wishlist.wishlist);
   const dispatch = useDispatch();
@@ -62,7 +61,7 @@ const ProductCard = ({ product }) => {
     debouncedUpdateCart(productId); // Update server
   };
 
-  
+
   return (
     <div className="col-xl-3 col-lg-4 col-sm-6 col-6">
       <div className="product-card2">
@@ -120,7 +119,13 @@ const ProductCard = ({ product }) => {
             </Link>
           </h6>
           <span>
-            ${product.price} {" "} <del>${product.originalPrice}</del>
+            {product?.discountPrice !== null ? (
+            <>
+              ${product?.discountPrice} <del>${product?.price}</del>
+            </>
+          ) : (
+            `$${product?.price}`
+          )}
           </span>
           <div className="rating">
   {product?.ratings > 0 ? (

@@ -35,13 +35,17 @@ export const userApi = apiSlice.injectEndpoints({
       overrideExisting: true,
     }),
     getAllUsers: builder.query({
-      query: () => ({
-        url: "get-users",
-        method: "GET",
-        credentials: "include",
-      }),
+      query: (role) => {
+        const queryString = role ? `?role=${role}` : '';
+        return {
+          url: `get-users${queryString}`,
+          method: "GET",
+          credentials: "include",
+        };
+      },
       overrideExisting: true,
     }),
+    
     updateUserRole: builder.mutation({
       query: ({ email, role }) => ({
         url: "update-user",

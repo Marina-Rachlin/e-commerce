@@ -4400,7 +4400,8 @@ header.style-2 .nav-right::after {
 }
 
 .product-card .product-card-img .view-and-favorite-area > ul li > button svg.heart-filled,
-.product-card2 .product-card-img .view-and-favorite-area ul li button svg.heart-filled {
+.product-card2 .product-card-img .view-and-favorite-area ul li button svg.heart-filled
+ {
   fill: red!important; 
   transition: 0.5s;
 }
@@ -9192,7 +9193,11 @@ header.style-2 .nav-right::after {
   transform: translateY(-50%);
   transition: 0.5s;
 }
-.sidebar-area .shop-widget .shop-item li:hover::before {
+.sidebar-area .shop-widget .shop-item li  .hover::before {
+  background-color: var(--primary-color1);
+}
+
+.sidebar-area .shop-widget .shop-item li ::before{
   background-color: var(--primary-color1);
 }
 .sidebar-area .shop-widget .shop-item li.brand-list {
@@ -9203,7 +9208,7 @@ header.style-2 .nav-right::after {
 .sidebar-area .shop-widget .shop-item li.brand-list:last-child {
   margin-bottom: 0;
 }
-.sidebar-area .shop-widget .shop-item li.brand-list a {
+.sidebar-area .shop-widget .shop-item li.brand-list .custom {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -9211,7 +9216,41 @@ header.style-2 .nav-right::after {
   flex-wrap: wrap;
   gap: 5px;
 }
-.sidebar-area .shop-widget .shop-item li.brand-list a span {
+
+.brand-list:before {
+  /* content: '';
+  display: inline-block;
+  width: 10px; 
+  height: 10px; 
+  border-radius: 50%;
+  margin-right: 5px; 
+  background-color: #ccc;  */
+  content: "";
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  border: 1px solid var(--primary-color1);
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: 0.5s;
+}
+
+.brand-list.selected:before {
+  background-color: var(--primary-color1); 
+}
+
+.sidebar-area .shop-widget .shop-item li.brand-list .custom p{
+  color: var(--primary-color1);
+    font-family: var(--font-Jost);
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: 0.3px;
+    margin-bottom: 0;
+}
+.sidebar-area .shop-widget .shop-item li.brand-list .custom span {
   color: var(--primary-color1);
   font-family: var(--font-Jost);
   font-size: 12px;

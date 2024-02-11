@@ -18,25 +18,28 @@ export const productApi = apiSlice.injectEndpoints({
       }),
     }),
     // getAllProductsShop: builder.query({
-    //   query: ({page}) => ({
-    //     url: `get-products-shop?page=${page}`,
+    //   query: ({ page, pageSize, category, brand, sort }) => ({
+    //     url: `get-products?category=${category}&brand=${brand}&stock=${sort}&page=${page}&pageSize=${pageSize}`,
     //     method: "GET",
     //     credentials: "include",
     //   }),
     // }),
     getAllProductsShop: builder.query({
-      query: ({ page, sort, pageSize, brand }) => {
-        // Construct the query URL based on the presence of the sort parameter
-        let url = `get-products-shop?page=${page}&pageSize=${pageSize}`;
-        if (sort) {
-          url += `&sort=${sort}`;
-        }
-        if (brand) {
-          url += `&brand=${brand}`;
-        }
+      query: ({ page, pageSize, category, brand, sort }) => {
+        let queryParams = [];
+        
+        if (category) queryParams.push(`category=${category}`);
+        if (brand) queryParams.push(`brand=${brand}`);
+        if (sort) queryParams.push(`stock=${sort}`);
+        if (page) queryParams.push(`page=${page}`);
+        if (pageSize) queryParams.push(`pageSize=${pageSize}`);
+        
+        const queryString = queryParams.join('&');
+    
         return {
-          url,
+          url: `get-products?${queryString}`,
           method: "GET",
+          credentials: "include",
         };
       },
     }),
@@ -44,7 +47,13 @@ export const productApi = apiSlice.injectEndpoints({
       query: () => ({
         url: "get-brands",
         method: "GET",
-        // credentials: "include",
+      }),
+    }),
+
+    getCategories: builder.query({
+      query: () => ({
+        url: "get-categories",
+        method: "GET",
       }),
     }),
     
@@ -87,5 +96,6 @@ export const {
   useGetProductDetailsQuery,
   useAddReviewMutation,
   useAddReplyInReviewMutation,
-  useGetBrandsQuery
+  useGetBrandsQuery,
+  useGetCategoriesQuery
 } = productApi;

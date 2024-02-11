@@ -36,6 +36,7 @@ const initializeApp = async () => {
     const response = await store.dispatch(
       apiSlice.endpoints.loadUser.initiate({}, { forceRefetch: true })
     );
+    console.log(response.data)
     if (!response.data || response.error) {
       console.error("Failed to load user, aborting further actions.");
       return; 

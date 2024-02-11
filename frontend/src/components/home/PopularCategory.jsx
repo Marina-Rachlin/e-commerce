@@ -21,27 +21,27 @@ const PopularCategory = () => {
           <CategoryCard
             imageSrc="/assets/img/categories/skin.png"
             linkHref="/shop"
-            categoryName="Bath & Body"
+            categoryName="Skin Care"
              />
          <CategoryCard
             imageSrc="/assets/img/categories/hair.png"
             linkHref="/shop"
-            categoryName="Bath & Body"
+            categoryName="Hair Care"
              />
           <CategoryCard
             imageSrc="/assets/img/categories/kids.png"
             linkHref="/shop"
-            categoryName="Bath & Body"
+            categoryName="kids & Baby"
              />
         <CategoryCard
             imageSrc="/assets/img/categories/makeup.png"
             linkHref="/shop"
-            categoryName="Bath & Body"
+            categoryName="Makeup"
              />
          <CategoryCard
             imageSrc="/assets/img/categories/tools.png"
             linkHref="/shop"
-            categoryName="Bath & Body"
+            categoryName="Accessories"
              />
         </div>
       </div>

@@ -4,6 +4,7 @@ import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
 import Link from "next/link";
 import { useGetBrandsQuery } from "../../../redux/features/products/productApi";
+import { useGetCategoriesQuery } from "../../../redux/features/products/productApi";
 
 const Sidebar = ({
   value,
@@ -11,37 +12,61 @@ const Sidebar = ({
   valuetext,
   isOpenSidebar,
   sidebarRef,
-  setPage,
-  setBrand
+  setPage, //for resetting to 1 if brand or category selected
+  brand, setBrand,
+  category, setCategory
 }) => {
 
-
-  const [categories, setCategories] = useState([{ name: "face" },{ name: "body" },{ name: "hair" },{ name: "face" },{ name: "body" },{ name: "hair" }]);
+  const [categories, setCategories] = useState([]);
   const [brands, setBrands] = useState([]);
-  const topRated = [{name: "Magical Eyelash Extensions", url: "jnjnjj", price: '15.00', discountPrice: '20.00'}, {name: "Magical Eyelash Extensions", url: "jnjnjj", price: '15.00', discountPrice: '20.00'}, {name: "Magical Eyelash Extensions", url: "jnjnjj", price: '15.00', discountPrice: '20.00'}]
-  const {isLoading, data, error} = useGetBrandsQuery();
+  const topRated = [
+    {
+      name: "Magical Eyelash Extensions",
+      url: "jnjnjj",
+      price: "15.00",
+      discountPrice: "20.00",
+    },
+    {
+      name: "Magical Eyelash Extensions",
+      url: "jnjnjj",
+      price: "15.00",
+      discountPrice: "20.00",
+    },
+    {
+      name: "Magical Eyelash Extensions",
+      url: "jnjnjj",
+      price: "15.00",
+      discountPrice: "20.00",
+    },
+  ];
+  const { isLoading, data, error } = useGetBrandsQuery();
+  const { isLoading: isLoadingCategories, data: categoriesData, error: categoriesError } = useGetCategoriesQuery();
 
   const handleBrandSelect = (brand) => {
-    console.log(brand)
     setBrand(brand);
     setPage(1);
   };
 
+  const handleCategorySelect = (category) => {
+    setCategory(category);
+    setPage(1);
+  };
 
   useEffect(() => {
-   if(isLoading){
-    return;
-   }
-   else if(data){
-    setBrands(data.brandList);
-   }
-   else{
-    console.log(error)
-   }
+    if (isLoading || isLoadingCategories) return;
 
+    if (error || categoriesError) {
+      console.log(error || categoriesError);
+      return; 
+    }
 
-    //fetch brands
-  }, [isLoading, data, error]);
+    if (data?.brandList) { //ensure that not undefined
+      setBrands(data.brandList);
+    }
+    if (categoriesData?.categoriesList) {
+      setCategories(categoriesData.categoriesList);
+    }
+  }, [isLoading, isLoadingCategories, data, categoriesData, error, categoriesError]);
 
   return (
     <div
@@ -86,11 +111,16 @@ const Sidebar = ({
             <h5 className="shop-widget-title">Categories</h5>
             <ul className="shop-item">
               {categories?.map((item, index) => {
+                const isCategorySelected = item.category === category;
                 return (
-                  <li key={index}>
-                    <Link legacyBehavior href="/shop">
-                      <a>{item.name}</a>
-                    </Link>
+                  <li
+                    className={`brand-list ${isCategorySelected ? "selected" : ""}`}
+                    key={index}
+                    onClick={() => handleCategorySelect(item.category)}
+                  >
+                    <div className="custom">
+                      <p>{item.category}</p>
+                    </div>
                   </li>
                 );
               })}
@@ -103,18 +133,22 @@ const Sidebar = ({
           <div className="check-box-item">
             <h5 className="shop-widget-title">Our Brand </h5>
             <ul className="shop-item">
-                {brands?.map((item, index) => {
-                    return(
-                        <li className="brand-list" key={index} onClick={() => handleBrandSelect(item.brand)}>
-                        <Link legacyBehavior href="/shop">
-                          <a>
-                            {item.brand}
-                            <span>{item.count}</span>
-                          </a>
-                        </Link>
-                      </li>
-                    )
-                })}
+              {brands?.map((item, index) => {
+                // Check if the current item is selected
+                const isSelected = item.brand === brand;
+                return (
+                  <li
+                    className={`brand-list ${isSelected ? "selected" : ""}`}
+                    key={index}
+                    onClick={() => handleBrandSelect(item.brand)}
+                  >
+                    <div className="custom">
+                      <p>{item.brand}</p>
+                      <span>{item.count}</span>
+                    </div>
+                  </li>
+                );
+              })}
             </ul>
           </div>
         </div>
@@ -123,27 +157,35 @@ const Sidebar = ({
         <div className="shop-widget">
           <h5 className="shop-widget-title">Top Rated Product</h5>
           {topRated?.map((item, index) => {
-            return(
-                <div key={index} className={`top-product-widget ${index !== topRated.length - 1 ? 'mb-20' : ''}`}>
-                  <div className="top-product-img">
-              <Link legacyBehavior href="/product-default">
-                <a>
-                  <img src={"/assets/img/inner-page/top-product1.png"} alt="" />
-                </a>
-              </Link>
-            </div>
-            <div className="top-product-content">
-              <h6>
-                <Link legacyBehavior href="/product-default">
-                  <a>{item.name}</a>
-                </Link>
-              </h6>
-              <span>
-                ${item.discountPrice} <del>${item.price}</del>
-              </span>
-            </div>
+            return (
+              <div
+                key={index}
+                className={`top-product-widget ${
+                  index !== topRated.length - 1 ? "mb-20" : ""
+                }`}
+              >
+                <div className="top-product-img">
+                  <Link legacyBehavior href="/product-default">
+                    <a>
+                      <img
+                        src={"/assets/img/inner-page/top-product1.png"}
+                        alt=""
+                      />
+                    </a>
+                  </Link>
                 </div>
-            )
+                <div className="top-product-content">
+                  <h6>
+                    <Link legacyBehavior href="/product-default">
+                      <a>{item.name}</a>
+                    </Link>
+                  </h6>
+                  <span>
+                    ${item.discountPrice} <del>${item.price}</del>
+                  </span>
+                </div>
+              </div>
+            );
           })}
         </div>
       </div>

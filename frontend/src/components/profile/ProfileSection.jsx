@@ -30,6 +30,7 @@ const ProfileSection = ({ user, initials, imageHandler, onSubmit }) => {
     newPassword: "",
     confirmPassword: "",
   };
+  
 
   const [formData, setFormData] = useState(defaultFormData);
 

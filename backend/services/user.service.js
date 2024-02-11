@@ -14,9 +14,51 @@ export const getUserById = async (id, res) => {
 };
 
 // Get all users
-export const getAllUsersService = async (res) => {
+// export const getAllUsersService = async (role, res) => {
+//   try {
+//     const cachedData = await redis.get("allUsers");
+
+//     if (cachedData) {
+//       const users = JSON.parse(cachedData);
+//       return res.status(200).json({
+//         success: true,
+//         source: "cache",
+//         total: users.length,
+//         users,
+//       });
+//     }
+
+//     const users = await userModel.find().sort({ createdAt: -1 });
+
+//     if (!users) {
+//       return res.status(404).json({
+//         success: false,
+//         message: "No users found in the database",
+//       });
+//     }
+
+//     await redis.set("allUsers", JSON.stringify(users), "EX", 25200); // 7 hours
+
+//     return res.status(200).json({
+//       success: true,
+//       source: "database",
+//       total: users.length,
+//       users,
+//     });
+//   } catch (error) {
+//     return res.status(500).json({
+//       success: false,
+//       message: "Error accessing the database",
+//     });
+//   }
+// };
+
+export const getAllUsersService = async ( role, res) => {
+
+  const cacheKey = role ? `allUsers:${role}` : "allUsers:all";
+
   try {
-    const cachedData = await redis.get("allUsers");
+    const cachedData = await redis.get(cacheKey);
 
     if (cachedData) {
       const users = JSON.parse(cachedData);
@@ -28,16 +70,19 @@ export const getAllUsersService = async (res) => {
       });
     }
 
-    const users = await userModel.find().sort({ createdAt: -1 });
+    // Adjust the database query based on the role
+    const query = (role !== '') ? { role: role } : {}; 
+    const users = await userModel.find(query).sort({ createdAt: -1 });
 
-    if (!users) {
+    if (!users.length) {
       return res.status(404).json({
         success: false,
         message: "No users found in the database",
       });
     }
 
-    await redis.set("allUsers", JSON.stringify(users), "EX", 25200); // 7 hours
+    // Cache the results using the role-specific cache key
+    await redis.set(cacheKey, JSON.stringify(users), "EX", 25200); // 7 hours
 
     return res.status(200).json({
       success: true,
@@ -52,6 +97,7 @@ export const getAllUsersService = async (res) => {
     });
   }
 };
+
 
 // Get all users
 // export const getAllUsersService = async (res) => {

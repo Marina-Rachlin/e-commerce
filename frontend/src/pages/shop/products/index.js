@@ -31,7 +31,6 @@ const Products = () => {
     e.stopPropagation();
     toggleSidebar();
   };
-  console.log('here')
 
   const [value, setValue] = useState([20, 37]);
   const handleChange = (event, newValue) => {
@@ -42,11 +41,10 @@ const Products = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [sort, setSort] = useState('');
   const [brand, setBrand] = useState('');
-  const {isLoading, data, error} = useGetAllProductsShopQuery({page, sort, brand});
+  const [category, setCategory] = useState('');
+  const pageSize = 20;
+  const {isLoading, data, error} = useGetAllProductsShopQuery({page, pageSize, sort, brand, category});
   const [products, setProducts] = useState([]);
-
-  console.log(brand)
-
 
   useEffect(() => {
     const handleOutsideClick = (e) => {
@@ -100,7 +98,7 @@ const Products = () => {
     } else{
       console.log(error)
     }
-  },[isLoading, data, page, sort, brand])
+  },[isLoading, data, page, sort, brand, category])
 
   const toggleSidebar = () => {
     setIsOpenSidebar(!isOpenSidebar);
@@ -137,6 +135,9 @@ const Products = () => {
         sidebarRef={sidebarRef}
         setPage={setPage}
         setBrand={setBrand}
+        brand={brand}
+        category={category}
+        setCategory={setCategory}
       />
 
       <div className="full-width-section mt-110 mb-110">

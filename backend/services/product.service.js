@@ -147,37 +147,83 @@ export const getAllProductsShopService = async (page, pageSize, sort, brand, req
     //   };
     // }
 
-    const products = await productModel.aggregate([
+    // const products = await productModel.aggregate([
+    //   { $match: matchStage },
+    //   {
+    //     $project: {
+    //       name: 1,
+    //       brand: 1,
+    //       category: 1,
+    //       price: 1,
+    //       discountPrice: 1,
+    //       stock: 1,
+    //       images: { $slice: ["$images", 1] }, // Include only the first image from the images array
+    //       commentsCount: { $size: "$reviews" }, // Add a computed field counting the number of reviews
+    //       ratings: 1,
+    //       purchased: 1,
+    //       isNew: 1,
+    //       isHot: 1, 
+    //       discount: 1
+    //     },
+    //   },
+    //   { $sort: sortOptions}, 
+    //   { $skip: (page - 1) * pageSize }, // Skip documents for pagination
+    //   { $limit: pageSize }, // Limit the number of documents to pageSize
+    // ]);
+
+
+    // let totalProducts = products.length;
+    // const totalPages = calculateTotalPages(totalProducts, pageSize);
+
+
+
+
+    const productsAggregation = await productModel.aggregate([
       { $match: matchStage },
       {
-        $project: {
-          name: 1,
-          brand: 1,
-          category: 1,
-          price: 1,
-          discountPrice: 1,
-          stock: 1,
-          images: { $slice: ["$images", 1] }, // Include only the first image from the images array
-          commentsCount: { $size: "$reviews" }, // Add a computed field counting the number of reviews
-          ratings: 1,
-          purchased: 1,
-          isNew: 1,
-          isHot: 1, 
-          discount: 1
-        },
-      },
-      { $sort: sortOptions}, 
-      { $skip: (page - 1) * pageSize }, // Skip documents for pagination
-      { $limit: pageSize }, // Limit the number of documents to pageSize
+        $facet: {
+          totalCount: [
+            { $count: "count" }
+          ],
+          paginatedResults: [
+            { $sort: sortOptions },
+            { $skip: (page - 1) * pageSize },
+            { $limit: pageSize },
+            {
+              $project: {
+                name: 1,
+                brand: 1,
+                category: 1,
+                price: 1,
+                discountPrice: 1,
+                stock: 1,
+                images: { $slice: ["$images", 1] }, // Include only the first image
+                commentsCount: { $size: "$reviews" },
+                ratings: 1,
+                purchased: 1,
+                isNew: 1,
+                isHot: 1, 
+                discount: 1
+              },
+            },
+          ]
+        }
+      }
     ]);
-
-
-    let totalProducts = products.length;
-    const totalPages = calculateTotalPages(totalProducts, pageSize);
-
-    console.log(totalProducts);
-    console.log(pageSize);
-    console.log(totalPages);
+    
+    // Extracting the total count and paginated results from the aggregation output
+    const totalProducts = productsAggregation.length > 0 ? productsAggregation[0].totalCount[0]?.count : 0;
+    const products = productsAggregation.length > 0 ? productsAggregation[0].paginatedResults : [];
+    
+    return {
+      source: "database",
+      products,
+      totalProducts,
+      page,
+      pageSize,
+      totalPages: calculateTotalPages(totalProducts, pageSize),
+    };
+    
 
     // await redis.set(cacheKey, JSON.stringify(products), "EX", 86400); // 24 hours
 
