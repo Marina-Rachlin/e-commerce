@@ -17,18 +17,18 @@ import "../../public/assets/css/animate.min.css";
 import "../../public/assets/css/style.css";
 import "../../public/admin-assets/scss/main.scss";
 import { Toaster } from "react-hot-toast";
-import Loader from "../components/Loader/Loader";
-import { useLoadUserQuery } from "../redux/features/api/apiSlice";
+import { ThemeProvider } from "@mui/material/styles";
+import theme from "../theme/theme";
+import { CssBaseline } from '@mui/material';
 import CustomLoading from "../components/CustomLoading.js";
 import socketIO from "socket.io-client";
 const ENDPOINT = process.env.NEXT_PUBLIC_SOCKET_SERVER_URI || "";
 const socketId = socketIO(ENDPOINT, { transports: ["websocket"] });
 
 export default function App({ Component, pageProps }) {
-
   useEffect(() => {
     import("../../public/assets/js/bootstrap.min.js");
-    import ("../../public/assets/css/fontawesome.min.css");
+    import("../../public/assets/css/fontawesome.min.css");
   }, []);
 
   useEffect(() => {
@@ -47,12 +47,15 @@ export default function App({ Component, pageProps }) {
       </Head>
       <Provider store={store}>
         <SessionProvider>
-          <MainLayout>
-            <CustomLoading>
-              <Component {...pageProps} />
-            </CustomLoading>
-          </MainLayout>
-          <Toaster position="top-center" reverseOrder={false} />
+          <ThemeProvider theme={theme}>
+          <CssBaseline />
+            <MainLayout>
+              <CustomLoading>
+                <Component {...pageProps} />
+              </CustomLoading>
+            </MainLayout>
+            <Toaster position="top-center" reverseOrder={false} />
+          </ThemeProvider>
         </SessionProvider>
       </Provider>
     </>

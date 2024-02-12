@@ -251,6 +251,7 @@ const CustomToolbar = props => {
 };
 
 const UsersTable = () => {
+ 
   // ** State
   const [value, setValue] = useState("");
   const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 25 });

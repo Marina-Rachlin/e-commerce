@@ -57,8 +57,8 @@ export const adminSidebarMenuData = [
     },
     {
       id: 9,
-      name: "Manage Team",
-      icon:"la-users-cog",
+      name: "Roles",
+      icon:"la-user-lock",
       routePath: "/admin/manage-team",
       active: "",
     },

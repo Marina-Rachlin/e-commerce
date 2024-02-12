@@ -1,19 +1,9 @@
 "use client";
 import Link from "next/link";
-import {
-  Sidebar,
-  Menu,
-  MenuItem,
-  SubMenu,
-} from "react-pro-sidebar";
-
-import {adminMobileMenuData} from "../../../../data/adminMobileMenudata"
-import SidebarFooter from "./SidebarFooter";
+import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
+import { adminMobileMenuData } from "../../../../data/adminMobileMenudata";
 import SidebarHeader from "./SidebarHeader";
-import {
-  isActiveLink,
-  isActiveParentChild,
-} from "../../../../utils/linkActiveChecker";
+import { isActiveLink } from "../../../../utils/linkActiveChecker";
 import { useRouter } from "next/router";
 
 const Index = () => {
@@ -29,37 +19,22 @@ const Index = () => {
       <SidebarHeader />
 
       <Sidebar>
-          <Menu>
-            {adminMobileMenuData.map((item) => (
-              <SubMenu
-                className={
-                  isActiveParentChild(item.items, router.asPath)
-                    ? "menu-active"
-                    : ""
-                }
-                label={item.label}
-                key={item.id}
-              >
-                {item.items.map((menuItem, i) => (
-                  <MenuItem
-                    className={
-                      isActiveLink(menuItem.routePath, router.asPath)
-                        ? "menu-active-link"
-                        : ""
-                    }
-                    key={i}
-                    // routerLink={<Link href={menuItem.routePath} />}
-                    
-                  >
-                    {menuItem.name}
-                  </MenuItem>
-                ))}
-              </SubMenu>
-            ))}
-          </Menu>
-        </Sidebar>
-{/* 
-      <SidebarFooter /> */}
+        <Menu>
+          {adminMobileMenuData.map((item) => (
+            <MenuItem
+              className={
+                isActiveLink(item.routePath, router.asPath) ? "menu-active-link" : ""
+              }
+              key={item.id}
+            >
+              <Link legacyBehavior href={item.routePath}>
+                <a>{item.label}</a>
+              </Link>
+            </MenuItem>
+          ))}
+        </Menu>
+      </Sidebar>
+
     </div>
   );
 };

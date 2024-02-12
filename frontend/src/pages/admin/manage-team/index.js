@@ -15,7 +15,6 @@ const index = () => {
 
   return (
     <AdminLayout>
-      <MenuToggler />
       <div className="admin-section user-dashboard">
         <div className="dashboard-outer">
           <BreadCrumb title="Manage Team" />
