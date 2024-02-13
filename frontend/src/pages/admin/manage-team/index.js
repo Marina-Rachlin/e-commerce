@@ -1,17 +1,9 @@
-import React, {useState} from "react";
+import React from "react";
 import AdminLayout from "../../../layout/admin/AdminLayout";
 import BreadCrumb from "../../../components/admin/BreadCrumb";
-import MenuToggler from "../../../components/admin/MenuToggler";
 import RolesTable from "./RolesTable";
-import NewMemberDialog from "./NewMemberDialog";
 
 const index = () => {
-
-    const [openDialog, setOpenDialog] = useState(false);
-
-    const handleOpenDialog = () => setOpenDialog(true);
-    const handleCloseDialog = () => setOpenDialog(false);
-
 
   return (
     <AdminLayout>
@@ -19,8 +11,7 @@ const index = () => {
         <div className="dashboard-outer">
           <BreadCrumb title="Manage Team" />
           <div className="row">
-            <RolesTable  handleOpenDialog={handleOpenDialog}/>
-            <NewMemberDialog open={openDialog} onClose={handleCloseDialog} />
+            <RolesTable />
           </div>
         </div>
       </div>

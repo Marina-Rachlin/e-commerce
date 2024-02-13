@@ -1,33 +1,19 @@
-import { useState, useEffect } from "react";
-import AdminLayout from "../../../layout/admin/AdminLayout";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
-import { Icon } from "@iconify/react";
 import { useGetAllUsersQuery } from "../../../redux/features/users/userApi";
 import { getInitials } from "../../../utils/get-initials";
 import CustomAvatar from "../../../components/avatar/CustomAvatar";
 import format from "date-fns/format";
 import NewMemberDialog from "./NewMemberDialog";
 import CustomToolbar from "./CustomToolbar";
+import { useUpdateUserRoleMutation } from "../../../redux/features/users/userApi";
+import { toast } from "react-hot-toast";
 
-import { DataGrid, GridToolbarExport } from "@mui/x-data-grid";
+import { DataGrid} from "@mui/x-data-grid";
 import {
   Box,
   Avatar as MuiAvatar,
   Typography,
-  IconButton,
-  Menu,
-  MenuItem,
-  TextField,
-} from "@mui/material";
-
-// material-ui
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
 } from "@mui/material";
 
 // ** renders customer column (with avatar or initials)
@@ -144,10 +130,11 @@ const columns = [
   },
 ];
 
-export default function RolesTable({ handleOpenDialog }) {
+export default function RolesTable() {
 
-    // Fetching Data
+  // Fetching Data
   const { isLoading, data, error, refetch } = useGetAllUsersQuery("admin");
+  
   const [paginationModel, setPaginationModel] = useState({
     page: 0,
     pageSize: 25,
@@ -155,6 +142,40 @@ export default function RolesTable({ handleOpenDialog }) {
   const [rowCountState, setRowCountState] = useState(0);
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  //Updating role
+  const [role, setRole] = useState('');
+  const [email, setEmail]  = useState('');
+  
+  const handleRoleChange = (e) => {
+    setRole(e.target.value);
+  };
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
+
+  const handleSubmit = async () => {
+    try {
+        await updateUserRole({ email, role });
+        toast.success("Role updated successfully!", { duration: 2000 });
+        refetch(); 
+        handleCloseDialog(); 
+        setRole(''); 
+        setEmail(''); 
+      } catch (error) {
+        toast.error(error.message || "Failed to update role", { duration: 2000 });
+      }
+  };
+
+  const [updateUserRole] = useUpdateUserRoleMutation();
+
+  //toggle dialog
+   const [openDialog, setOpenDialog] = useState(false);
+
+   const handleOpenDialog = () => setOpenDialog(true);
+   const handleCloseDialog = () => setOpenDialog(false);
+
 
 
 // UseEffect
@@ -176,10 +197,9 @@ export default function RolesTable({ handleOpenDialog }) {
       setRows(newRows);
       setRowCountState(newRows.length);
       setLoading(false);
-    } else {
+    }else {
       console.log(error);
-      console.log("Error. trying to refetch...");
-      refetch();
+      setLoading(false);
     }
   }, [isLoading, data, error, paginationModel, rowCountState, loading]);
 
@@ -206,6 +226,8 @@ export default function RolesTable({ handleOpenDialog }) {
           }}
         />
       </Box>
+
+      <NewMemberDialog open={openDialog} onClose={handleCloseDialog} onEmailChange={handleEmailChange} onRoleChange={handleRoleChange} role={role} email={email} onSubmit={handleSubmit}/>
     </>
   );
 }

@@ -7,7 +7,7 @@ import Chart from './dashboard/Chart';
 import OutOfStockProducts from './dashboard/OutOfStockProducts';
 import LineChartDiagram from './analytics/orders/LineChartDiagram';
 
-const Admin = () => {
+const Admin = ({children}) => {
 
 
   const analyticsData = [
@@ -72,6 +72,7 @@ const Admin = () => {
 
           <div className="row">
             <TopCardBlock />
+            {children}
           </div>
 
           <div className="row">
@@ -80,7 +81,7 @@ const Admin = () => {
                 <Chart />
               </div>
             </div>
-            {/* End .col */}
+       
 
             <div className="col-xl-5 col-lg-12">
               <div className="notification-widget ls-widget">
@@ -106,7 +107,6 @@ const Admin = () => {
             </div>
            
           </div>
-          {/* End .row profile and notificatins */}
         </div>
       </div>
       
