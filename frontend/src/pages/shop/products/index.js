@@ -32,7 +32,7 @@ const Products = () => {
     toggleSidebar();
   };
 
-  const [value, setValue] = useState([20, 37]);
+  const [value, setValue] = useState([0, 100]);
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -42,9 +42,11 @@ const Products = () => {
   const [sort, setSort] = useState('');
   const [brand, setBrand] = useState('');
   const [category, setCategory] = useState('');
+  const [price, setPrice] = useState([0, 10000]);
   const pageSize = 20;
-  const {isLoading, data, error} = useGetAllProductsShopQuery({page, pageSize, sort, brand, category});
+  const {isLoading, data, error} = useGetAllProductsShopQuery({page, pageSize, sort, brand, category, price});
   const [products, setProducts] = useState([]);
+  const [topRated, setTopRated] = useState([]);
 
   useEffect(() => {
     const handleOutsideClick = (e) => {
@@ -93,12 +95,30 @@ const Products = () => {
         isHot: item.isHot,
         discount: item.discount
       })))
+      const topRatedProducts = data.topRated.map(((item) => ({
+        _id: item._id,
+        name: item.name,
+        category: item.category,
+        brand: item.brand,
+        price: item.price,
+        discountPrice: item.discountPrice,
+        images: item.images,
+        stock: item.stock,
+        ratings: item.ratings,
+        commentsCount: item.commentsCount,
+        purchased: item.purchased,
+        isNew: item.isNew,
+        isHot: item.isHot,
+        discount: item.discount
+      })))
+      console.log(topRatedProducts)
+      setTopRated(topRatedProducts);
       setProducts(fetchedProducts);
       setTotalPages(data.totalPages);
     } else{
       console.log(error)
     }
-  },[isLoading, data, page, sort, brand, category])
+  },[isLoading, data, page, sort, brand, category, price])
 
   const toggleSidebar = () => {
     setIsOpenSidebar(!isOpenSidebar);
@@ -138,6 +158,8 @@ const Products = () => {
         brand={brand}
         category={category}
         setCategory={setCategory}
+        setPrice={setPrice}
+        topRated={topRated}
       />
 
       <div className="full-width-section mt-110 mb-110">

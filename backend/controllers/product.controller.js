@@ -98,7 +98,10 @@ export const getAllProductsShop = CatchAsyncError(async (req, res, next) => {
   const sort = req.query.sort || "";
   const brand = req.query.brand || "";
   const category = req.query.category || "";
-  console.log(req)
+
+    // Parse the price parameter
+    const priceParam = req.query.price || "";
+    const [minPrice, maxPrice] = priceParam.split('-').map(parseFloat);
 
   try {
     const result = await getAllProductsShopService(
@@ -107,6 +110,8 @@ export const getAllProductsShop = CatchAsyncError(async (req, res, next) => {
       sort,
       brand,
       category,
+      minPrice,
+      maxPrice,
       req
     );
     res.status(200).json({
@@ -117,6 +122,7 @@ export const getAllProductsShop = CatchAsyncError(async (req, res, next) => {
       pageSize: result.pageSize,
       totalPages: result.totalPages,
       totalProducts: result.totalProducts,
+      topRated: result.topRated
     });
   } catch (error) {
     {

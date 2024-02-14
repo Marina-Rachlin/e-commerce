@@ -25,19 +25,23 @@ export const productApi = apiSlice.injectEndpoints({
     //   }),
     // }),
     getAllProductsShop: builder.query({
-      query: ({ page, pageSize, category, brand, sort }) => {
+      query: ({ page, pageSize, category, brand, sort, price }) => {
         let queryParams = [];
         
         if (category) queryParams.push(`category=${category}`);
         if (brand) queryParams.push(`brand=${brand}`);
-        if (sort) queryParams.push(`stock=${sort}`);
+        if (sort) queryParams.push(`sort=${sort}`);
         if (page) queryParams.push(`page=${page}`);
         if (pageSize) queryParams.push(`pageSize=${pageSize}`);
+        if (price) {
+          // Assuming price is an array with two values [min, max]
+          queryParams.push(`price=${price[0]}-${price[1]}`);
+        }
         
         const queryString = queryParams.join('&');
     
         return {
-          url: `get-products?${queryString}`,
+          url: `get-products-shop?${queryString}`,
           method: "GET",
           credentials: "include",
         };

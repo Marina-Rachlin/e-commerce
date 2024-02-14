@@ -108,83 +108,65 @@ export const getAllProductsService = async (
   }
 };
 
-// Get All Products Shop
-export const getAllProductsShopService = async (page, pageSize, sort, brand, req) => {
+export const getAllProductsShopService = async (
+  page,
+  pageSize,
+  sort,
+  brand,
+  category,
+  minPrice,
+  maxPrice,
+  req
+) => {
+
   try {
-    // let totalProducts = await productModel.countDocuments();
-    // const totalPages = calculateTotalPages(totalProducts, pageSize);
+
     let sortOptions = {};
-    switch (sort) {
-      case "price_asc":
-        sortOptions = { price: 1 };
-        break;
-      case "price_desc":
-        sortOptions = { price: -1 };
-        break;
-      default:
-        sortOptions.createdAt = -1; // Fallback to default sorting
-    }
+switch (sort) {
+  case "price_asc":
+    sortOptions = { discountPrice: 1, price: 1 };
+    break;
+  case "price_desc":
+    sortOptions = { discountPrice: -1, price: -1 };
+    break;
+  default:
+    sortOptions = { createdAt: -1 }; // Default sorting by createdAt if no sort option is provided
+}
 
     let matchStage = {};
-
-    // If a brand is specified, update the matchStage to filter by this brand
     if (brand) {
-      matchStage = { ...matchStage, brand: brand };
+      matchStage.brand = brand; // Filter by brand if specified
     }
-    const cacheKey = `${req.originalUrl}:${page}`;
 
-    // const cachedData = await redis.get(cacheKey);
+    // Add this block for filtering by category
+    if (category) {
+      matchStage.category = category; // Filter by category if specified
+    }
 
-    // if (cachedData) {
-    //   const products = JSON.parse(cachedData);
-    //   return {
-    //     source: "cache",
-    //     products: products,
-    //     totalProducts,
-    //     page,
-    //     pageSize,
-    //     totalPages,
-    //   };
-    // }
+    // Add this block for filtering by price range
+    if (minPrice !== undefined && maxPrice !== undefined) {
+      matchStage.$or = [
+        {
+          $and: [
+            { discountPrice: { $ne: null } },
+            { discountPrice: { $gte: minPrice, $lte: maxPrice } },
+          ],
+        },
+        {
+          $and: [
+            { discountPrice: null },
+            { price: { $gte: minPrice, $lte: maxPrice } },
+          ],
+        },
+      ];
+    }
 
-    // const products = await productModel.aggregate([
-    //   { $match: matchStage },
-    //   {
-    //     $project: {
-    //       name: 1,
-    //       brand: 1,
-    //       category: 1,
-    //       price: 1,
-    //       discountPrice: 1,
-    //       stock: 1,
-    //       images: { $slice: ["$images", 1] }, // Include only the first image from the images array
-    //       commentsCount: { $size: "$reviews" }, // Add a computed field counting the number of reviews
-    //       ratings: 1,
-    //       purchased: 1,
-    //       isNew: 1,
-    //       isHot: 1, 
-    //       discount: 1
-    //     },
-    //   },
-    //   { $sort: sortOptions}, 
-    //   { $skip: (page - 1) * pageSize }, // Skip documents for pagination
-    //   { $limit: pageSize }, // Limit the number of documents to pageSize
-    // ]);
-
-
-    // let totalProducts = products.length;
-    // const totalPages = calculateTotalPages(totalProducts, pageSize);
-
-
-
-
+    // Main product aggregation for pagination and sorting
     const productsAggregation = await productModel.aggregate([
       { $match: matchStage },
       {
         $facet: {
-          totalCount: [
-            { $count: "count" }
-          ],
+          totalCount: [{ $count: "count" }],
           paginatedResults: [
             { $sort: sortOptions },
             { $skip: (page - 1) * pageSize },
@@ -197,39 +179,46 @@ export const getAllProductsShopService = async (page, pageSize, sort, brand, req
                 price: 1,
                 discountPrice: 1,
                 stock: 1,
-                images: { $slice: ["$images", 1] }, // Include only the first image
+                images: { $slice: ["$images", 1] },
                 commentsCount: { $size: "$reviews" },
                 ratings: 1,
                 purchased: 1,
                 isNew: 1,
-                isHot: 1, 
-                discount: 1
+                isHot: 1,
+                discount: 1,
               },
             },
-          ]
-        }
-      }
+          ],
+        },
+      },
     ]);
-    
-    // Extracting the total count and paginated results from the aggregation output
-    const totalProducts = productsAggregation.length > 0 ? productsAggregation[0].totalCount[0]?.count : 0;
-    const products = productsAggregation.length > 0 ? productsAggregation[0].paginatedResults : [];
-    
+
+    // Extracting the main query results
+    const totalProducts = productsAggregation[0].totalCount[0]?.count || 0;
+    const products = productsAggregation[0].paginatedResults;
+    const totalPages = calculateTotalPages(totalProducts, pageSize);
+
+    // Independent query for top-rated products
+    const topRatedAggregation = await productModel.aggregate([
+      { $match: { ratings: { $gte: 4 } } }, // Only consider products with ratings 4 or above
+      { $sort: { ratings: -1, commentsCount: -1 } }, // Sort them by ratings and comments count
+      { $limit: 4 }, // Limit to top 4
+      {
+        $project: {
+          name: 1,
+          brand: 1,
+          price: 1,
+          discountPrice: 1,
+          images: { $slice: ["$images", 1] },
+          ratings: 1,
+        },
+      },
+    ]);
+
     return {
       source: "database",
       products,
-      totalProducts,
-      page,
-      pageSize,
-      totalPages: calculateTotalPages(totalProducts, pageSize),
-    };
-    
-
-    // await redis.set(cacheKey, JSON.stringify(products), "EX", 86400); // 24 hours
-
-    return {
-      source: "database",
-      products,
+      topRated: topRatedAggregation, // Now statically set, unaffected by the main query's filters
       totalProducts,
       page,
       pageSize,
@@ -239,6 +228,7 @@ export const getAllProductsShopService = async (page, pageSize, sort, brand, req
     throw error;
   }
 };
+
 
 //getOutOfStockProductsService
 // export const getOutOfStockProductsService = async () => {
@@ -281,3 +271,9 @@ export const getAllProductsShopService = async (page, pageSize, sort, brand, req
 //     throw new Error("Error accessing the database");
 //   }
 // };
+
+
+
+
+
+
