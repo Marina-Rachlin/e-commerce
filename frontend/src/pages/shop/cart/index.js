@@ -9,10 +9,8 @@ import {
 } from "../../../redux/features/cart/cartApi";
 import {
   fetchCartSuccess,
-  fetchCartFailure,
   removeItemFromCart,
 } from "../../../redux/features/cart/cartSlice";
-import { areCartsEqual } from "../../../utils/cartUtils";
 import { debounce } from "lodash";
 import { useRouter } from "next/router";
 

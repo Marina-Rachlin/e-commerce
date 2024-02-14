@@ -149,6 +149,7 @@ export default function RolesTable() {
   
   const handleRoleChange = (e) => {
     setRole(e.target.value);
+    console.log(e.target.value)
   };
 
   const handleEmailChange = (e) => {
@@ -174,7 +175,11 @@ export default function RolesTable() {
    const [openDialog, setOpenDialog] = useState(false);
 
    const handleOpenDialog = () => setOpenDialog(true);
-   const handleCloseDialog = () => setOpenDialog(false);
+   const handleCloseDialog = () => {
+    setRole('');
+    setEmail('');
+    setOpenDialog(false);
+   };
 
 
 
