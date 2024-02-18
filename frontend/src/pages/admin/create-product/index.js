@@ -3,20 +3,23 @@ import MenuToggler from "../../../components/admin/MenuToggler";
 import BreadCrumb from "../../../components/admin/BreadCrumb";
 import AdminLayout from "../../../layout/admin/AdminLayout";
 import Script from "next/script";
+import Head from "next/head";
 
 const createProduct = () => {
   return (
     <>
-     <Script async src="https://www.googletagmanager.com/gtag/js?id=G-81GLR4VQK9"></Script>
-      <Script>
-        {
-          ` window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-        
-          gtag('config', 'G-81GLR4VQK9');`
-        }
-      </Script>
+     <Head>
+    <Script async src="https://www.googletagmanager.com/gtag/js?id=G-81GLR4VQK9"></Script>
+    <Script>
+      {
+        ` window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+      
+        gtag('config', 'G-81GLR4VQK9');`
+      }
+    </Script>
+    </Head>
     <AdminLayout>
      
       {/* <!-- Dashboard --> */}

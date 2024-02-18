@@ -14,7 +14,8 @@ import { loadStripe } from "@stripe/stripe-js";
 import { useLoadUserQuery } from "../../../redux/features/api/apiSlice";
 import { Elements } from "@stripe/react-stripe-js";
 import StripePaymentForm from "./stripeForm";
-import Script from "next/script"
+import Script from "next/script";
+import Head from "next/head";
 
 const Checkout = () => {
   const { user } = useSelector((state) => state.auth); // for prefilled form fields
@@ -129,16 +130,18 @@ const Checkout = () => {
 
   return (
     <>
-     <Script async src="https://www.googletagmanager.com/gtag/js?id=G-81GLR4VQK9"></Script>
-      <Script>
-        {
-          ` window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-        
-          gtag('config', 'G-81GLR4VQK9');`
-        }
-      </Script>
+     <Head>
+    <Script async src="https://www.googletagmanager.com/gtag/js?id=G-81GLR4VQK9"></Script>
+    <Script>
+      {
+        ` window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+      
+        gtag('config', 'G-81GLR4VQK9');`
+      }
+    </Script>
+    </Head>
       <div className="checkout-section pt-110 mb-110">
         <div className="container">
           <div className="row gy-5">

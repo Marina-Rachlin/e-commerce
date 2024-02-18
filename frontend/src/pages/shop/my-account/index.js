@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { signOut } from "next-auth/react";
 import Protected from "../../../hooks/useProtected";
 import Script from "next/script";
+import Head from "next/head";
 
 // Custom components
 import UserSidebar from "../../../components/profile/UserSidebar";
@@ -13,6 +14,7 @@ import { useSelector } from "react-redux";
 import { useUpdateAvatarMutation, useEditProfileMutation } from "../../../redux/features/users/userApi";
 import { useLoadUserQuery } from "../../../redux/features/api/apiSlice";
 import { toast } from "react-hot-toast";
+
 
 const MyAccount = () => {
   const { user } = useSelector((state) => state.auth);
@@ -70,16 +72,18 @@ const MyAccount = () => {
 
   return (
     <>
-     <Script async src="https://www.googletagmanager.com/gtag/js?id=G-81GLR4VQK9"></Script>
-      <Script>
-        {
-          ` window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-        
-          gtag('config', 'G-81GLR4VQK9');`
-        }
-      </Script>
+       <Head>
+    <Script async src="https://www.googletagmanager.com/gtag/js?id=G-81GLR4VQK9"></Script>
+    <Script>
+      {
+        ` window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+      
+        gtag('config', 'G-81GLR4VQK9');`
+      }
+    </Script>
+    </Head>
     <Protected>
       <div className="dashboard-section mt-110 mb-110">
         <div className="container">

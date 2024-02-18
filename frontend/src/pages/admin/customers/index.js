@@ -3,11 +3,13 @@ import BreadCrumb from "../../../components/admin/BreadCrumb";
 import AdminLayout from "../../../layout/admin/AdminLayout";
 import UsersTable from "../../../views/customers/UsersTable";
 import Script from "next/script";
+import Head from "next/head";
 
 const index = () => {
   return (
     <>
-        <Script async src="https://www.googletagmanager.com/gtag/js?id=G-81GLR4VQK9"></Script>
+    <Head>
+    <Script async src="https://www.googletagmanager.com/gtag/js?id=G-81GLR4VQK9"></Script>
     <Script>
       {
         ` window.dataLayer = window.dataLayer || [];
@@ -17,6 +19,7 @@ const index = () => {
         gtag('config', 'G-81GLR4VQK9');`
       }
     </Script>
+    </Head>
     <AdminLayout>
      
       <div className="admin-section user-dashboard">
