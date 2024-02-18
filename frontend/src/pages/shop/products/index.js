@@ -8,6 +8,7 @@ import CustomToolbar from "./CustomToolbar";
 import Sidebar from "./Sidebar";
 import Pagination from "./Pagination";
 import { useGetAllProductsShopQuery } from "../../../redux/features/products/productApi";
+import Script from 'next/script'
 
 function valuetext(value) {
   return `${value}°C`;
@@ -147,6 +148,16 @@ const Products = () => {
 
   return (
     <>
+     <Script async src="https://www.googletagmanager.com/gtag/js?id=G-81GLR4VQK9"></Script>
+      <Script>
+        {
+          ` window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+        
+          gtag('config', 'G-81GLR4VQK9');`
+        }
+      </Script>
       <Sidebar
         value={value}
         handleChange={handleChange}

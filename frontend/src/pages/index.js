@@ -1,5 +1,6 @@
 import React from "react";
 import Head from "next/head";
+import Script from "next/script";
 import Banner from "../components/banner/Banner";
 import PopularCategory from "../components/home/PopularCategory";
 import ProductBanner from "../components/home/ProductBanner";
@@ -11,6 +12,7 @@ import BannerFooter from "../components/home/BannerFooter";
 import ProductViewModal from "../components/common/ProductViewModal";
 import FeatureProduct from "../components/home/FeatureProduct";
 
+
 export default function Home() {
 
   return (
@@ -21,6 +23,16 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/assets/img/sm-logo.svg" />
       </Head>
+      <Script async src="https://www.googletagmanager.com/gtag/js?id=G-81GLR4VQK9"></Script>
+      <Script>
+        {
+          ` window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+        
+          gtag('config', 'G-81GLR4VQK9');`
+        }
+      </Script>
 
       <ProductViewModal />
       <Banner />

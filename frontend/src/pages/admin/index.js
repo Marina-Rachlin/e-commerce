@@ -6,6 +6,7 @@ import TopCardBlock from './dashboard/TopCardBlock';
 import Chart from './dashboard/Chart';
 import OutOfStockProducts from './dashboard/OutOfStockProducts';
 import LineChartDiagram from './analytics/orders/LineChartDiagram';
+import Script from 'next/script';
 
 const Admin = ({children}) => {
 
@@ -63,6 +64,16 @@ const Admin = ({children}) => {
 
   return (
     <>
+     <Script async src="https://www.googletagmanager.com/gtag/js?id=G-81GLR4VQK9"></Script>
+      <Script>
+        {
+          ` window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+        
+          gtag('config', 'G-81GLR4VQK9');`
+        }
+      </Script>
     <AdminLayout>
      <div className="admin-section container user-dashboard">
         <div className="dashboard-outer">

@@ -13,6 +13,7 @@ import {
 } from "../../../redux/features/cart/cartSlice";
 import { debounce } from "lodash";
 import { useRouter } from "next/router";
+import Script from 'next/script'
 
 const Cart = () => {
   const { isLoading, data, error } = useGetCartQuery();
@@ -106,6 +107,16 @@ const Cart = () => {
 
   return (
     <>
+       <Script async src="https://www.googletagmanager.com/gtag/js?id=G-81GLR4VQK9"></Script>
+      <Script>
+        {
+          ` window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+        
+          gtag('config', 'G-81GLR4VQK9');`
+        }
+      </Script>
       <div className="whistlist-section cart mt-110 mb-110">
         <div className="container">
         {errorMessages.length > 0 && (

@@ -37,15 +37,15 @@ app.use(cookieParser());
 //   credentials: true,
 // }));
 
-// app.use(cors({
-//   origin: 'https://beautime-client.vercel.app',
-//   credentials: true,
-// }));
-
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: 'https://beautime.vercel.app',
   credentials: true,
 }));
+
+// app.use(cors({
+//   origin: 'http://localhost:3000',
+//   credentials: true,
+// }));
 
 // api requests limit
 const limiter = rateLimit({

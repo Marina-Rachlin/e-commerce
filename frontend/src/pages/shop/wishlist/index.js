@@ -1,12 +1,23 @@
 import React from "react";
 import WishlistItem from "./WishlistItem";
 import { useSelector } from "react-redux";
+import Script from 'next/script'
 
 const Wishlist = () => {
   const wishlist = useSelector((state) => state.wishlist.wishlist);
 
   return (
     <>
+     <Script async src="https://www.googletagmanager.com/gtag/js?id=G-81GLR4VQK9"></Script>
+      <Script>
+        {
+          ` window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+        
+          gtag('config', 'G-81GLR4VQK9');`
+        }
+      </Script>
       <div className="whistlist-section mt-110 mb-110">
         <div className="container">
           <div className="row">
