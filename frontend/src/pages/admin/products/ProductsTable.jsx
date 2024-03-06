@@ -4,6 +4,8 @@ import Link from "next/link";
 import { Icon } from "@iconify/react";
 import { useGetAllProductsQuery } from "../../../redux/features/products/productApi";
 import { format } from "timeago.js";
+import { useDeleteProductMutation } from "../../../redux/features/products/productApi";
+import {toast} from 'react-hot-toast';
 
 import { DataGrid, GridToolbarExport } from "@mui/x-data-grid";
 import {
@@ -23,7 +25,6 @@ import {
   Divider,
   CardHeader,
 } from "@mui/material";
-
 
 // ** Vars
 const productCategory = {
@@ -53,8 +54,7 @@ const renderProduct = (row) => {
 };
 
 // ** rowOptions(3 dots) column
-const RowOptions = ({ id }) => {
-  // const dispatch = useDispatch()
+const RowOptions = ({ id, deleteProduct, isSuccess, refetch }) => {
 
   const [anchorEl, setAnchorEl] = useState(null);
   const rowOptionsOpen = Boolean(anchorEl);
@@ -67,9 +67,15 @@ const RowOptions = ({ id }) => {
     setAnchorEl(null);
   };
 
-  const handleDelete = () => {
-    // dispatch(deleteStudent(id))
-    handleRowOptionsClose();
+  const handleDelete = async () => {
+    try {
+      await deleteProduct(id);
+      toast.success('Product deleted');
+      refetch();
+      handleRowOptionsClose();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -119,7 +125,214 @@ const RowOptions = ({ id }) => {
   );
 };
 
-//** columns
+// //** columns
+// const columns = [
+//   {
+//     field: "name",
+//     headerName: "Product",
+//     flex: 0.5,
+//     minWidth: 200,
+//     renderCell: ({ row }) => {
+//       const { name, brand } = row;
+//       return (
+//         <Box sx={{ display: "flex", alignItems: "center" }}>
+//           {renderProduct(row)}
+//           <Box
+//             sx={{
+//               display: "flex",
+//               alignItems: "flex-start",
+//               flexDirection: "column",
+//             }}
+//           >
+//             <Typography
+//               variant="body1"
+//               style={{
+//                 color: "#2b3445",
+//                 fontWeight: "400",
+//                 lineHeight: "1.75",
+//                 textTransform: "capitalize",
+//               }}
+//             >
+//               <Link href="#" color="inherit">
+//                 {" "}
+//                 {name}{" "}
+//               </Link>
+//             </Typography>
+//             <Typography
+//               noWrap
+//               variant="caption"
+//               color={"#7D879C"}
+//               fontWeight={300}
+//             >
+//               {brand}
+//             </Typography>
+//           </Box>
+//         </Box>
+//       );
+//     },
+//   },
+//   {
+//     field: "category",
+//     headerName: "Category",
+//     flex: 0.3,
+//     minWidth: 150,
+//     renderCell: ({ row }) => {
+//       return (
+//         <Box
+//           sx={{
+//             display: "flex",
+//             alignItems: "center",
+//             "& svg": { mr: 1, color: productCategory[row.category].color },
+//           }}
+//         >
+//           <Icon
+//             icon={productCategory[row.category].icon}
+//             style={{ fontSize: "20px" }}
+//           />
+//           <Typography
+//             noWrap
+//             variant="body1"
+//             style={{
+//               color: "#2b3445",
+//               fontWeight: "400",
+//               lineHeight: "1.75",
+//               textTransform: "capitalize",
+//             }}
+//           >
+//             {row.category}
+//           </Typography>
+//         </Box>
+//       );
+//     },
+//   },
+//   {
+//     field: "stock",
+//     headerName: "Stock",
+//     flex: 0.2,
+//     minWidth: 100,
+//     renderCell: ({ row }) => {
+//       const cellStyles =
+//         row.stock > 0
+//           ? { color: "#2b3445" }
+//           : { color: "#d92f25", fontSize: "14px" };
+
+//       return (
+//         <Typography noWrap variant="body1" style={cellStyles}>
+//           {row.stock > 0 ? row.stock : "Out of Stock"}
+//         </Typography>
+//       );
+//     },
+//   },
+//   {
+//     field: "price",
+//     headerName: "Price",
+//     flex: 0.2,
+//     minWidth: 70,
+//     renderCell: ({ row }) => {
+//       return (
+//         <Typography
+//           noWrap
+//           variant="body1"
+//           style={{ color: "#2b3445", fontWeight: "400", lineHeight: "1.75" }}
+//         >
+//           ${row.price}
+//         </Typography>
+//       );
+//     },
+//   },
+//   {
+//     field: "discountPrice",
+//     headerName: "Discount",
+//     flex: 0.15,
+//     renderCell: ({ row }) => {
+//       if (row.discountPrice) {
+//         return (
+//           <Typography
+//             noWrap
+//             variant="body1"
+//             style={{ color: "#2b3445", fontWeight: "400", lineHeight: "1.75" }}
+//           >
+//             ${row.discountPrice}
+//           </Typography>
+//         );
+//       }
+//       return null;
+//     },
+//   },
+//   {
+//     flex: 0.1,
+//     sortable: false,
+//     field: "actions",
+//     headerName: "Actions",
+//     renderCell: ({ row }) => <RowOptions id={row.id} />,
+//   },
+// ];
+
+//** Grid custom toolbar
+const CustomToolbar = props => {
+  return (
+    <Box className="grid-toolbar">
+      <GridToolbarExport className="grid-toolbar-export" />
+      <Box sx={{ display: "flex", flexWrap: "wrap", alignItems: "center" }}>
+        <TextField
+          size="small" 
+          value={props.value}
+          onChange={props.onChange}
+          placeholder='Search ...'
+          sx={{ mr: 4, mb: 2 }}
+          className="mui-search-field"
+          InputProps={{
+            startAdornment: (
+              <Box sx={{ mr: 2, display: 'flex' }}>
+                <Icon icon='mdi:magnify' fontSize={20} />
+              </Box>
+            ),
+            endAdornment: (
+              <IconButton size='small' title='Clear' aria-label='Clear' onClick={props.clearSearch}>
+                <Icon icon='mdi:close' fontSize={20} />
+              </IconButton>
+            )
+          }} 
+        />
+        <Button
+          sx={{ mb: 2 }}
+          variant="contained"
+          className="mui-toggle-button"
+        >
+          Add Product
+        </Button>
+      </Box>
+    </Box>
+  );
+};
+
+const ProductsTable = () => {
+  // ** State
+  const [category, setCategory] = useState("");
+  const [brand, setBrand] = useState("");
+  const [status, setStatus] = useState("");
+  const [value, setValue] = useState("");
+  const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 25});
+  const { page, pageSize } = paginationModel;
+  const [rowCountState, setRowCountState] = useState(0);
+  const { isLoading, data, error, refetch} = useGetAllProductsQuery({
+    brand,
+    category,
+    stock: status,
+    value,
+    page,
+    pageSize,
+    context: 'admin'
+  },{ refetchOnMountOrArgChange: true });
+  const [rows, setRows] = useState([]);
+  const [loading, setLoading] = useState(true)
+  const [filterModel, setFilterModel] = useState({
+    items: [],
+  });
+  
+  const [deleteProduct, { isSuccess, error: deleteError }] = useDeleteProductMutation({});
+
+  //** columns
 const columns = [
   {
     field: "name",
@@ -253,94 +466,14 @@ const columns = [
       return null;
     },
   },
-  // {
-  //   field: "created_at",
-  //   headerName: "Created At",
-  //   flex: 0.15,
-  //   minWidth: 150,
-  //   renderCell: ({ row }) => {
-  //     return (
-  //       <Typography
-  //         noWrap
-  //         variant="body1"
-  //         style={{ color: "#7D879C", fontWeight: "300" }}
-  //       >
-  //         {row.created_at}
-  //       </Typography>
-  //     );
-  //   },
-  // },
-  // { field: " ", headerName: "Purchased", flex: 0.15, minWidth: 80 },
   {
     flex: 0.1,
     sortable: false,
     field: "actions",
     headerName: "Actions",
-    renderCell: ({ row }) => <RowOptions id={row.id} />,
+    renderCell: ({ row }) => <RowOptions id={row.id} deleteProduct={deleteProduct} isSuccess={isSuccess} refetch={refetch}/>,
   },
 ];
-
-//** Grid custom toolbar
-const CustomToolbar = props => {
-  return (
-    <Box className="grid-toolbar">
-      <GridToolbarExport className="grid-toolbar-export" />
-      <Box sx={{ display: "flex", flexWrap: "wrap", alignItems: "center" }}>
-        <TextField
-          size="small" 
-          value={props.value}
-          onChange={props.onChange}
-          placeholder='Search ...'
-          sx={{ mr: 4, mb: 2 }}
-          className="mui-search-field"
-          InputProps={{
-            startAdornment: (
-              <Box sx={{ mr: 2, display: 'flex' }}>
-                <Icon icon='mdi:magnify' fontSize={20} />
-              </Box>
-            ),
-            endAdornment: (
-              <IconButton size='small' title='Clear' aria-label='Clear' onClick={props.clearSearch}>
-                <Icon icon='mdi:close' fontSize={20} />
-              </IconButton>
-            )
-          }} 
-        />
-        <Button
-          sx={{ mb: 2 }}
-          variant="contained"
-          className="mui-toggle-button"
-        >
-          Add Product
-        </Button>
-      </Box>
-    </Box>
-  );
-};
-
-const ProductsTable = () => {
-  // ** State
-  const [category, setCategory] = useState("");
-  const [brand, setBrand] = useState("");
-  const [status, setStatus] = useState("");
-  const [value, setValue] = useState("");
-  const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 25});
-  const { page, pageSize } = paginationModel;
-  const [rowCountState, setRowCountState] = useState(0);
-  const { isLoading, data, error, refetch} = useGetAllProductsQuery({
-    brand,
-    category,
-    stock: status,
-    value,
-    page,
-    pageSize,
-    context: 'admin'
-  });
-  const [rows, setRows] = useState([]);
-  const [loading, setLoading] = useState(true)
-  const [filterModel, setFilterModel] = useState({
-    items: [],
-  });
 
   const handleFilter = useCallback(val => {
     setValue(val)
@@ -368,12 +501,12 @@ const ProductsTable = () => {
 
   useEffect(() => {
     if (isLoading) {
-      return; // Skip the rest of the code if still loading
+      return; 
     }
 
     if (data) {
       const newRows = data.products.map((item) => ({
-        id: item._id, // used as a key
+        id: item._id, 
         name: item.name,
         category: item.category,
         brand: item.brand,
@@ -390,7 +523,7 @@ const ProductsTable = () => {
       setLoading(false)
     } else {
       console.log(error);
-      console.log('Error. trying to refetch...')
+      console.log(deleteError);
       refetch()
     }
   }, [ 
@@ -402,7 +535,13 @@ const ProductsTable = () => {
     value,
     paginationModel,
     error,
+    isSuccess
   ]);
+
+  // const handleDelete = async () => {
+  //   const id = productId;
+  //   await deleteProduct(id);
+  // };
 
 
   return (

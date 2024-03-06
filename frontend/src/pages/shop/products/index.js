@@ -10,12 +10,16 @@ import Pagination from "./Pagination";
 import { useGetAllProductsShopQuery } from "../../../redux/features/products/productApi";
 import Script from 'next/script';
 import Head from 'next/head'
+import { useRouter } from 'next/router';
 
 function valuetext(value) {
   return `${value}°C`;
 }
 
 const Products = () => {
+
+  const router = useRouter();
+
   const [isOpenSidebar, setIsOpenSidebar] = useState(false);
   const sidebarRef = useRef(null);
   const sidebarBtnRef = useRef(null);
@@ -46,7 +50,7 @@ const Products = () => {
   const [category, setCategory] = useState('');
   const [price, setPrice] = useState([0, 10000]);
   const pageSize = 20;
-  const {isLoading, data, error} = useGetAllProductsShopQuery({page, pageSize, sort, brand, category, price});
+  const {isLoading, data, error } = useGetAllProductsShopQuery({page, pageSize, sort, brand, category, price});
   const [products, setProducts] = useState([]);
   const [topRated, setTopRated] = useState([]);
 
@@ -76,6 +80,32 @@ const Products = () => {
   }, [isOpenSidebar]);
 
   useEffect(() => {
+    // Extract the category parameter from the URL
+    const { category: categoryParam } = router.query;
+
+    if (categoryParam) {
+      setCategory(categoryParam.toString());
+    } else {
+      setCategory(''); 
+    }
+  }, [router.query]);
+
+  useEffect(() => {
+    // Extract the category parameter from the URL
+    const { category: categoryParam } = router.query;
+  
+    if (categoryParam) {
+      // Decode the category parameter
+      const decodedCategory = decodeURIComponent(categoryParam.toString());
+      setCategory(decodedCategory);
+    } else {
+      setCategory(''); 
+    }
+  }, [router.query]);
+  
+
+
+  useEffect(() => {
     if(isLoading){
       return;
     }
@@ -93,8 +123,8 @@ const Products = () => {
         ratings: item.ratings,
         commentsCount: item.commentsCount,
         purchased: item.purchased,
-        isNew: item.isNew,
-        isHot: item.isHot,
+        isNew: item.isNewProduct,
+        isHot: item.isHotProduct,
         discount: item.discount
       })))
       const topRatedProducts = data.topRated.map(((item) => ({
@@ -113,7 +143,6 @@ const Products = () => {
         isHot: item.isHot,
         discount: item.discount
       })))
-      console.log(topRatedProducts)
       setTopRated(topRatedProducts);
       setProducts(fetchedProducts);
       setTotalPages(data.totalPages);

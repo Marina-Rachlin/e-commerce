@@ -81,7 +81,7 @@ const Banner = () => {
                               </div>
                               <h1>{title}</h1>
                               <p>{description}</p>
-                              <Link legacyBehavior href="/shop">
+                              <Link legacyBehavior href="/shop/products">
                                 <a className="primary-btn1 hover-btn3">
                                   *Shop Now*
                                 </a>

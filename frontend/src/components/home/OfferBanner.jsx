@@ -11,7 +11,7 @@ const OfferBanner = () => {
               <img src="/assets/img/banners/offer-banner-left-img1.png" alt="" />
               <div className="offer-banner-left-content">
                 <h3>Up to <span>40%</span> Off All Accessory.</h3>
-                <Link legacyBehavior href="/shop"><a>Shop Now</a></Link>
+                <Link legacyBehavior href="/shop/products"><a>Shop Now</a></Link>
               </div>
             </div>
           </div>
@@ -20,7 +20,7 @@ const OfferBanner = () => {
               <img src="/assets/img/banners/offer-banner-right-img1.png" alt="" />
               <div className="offer-banner-right-content">
                 <h3>Organic <span>product</span> for your face.</h3>
-                <Link legacyBehavior href="/shop"><a  className="primary-btn3 hover-btn5">Shop Now</a></Link>
+                <Link legacyBehavior href="/shop/products"><a  className="primary-btn3 hover-btn5">Shop Now</a></Link>
               </div>
             </div>
           </div>

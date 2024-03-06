@@ -13,6 +13,7 @@ import {
   useUpdateNotificationStatusMutation,
 } from "../../../redux/features/notifications/notificationsApi";
 import { format } from "timeago.js";
+import Notifications from "./NOtifications";
 
 const DashboardHeader = ({ user }) => {
   // const { user } = useSelector((state) => state.auth);
@@ -31,10 +32,15 @@ const DashboardHeader = ({ user }) => {
     audio.play();
   };
 
+  const handleNotificationStatusChange = async (id) => {
+    await updateNotificationStatus(id);
+  };
+
   useEffect(() => {
     if (data) {
-      setNotifications(data.adminNotifications);
-      // data.adminNotifications?.filter((item) => item.status === "unread"
+      setNotifications(
+        data.adminNotifications.filter((item) => item.status === "unread")
+      );
     }
     if (isSuccess) {
       refetch();
@@ -87,6 +93,7 @@ const DashboardHeader = ({ user }) => {
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
+                
                 {notifications && notifications.length > 0 && (
                   <span className="count">{notifications.length}</span>
                 )}

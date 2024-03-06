@@ -29,16 +29,13 @@ setupListeners(store.dispatch);
 
 // call on every page load
 const initializeApp = async () => {
-  console.log("initialize app");
 
   // Loading user
   try {
     const response = await store.dispatch(
       apiSlice.endpoints.loadUser.initiate({}, { forceRefetch: true })
     );
-    console.log(response.data)
     if (!response.data || response.error) {
-      console.error("Failed to load user, aborting further actions.");
       return; 
     }
   } catch (error) {
@@ -81,7 +78,8 @@ try {
   );
 
   if (getCartResponse.data) {
-    const cartItems = getCartResponse.data.cart.map((item) => ({
+    const cartItems = getCartResponse.data.cart.map((item, index) => ({
+      key: index,
       productId: item.productId, 
       quantity: item.quantity
     }));

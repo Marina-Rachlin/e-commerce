@@ -71,14 +71,14 @@ const generateProduct = () => {
     name: faker.random.arrayElement(productNames), 
     brand: faker.random.arrayElement(brandNames),
     description: faker.lorem.paragraph(),
-    category: faker.random.arrayElement(['Makeup', 'Skincare', 'Hair', 'Body', 'Accessories', 'Kids']),
+    category: faker.random.arrayElement(['Makeup', 'Skin Care', 'Hair Care', 'Bath & Body', 'Accessories', 'Kids & Baby']),
     stock: Math.random() < 0.9 ? faker.datatype.number({ min: 1, max: 100 }) : 0,// 90% chance of stock > 0
     price: faker.datatype.number({ min: 10, max: 100 }),
     discountPrice: Math.random() < 0.7 ? faker.datatype.number({ min: 5, max: 50 }) : null,// 70% chance of discount
     images: Array.from({ length: 4 }, generateImage),
-    isNew: Math.random() < 0.5, // 50% chance to be new
-    isHot: Math.random() < 0.2, // 20% chance to be hot
-    discount: Math.random() < 0.3 ? faker.datatype.number({ min: 1, max: 50 }) : 0, // Generate an array of 4 images
+    isNewProduct: Math.random() < 0.6, 
+    isHotProduct: Math.random() < 0.6, 
+    discount: Math.random() < 0.5 ? faker.datatype.number({ min: 1, max: 50 }) : null, // Generate an array of 4 images
   };
 };
 

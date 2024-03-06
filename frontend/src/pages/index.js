@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import Head from "next/head";
 import Script from "next/script";
 import Banner from "../components/banner/Banner";
@@ -11,9 +11,62 @@ import BrandSection from "../components/home/BrandSection";
 import BannerFooter from "../components/home/BannerFooter";
 import ProductViewModal from "../components/common/ProductViewModal";
 import FeatureProduct from "../components/home/FeatureProduct";
+import { useGetAllProductsShopQuery } from "../redux/features/products/productApi";
 
 
 export default function Home() {
+
+  const pageSize = 8;
+  const page = 1;
+  const[products, setProducts] = useState([]);
+  const[mostPopular, setMostPopular] = useState([]);
+ const {isLoading,data, error} = useGetAllProductsShopQuery({page, pageSize});
+
+ useEffect(() => {
+   if(isLoading){
+     return;
+   }
+   else if(data){
+    console.log(data)
+     const productsData = data.products.map(((item) => ({
+       _id: item._id,
+       name: item.name,
+       category: item.category,
+       brand: item.brand,
+       price: item.price,
+       discountPrice: item.discountPrice,
+       images: item.images,
+       stock: item.stock,
+       ratings: item.ratings,
+       commentsCount: item.commentsCount,
+       purchased: item.purchased,
+       isNew: item.isNewProduct,
+       isHot: item.isHotProduct,
+       discount: item.discount
+     })))
+     setProducts(productsData);
+     const mostPopularProducts = data.mostPopular.map(((item) => ({
+      _id: item._id,
+      name: item.name,
+      category: item.category,
+      brand: item.brand,
+      price: item.price,
+      discountPrice: item.discountPrice,
+      images: item.images,
+      ratings: item.ratings,
+      commentsCount: item.commentsCount,
+      purchased: item.purchased,
+      isNew: item.isNewProduct,
+      isHot: item.isHotProduct,
+      discount: item.discount
+    })))
+     setMostPopular(mostPopularProducts);
+   }
+   else{
+     console.log(error);
+   }
+ }, [data])
+ 
 
   return (
     <>
@@ -37,11 +90,11 @@ export default function Home() {
       <ProductViewModal />
       <Banner />
       <PopularCategory />
-      <FeatureProduct />
+      <FeatureProduct products={products}/>
       <ProductBanner />
       <SuggestSection />
       <OfferBanner />
-      <TopSellingProduct />
+      <TopSellingProduct products={mostPopular}/>
       <BrandSection />
       <BannerFooter />
     </>

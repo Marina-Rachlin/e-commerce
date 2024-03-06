@@ -16259,5 +16259,17 @@ Testimonial-Section Css
 }
 
 
+.demo-credentials {
+  background-color: #d1ecf1; /* Light blue background color */
+  border: 1px solid #bee5eb; /* Border color */
+  padding: 10px;
+  margin-bottom: 20px; /* Adjust margin as needed */
+
+}
+
+.demo-credentials p {
+  margin: 0;
+}
+
 
 

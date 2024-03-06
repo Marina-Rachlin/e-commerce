@@ -3,13 +3,13 @@ import React, { useState, useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-import { useCreateProductMutation } from "../../../../redux/features/products/productApi";
+import { useCreateProductMutation, useGetAllProductsQuery } from "../../../../redux/features/products/productApi";
 import { toast } from "react-hot-toast";
 
 const PostBoxForm = () => {
   const [images, setImages] = useState([]);
   const [error, setError] = useState("");
-  const [createProduct, { useLoading, isSuccess, error: isError }] =
+  const [createProduct, { isLoading, isSuccess, error: isError }] =
     useCreateProductMutation();
 
   const schema = Yup.object().shape({
@@ -30,7 +30,7 @@ const PostBoxForm = () => {
       .required("Brand is required!"),
     category: Yup.string()
       .oneOf(
-        ["Body", "Hair", "Face", "Kids", "Makeup"],
+        ["Body", "Hair", "Skin", "Kids", "Makeup"],
         "Category field must have at least 1 item"
       )
       .required("Category field is required!"),
@@ -62,8 +62,9 @@ const PostBoxForm = () => {
     control,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm({
-    initialValues,
+    defaultValues: initialValues,
     mode: "onChange",
     resolver: yupResolver(schema),
   });
@@ -138,6 +139,8 @@ const PostBoxForm = () => {
   useEffect(() => {
     if (isSuccess) {
       toast.success("Product created successfully!");
+      setImages([]);
+      reset({ ...initialValues});
     }
     if (isError) {
       if ("data" in isError) {
@@ -297,7 +300,7 @@ const PostBoxForm = () => {
                   <option></option>
                   <option>Body</option>
                   <option>Hair</option>
-                  <option>Face</option>
+                  <option>Skincare</option>
                   <option>Kids</option>
                   <option>Makeup</option>
                 </select>
@@ -379,7 +382,8 @@ const PostBoxForm = () => {
         {/* <!-- Input --> */}
         <div className="form-group col-lg-12 col-md-12 text-right">
           <button type="submit" className="theme-btn btn-style-one">
-            Save Product
+            {/* Save Product */}
+            {isLoading ? 'Saving...' : 'Save Product'}
           </button>
         </div>
       </div>

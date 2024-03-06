@@ -93,7 +93,6 @@ export const addToCart = CatchAsyncError(async (req, res, next) => {
     }
 
     await cart.save();
-    console.log("cart saved");
 
     // Re-fetch the cart with populated product details
     const populatedCart = await CartModel.findOne({ userId }).populate({

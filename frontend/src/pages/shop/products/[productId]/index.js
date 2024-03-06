@@ -22,6 +22,7 @@ const ProductDefaultPage = () => {
   const { productId } = router.query;
   const [product, setProduct] = useState(null);
   const { user } = useSelector((state) => state.auth);
+  console.log(user)
   const { isLoading, data, error, refetch } = useGetProductDetailsQuery(productId);
   useMagneticHover();
   const [review, setReview] = useState("");
@@ -542,8 +543,8 @@ const ProductDefaultPage = () => {
                                             <div key={index} className="commentReply">
                                               <div className="image-box">
                                                 <img
-                                                  src={review.user.avatar?.url ||"/assets/img/inner-page/comment-author1.png"}
-                                                  alt={review.user.name}
+                                                  src={reply.user.avatar?.url ||"/assets/img/inner-page/comment-author1.png"}
+                                                  alt={reply.user.name}
                                                 />
                                               </div>
 

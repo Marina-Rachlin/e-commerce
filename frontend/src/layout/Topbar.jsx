@@ -24,29 +24,29 @@ const Topbar2 = () => {
             </div>
             <p>
               Enjoy Free shipping for orders over $30!{" "}
-              <Link legacyBehavior href="/shop">
+              <Link legacyBehavior href="/shop/products">
                 <a>Shop Now</a>
               </Link>
             </p>
             <div className="social-area">
               <ul>
                 <li>
-                  <a href="https://www.facebook.com/">
+                  <a href="/#">
                     <i className="fab fa-facebook-f" />
                   </a>
                 </li>
                 <li>
-                  <a href="https://twitter.com/">
+                  <a href="/#">
                     <i className="fab fa-twitter" />
                   </a>
                 </li>
                 <li>
-                  <a href="https://www.pinterest.com/">
+                  <a href="/#">
                     <i className="fab fa-pinterest-p" />
                   </a>
                 </li>
                 <li>
-                  <a href="https://www.instagram.com/">
+                  <a href="/#">
                     <i className="fab fa-instagram" />
                   </a>
                 </li>

@@ -114,6 +114,9 @@ export const createOrder = CatchAsyncError(async (req, res, next) => {
       await userCart.save();
     }
 
+    const cartKey = `cart_${userId}`;
+    await redis.del(cartKey);
+
 
     await sendOrderConfirmationEmail(user, newOrder);
 

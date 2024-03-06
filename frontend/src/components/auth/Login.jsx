@@ -103,8 +103,7 @@ useEffect(() => {
   }
   if (error) {
     if ("data" in error) {
-      const errorData = error;
-      console.log(errorData)
+   toast.error(error.data.message)
     }
   }
 }, [isSuccess, error]);
@@ -115,6 +114,11 @@ useEffect(() => {
         <div className="form-title">
           <h3>Log In</h3>
         </div>
+
+        <div className="demo-credentials">
+        <p><strong>Email:</strong> admin@gmail.com</p>
+        <p><strong>Password:</strong> 123456</p>
+      </div>
 
         <form onSubmit={handleSubmit(onSubmit)}>
 

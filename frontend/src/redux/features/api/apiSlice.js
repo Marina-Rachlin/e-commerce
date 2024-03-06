@@ -12,13 +12,11 @@ export const apiSlice = createApi({
           credentials: "include",
         }),
         async onQueryStarted(arg, { queryFulfilled, dispatch }) {
-          // console.log("Query started with argument:", arg);
           try {
             const result = await queryFulfilled;
-            // console.log("Query successful, result:", result);
             dispatch(userLoggedIn({ accessToken: result.data.accessToken, user: result.data.user}));
           } catch (error) {
-            // console.error("Query failed, error:", error); // Log error if query fails
+            console.error("Query failed, error:", error); // Log error if query fails
           }
         },
       }),

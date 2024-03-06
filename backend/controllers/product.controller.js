@@ -122,7 +122,8 @@ export const getAllProductsShop = CatchAsyncError(async (req, res, next) => {
       pageSize: result.pageSize,
       totalPages: result.totalPages,
       totalProducts: result.totalProducts,
-      topRated: result.topRated
+      topRated: result.topRated,
+      mostPopular: result.mostPopular
     });
   } catch (error) {
     {

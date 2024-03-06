@@ -9,16 +9,16 @@ const notificationSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  // status: {
-  //   type: String,
-  //   required: true,
-  //   default: 'unread',
-  // },
-  read: {
-    type: Boolean,
-    default: false,
+  status: {
+    type: String,
     required: true,
+    default: 'unread',
   },
+  // read: {
+  //   type: Boolean,
+  //   default: false,
+  //   required: true,
+  // },
   type: {
     type: String,
   },

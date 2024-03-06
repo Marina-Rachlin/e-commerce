@@ -183,8 +183,8 @@ switch (sort) {
                 commentsCount: { $size: "$reviews" },
                 ratings: 1,
                 purchased: 1,
-                isNew: 1,
-                isHot: 1,
+                isNewProduct: 1,
+                isHotProduct: 1,
                 discount: 1,
               },
             },
@@ -215,10 +215,31 @@ switch (sort) {
       },
     ]);
 
+       // Independent query for mostPopular products
+       const mostPopularAggregation = await productModel.aggregate([
+        { $sort: {purchased: -1 } },
+        { $limit: 8 }, 
+        {
+          $project: {
+            name: 1,
+            brand: 1,
+            price: 1,
+            discountPrice: 1,
+            images: { $slice: ["$images", 1] },
+            ratings: 1,
+            commentsCount: { $size: "$reviews" },
+            isNewProduct: 1,
+            isHotProduct: 1,
+            discount: 1
+          },
+        },
+      ]);
+
     return {
       source: "database",
       products,
-      topRated: topRatedAggregation, // Now statically set, unaffected by the main query's filters
+      topRated: topRatedAggregation,
+      mostPopular: mostPopularAggregation, // Now statically set, unaffected by the main query's filters
       totalProducts,
       page,
       pageSize,

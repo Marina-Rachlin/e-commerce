@@ -46,44 +46,72 @@ export const getAdminNotifications = CatchAsyncError(async (req, res, next) => {
 });
 
 // update notification status --- only admin
-export const updateNotification = CatchAsyncError(
-  async (req, res, next) => {
+// export const updateNotification = CatchAsyncError(
+//   async (req, res, next) => {
+//     try {
+//       const notificationId = req.params.id;
+//       const { status } = req.body;
+//       console.log(status)
+
+//       if (!isValidObjectId(notificationId)) {
+//         return next(new ErrorHandler("Invalid order ID", 400));
+//       }
+
+//       // Find the notification in DB
+//       const notification = await notificationModel.findById(notificationId);
+
+//       if (!notification) {
+//         return next(new ErrorHandler("Notification not found", 404));
+//       }
+
+//       notification.status = read; // update in DB
+//       await notification.save();
+
+//       // Update the cached document selectively
+//       const cachedData = await redis.get("adminNotifications");
+
+//       if (cachedData) {
+//         const adminNotifications = JSON.parse(cachedData);
+//         const updatedNotificationIndex = adminNotifications.findIndex((n) => n._id === notificationId);
+
+//         if (updatedNotificationIndex) {
+//         //   adminNotifications[updatedNotificationIndex].read = read;
+//         adminNotifications.splice(updatedNotificationIndex, 1);
+
+//           await redis.set("adminNotifications", JSON.stringify(adminNotifications), "EX", 3600);//1 hour
+//         }
+//       }
+
+//       res.status(200).json({
+//         success: true,
+//         message: "Notification status was updated successfully"
+//       });
+//     } catch (error) {
+//       return next(new ErrorHandler(error.message, 500));
+//     }
+//   }
+// );
+
+export const updateNotification = CatchAsyncError(async (req, res, next) => {
     try {
-      const notificationId = req.params.id;
-      const { read } = req.body;
-
-      if (!isValidObjectId(notificationId)) {
-        return next(new ErrorHandler("Invalid order ID", 400));
-      }
-
-      // Find the notification in DB
-      const notification = await notificationModel.findById(notificationId);
-
+      const notification = await notificationModel.findById(req.params.id);
       if (!notification) {
         return next(new ErrorHandler("Notification not found", 404));
+      } else {
+        notification.status
+          ? (notification.status = "read")
+          : notification?.status;
       }
 
-      notification.read = read; // update in DB
       await notification.save();
 
-      // Update the cached document selectively
-      const cachedData = await redis.get("adminNotifications");
+      const notifications = await notificationModel.find().sort({
+        createdAt: -1,
+      });
 
-      if (cachedData) {
-        const adminNotifications = JSON.parse(cachedData);
-        const updatedNotificationIndex = adminNotifications.findIndex((n) => n._id === notificationId);
-
-        if (updatedNotificationIndex) {
-        //   adminNotifications[updatedNotificationIndex].read = read;
-        adminNotifications.splice(updatedNotificationIndex, 1);
-
-          await redis.set("adminNotifications", JSON.stringify(adminNotifications), "EX", 3600);//1 hour
-        }
-      }
-
-      res.status(200).json({
+      res.status(201).json({
         success: true,
-        message: "Notification status was updated successfully"
+        notifications,
       });
     } catch (error) {
       return next(new ErrorHandler(error.message, 500));
@@ -95,7 +123,7 @@ export const updateNotification = CatchAsyncError(
 cron.schedule("0 0 0 * * *", async () => {
   const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
   await notificationModel.deleteMany({
-    read: "true",
+    status: "read",
     createdAt: { $lt: thirtyDaysAgo },
   });
   console.log("Deleted read notifications");

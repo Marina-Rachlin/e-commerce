@@ -9,6 +9,7 @@ export const productApi = apiSlice.injectEndpoints({
         body: data,
         credentials: "include",
       }),
+      invalidatesTags: ['Products']
     }),
     getAllProducts: builder.query({
       query: ({ category, brand, stock, value, page, pageSize, context }) => ({
@@ -17,18 +18,11 @@ export const productApi = apiSlice.injectEndpoints({
         credentials: "include",
       }),
     }),
-    // getAllProductsShop: builder.query({
-    //   query: ({ page, pageSize, category, brand, sort }) => ({
-    //     url: `get-products?category=${category}&brand=${brand}&stock=${sort}&page=${page}&pageSize=${pageSize}`,
-    //     method: "GET",
-    //     credentials: "include",
-    //   }),
-    // }),
     getAllProductsShop: builder.query({
       query: ({ page, pageSize, category, brand, sort, price }) => {
         let queryParams = [];
         
-        if (category) queryParams.push(`category=${category}`);
+        if (category) queryParams.push(`category=${encodeURIComponent(category)}`);//to deal with categories like "Bath & Body"
         if (brand) queryParams.push(`brand=${brand}`);
         if (sort) queryParams.push(`sort=${sort}`);
         if (page) queryParams.push(`page=${page}`);
@@ -90,6 +84,13 @@ export const productApi = apiSlice.injectEndpoints({
         credentials: "include",
       }),
     }),
+    deleteProduct: builder.mutation({
+      query: (id) => ({
+        url: `delete-product/${id}`,
+        method: "DELETE",
+        credentials: "include",
+      }),
+    }),
   }),
 });
 
@@ -101,5 +102,6 @@ export const {
   useAddReviewMutation,
   useAddReplyInReviewMutation,
   useGetBrandsQuery,
-  useGetCategoriesQuery
+  useGetCategoriesQuery,
+  useDeleteProductMutation
 } = productApi;
